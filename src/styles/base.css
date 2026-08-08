@@ -1,0 +1,146 @@
+/**
+ * Reset enxuto + estilos de documento.
+ *
+ * Vale notar o que NÃO está aqui: `overflow-x: hidden` no body. O protótipo
+ * usava isso para esconder estouro horizontal; a versão de produção corrige o
+ * layout que estourava, então a régua fica honesta — se algo vazar, aparece.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--sand);
+  /* Compensa a barra fixa ao pular por âncora (#tudo, #comparar…). */
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--teal-text);
+  text-decoration: none;
+  transition: color var(--t-fast) ease;
+}
+
+a:hover {
+  color: var(--coral-text);
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--ink);
+}
+
+/**
+ * Foco visível. O protótipo aplicava `outline: none` nos campos e sinalizava
+ * foco só pela cor da borda — o que some para quem navega por teclado e reprova
+ * no WCAG 2.4.7. Aqui todo elemento interativo tem anel de foco de verdade,
+ * e apenas quando o foco veio do teclado (`:focus-visible`).
+ */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-xs);
+}
+
+/* Scrollbar (WebKit) */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sand-2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sand-3);
+  border-radius: var(--r-xs);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c4ad8d;
+}
+
+/* Firefox */
+* {
+  scrollbar-color: var(--sand-3) var(--sand-2);
+}
+
+/* Conteúdo visível só para leitores de tela. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

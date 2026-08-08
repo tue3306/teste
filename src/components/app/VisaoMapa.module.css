@@ -1,0 +1,192 @@
+/**
+ * `minmax(0, 1fr)` e não `1fr`.
+ *
+ * `1fr` equivale a `minmax(auto, 1fr)`, e esse mínimo `auto` é o `min-content`
+ * da coluna. Como os rótulos dos pins usam `white-space: nowrap`, o min-content
+ * do mapa passava de 384px e empurrava a coluna para fora de uma tela de 375px.
+ * Com o mínimo em zero, a coluna encolhe e o conteúdo se ajusta dentro dela.
+ */
+.grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.mapa {
+  position: relative;
+  height: 560px;
+  border-radius: var(--r-4xl);
+  border: 1px solid var(--ink-a07);
+  overflow: hidden;
+  background: var(--grad-mapa);
+}
+
+.malha {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(20, 49, 47, 0.05) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg, rgba(20, 49, 47, 0.05) 0 1px, transparent 1px 46px);
+}
+
+.mar {
+  position: absolute;
+  inset-inline: -6%;
+  inset-block-start: 56%;
+  height: 50%;
+  background: var(--grad-agua);
+  border-block-start: 2px solid rgba(14, 154, 167, 0.35);
+  transform: rotate(-4deg);
+  opacity: 0.85;
+}
+
+.legenda {
+  position: absolute;
+  inset-inline-start: 26px;
+  inset-block-end: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.marcador {
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  box-shadow: 0 6px 14px -6px rgba(20, 49, 47, 0.9);
+  transition:
+    width var(--t-fast) var(--ease),
+    height var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
+.rotulo {
+  font-size: 11.5px;
+  font-weight: 750;
+  color: var(--ink-3);
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  box-shadow: 0 6px 14px -10px rgba(20, 49, 47, 0.9);
+}
+
+.rotuloAtivo {
+  color: var(--ink);
+}
+
+.detalhe {
+  padding: 22px;
+  border-radius: var(--r-3xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: var(--sh-lg);
+}
+
+.foto {
+  height: 124px;
+  border-radius: var(--r-lg);
+}
+
+.nome {
+  font-size: 18.5px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-block-start: 14px;
+}
+
+.sub {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-block-start: 5px;
+}
+
+.linhaPreco {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-block-start: 16px;
+}
+
+.info {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.preco {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.escolherDia {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-block-start: 16px;
+}
+
+.rotuloDia {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.select {
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-a12);
+  background: var(--sand);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.confirmacao {
+  margin-block-start: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  background: var(--mint);
+  border: 1px solid var(--teal-border);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--teal-text);
+}
+
+@media (min-width: 1180px) {
+  .grade {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+/* Num celular o mapa de 560px come a tela inteira antes do painel de detalhe. */
+@media (max-width: 720px) {
+  .mapa {
+    height: 420px;
+  }
+
+  .rotulo {
+    font-size: 10.5px;
+    padding: 3px 7px;
+    /* Nome longo é cortado com reticências em vez de esticar o pin para fora
+       do mapa. */
+    max-width: 34vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

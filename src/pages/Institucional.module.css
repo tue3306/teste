@@ -1,0 +1,111 @@
+.pagina {
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) 0;
+  max-width: 760px;
+}
+
+.titulo {
+  font-size: var(--fs-5xl);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+  margin: 12px 0 0;
+}
+
+.chamada {
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin-block-start: 22px;
+  text-wrap: pretty;
+}
+
+/* Aviso de revisão pendente. Amarelo de atenção, não vermelho de erro: nada
+   está quebrado, só falta a chancela de quem entende do assunto. */
+.aviso {
+  display: flex;
+  gap: 12px;
+  margin-block-start: 28px;
+  padding: 16px 18px;
+  border-radius: var(--r-xl);
+  border: 1px solid rgba(214, 158, 46, 0.4);
+  background: #fdf6e3;
+}
+
+.avisoIcone {
+  flex: none;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.avisoTexto {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: #6b4f10;
+  margin: 0;
+}
+
+.bloco {
+  margin-block-start: 42px;
+}
+
+.blocoTitulo {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+
+.paragrafo {
+  font-size: var(--fs-base);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.paragrafo + .paragrafo {
+  margin-block-start: 14px;
+}
+
+.lista {
+  margin-block-start: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+}
+
+.marcador {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex: none;
+  translate: 0 -2px;
+}
+
+.rodapeNota {
+  margin-block: 48px 0;
+  padding-block-start: 24px;
+  border-block-start: 1px solid var(--ink-a09);
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.navegacao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 20px;
+}

@@ -1,0 +1,169 @@
+.cabecalho {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 60;
+  backdrop-filter: blur(16px) saturate(150%);
+  background: rgba(251, 246, 238, 0.9);
+  border-block-end: 1px solid var(--ink-a07);
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-block: 14px;
+}
+
+.resumo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a09);
+  background: var(--surface);
+  min-width: 0;
+  flex: 1;
+  max-width: 480px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px -18px rgba(20, 49, 47, 0.9);
+}
+
+.destino {
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detalhe {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.separador {
+  color: var(--ink-a16);
+  flex: none;
+}
+
+.aoVivo {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex: none;
+  margin-inline-start: auto;
+  animation: bibPulse 2s ease-in-out infinite;
+}
+
+.espaco {
+  flex: 1;
+}
+
+.conta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.salvos {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--teal-strong);
+  display: grid;
+  place-items: center;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--on-brand);
+  flex: none;
+}
+
+/**
+ * As sete abas quebram em linha nova em vez de rolar lateralmente.
+ *
+ * A versão com `overflow-x: auto` escondia "Minha viagem" e "Bia" fora da tela
+ * no celular, atrás de um arrasto sem nenhuma pista visual de que existia.
+ */
+.abas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-block-end: 12px;
+}
+
+.abaItem {
+  flex: none;
+}
+
+.aba {
+  position: relative;
+  display: block;
+  padding: 9px 17px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.aba:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+/* Pílula que desliza entre as abas, animada pelo Motion. */
+.realce {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--r-pill);
+  background: var(--mint);
+  border: 1px solid var(--teal);
+}
+
+.abaTexto {
+  position: relative;
+}
+
+.abaAtiva {
+  border-color: transparent;
+  color: var(--teal-text);
+}
+
+.abaAtiva:hover {
+  color: var(--teal-text);
+  border-color: transparent;
+}
+
+/* Abaixo de 780px o resumo da busca some: o espaço é do logotipo, das abas e
+   da conta. O protótipo mantinha tudo na linha e o resumo espremia o resto. */
+@media (max-width: 780px) {
+  .resumo {
+    display: none;
+  }
+
+  .salvos {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aoVivo {
+    animation: none;
+  }
+}

@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html { scroll-behavior: smooth; background: #0b0c11; }
+  body { margin: 0; background: #0b0c11; color: #f1f2f7; font-family: 'Manrope', 'Helvetica Neue', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  * { box-sizing: border-box; }
+  a { color: var(--acc, #55dbd0); text-decoration: none; transition: color .25s ease; }
+  a:hover { color: var(--acc2, #b18cf7); }
+  ::selection { background: var(--acc, #55dbd0); color: #08090d; }
+  input, button, select, textarea { font-family: inherit; }
+  input::placeholder { color: rgba(241,242,247,.34); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #0b0c11; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.13); border-radius: 8px; }
+  @keyframes bibFloat { 0%,100% { transform: translate3d(0,0,0) } 50% { transform: translate3d(0,-16px,0) } }
+  @keyframes bibFloatB { 0%,100% { transform: translate3d(0,-10px,0) } 50% { transform: translate3d(0,10px,0) } }
+  @keyframes bibMarquee { from { transform: translate3d(0,0,0) } to { transform: translate3d(-50%,0,0) } }
+  @keyframes bibPulse { 0%,100% { opacity: .35; transform: scale(1) } 50% { opacity: .9; transform: scale(1.35) } }
+  @keyframes bibSpin { to { transform: rotate(360deg) } }
+  @keyframes bibShimmer { from { background-position: -220% 0 } to { background-position: 320% 0 } }
+  @keyframes bibRise { from { opacity: 0; transform: translate3d(0,26px,0) } to { opacity: 1; transform: none } }
+  @keyframes bibGlow { 0%,100% { opacity: .5 } 50% { opacity: 1 } }
+</style>
+</helmet>
+
+<div style="position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--acc,#55dbd0),var(--acc2,#b18cf7));z-index:90;box-shadow:0 0 18px var(--acc,#55dbd0)" data-progress=""></div>
+<div style="position:fixed;top:0;left:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--acc,#55dbd0);pointer-events:none;z-index:95;opacity:0;mix-blend-mode:screen;transform:translate(-50%,-50%)" data-cursor=""></div>
+<div style="position:fixed;top:0;left:0;width:5px;height:5px;border-radius:50%;background:var(--acc2,#b18cf7);pointer-events:none;z-index:95;opacity:0;transform:translate(-50%,-50%)" data-cursor-dot=""></div>
+
+<canvas style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.85" data-sky=""></canvas>
+<div style="position:fixed;top:-16vh;left:50%;width:120vw;height:80vh;transform:translateX(-50%);background:radial-gradient(50% 60% at 30% 40%, rgba(85,219,208,.16), transparent 70%),radial-gradient(45% 55% at 72% 30%, rgba(177,140,247,.15), transparent 70%);filter:blur(20px);z-index:0;pointer-events:none;animation:bibGlow 12s ease-in-out infinite"></div>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;z-index:1" data-screen-label="Landing">
+
+  <header style="position:sticky;top:0;z-index:60;padding:14px 0;backdrop-filter:blur(18px) saturate(140%);background:linear-gradient(180deg,rgba(11,12,17,.86),rgba(11,12,17,.45));border-bottom:1px solid rgba(255,255,255,.06)">
+    <nav style="max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:32px">
+      <a href="#topo" style="display:flex;align-items:baseline;gap:1px;font-size:22px;font-weight:800;letter-spacing:-.045em;color:#f1f2f7">BI<span style="color:var(--acc,#55dbd0);font-weight:300;padding:0 1px">&amp;</span>B</a>
+      <div style="display:flex;align-items:center;gap:26px;font-size:14px;color:rgba(241,242,247,.6);margin-left:8px">
+        <a href="#tudo" style="color:inherit" style-hover="color:#f1f2f7">Como funciona</a>
+        <a href="#comparar" style="color:inherit" style-hover="color:#f1f2f7">Comparador</a>
+        <a href="#roteiro" style="color:inherit" style-hover="color:#f1f2f7">Roteiro IA</a>
+        <a href="#bia" style="color:inherit" style-hover="color:#f1f2f7">Assistente</a>
+      </div>
+      <div style="flex:1"></div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button style="background:none;border:1px solid rgba(255,255,255,.12);color:rgba(241,242,247,.8);padding:10px 18px;border-radius:999px;font-size:13.5px;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1)" style-hover="border-color:rgba(255,255,255,.3);color:#f1f2f7;transform:translateY(-1px)">Entrar</button>
+        <button onClick="{{ abrirApp }}" style="background:linear-gradient(135deg,var(--acc,#55dbd0),var(--acc2,#b18cf7));border:none;color:#08090d;padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:700;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 8px 26px rgba(85,219,208,.24)" style-hover="transform:translateY(-2px);box-shadow:0 14px 40px rgba(85,219,208,.42)">Abrir plataforma</button>
+      </div>
+    </nav>
+  </header>
+
+  <section id="topo" style="max-width:1280px;margin:0 auto;padding:76px 32px 40px;display:grid;grid-template-columns:{{ heroCols }};gap:56px;align-items:start">
+    <div>
+      <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(241,242,247,.72)">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--acc,#55dbd0);box-shadow:0 0 12px var(--acc,#55dbd0);animation:bibPulse 2.4s ease-in-out infinite"></span>
+        342 fontes vasculhadas por busca
+      </div>
+      <h1 data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .08s,transform .9s cubic-bezier(.2,.8,.2,1) .08s;font-size:76px;line-height:.96;letter-spacing:-.045em;font-weight:800;margin:26px 0 0">Voo, hotel e roteiro.<br /><span style="background:linear-gradient(100deg,var(--acc,#55dbd0),var(--acc2,#b18cf7) 70%);-webkit-background-clip:text;background-clip:text;color:transparent">Uma busca só.</span></h1>
+      <p data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .16s,transform .9s cubic-bezier(.2,.8,.2,1) .16s;font-size:19px;line-height:1.55;color:rgba(241,242,247,.62);max-width:520px;margin:24px 0 0;text-wrap:pretty">A BI&amp;B varre companhias aéreas, hospedagens, passeios e restaurantes ao mesmo tempo, compara tudo lado a lado e monta seu roteiro dia por dia. Com o melhor preço garantido — ou devolvemos a diferença.</p>
+
+      <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .24s,transform .9s cubic-bezier(.2,.8,.2,1) .24s;margin:36px 0 0;padding:14px;border-radius:26px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.03));backdrop-filter:blur(24px) saturate(160%);box-shadow:0 30px 70px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.09)">
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px">
+          <label style="display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.42)">Destino</span>
+            <input value="{{ busca.destino }}" onChange="{{ setDestino }}" style="background:none;border:none;outline:none;color:#f1f2f7;font-size:15px;font-weight:600;width:100%;padding:0" />
+          </label>
+          <label style="display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.42)">Datas</span>
+            <input value="{{ busca.datas }}" onChange="{{ setDatas }}" style="background:none;border:none;outline:none;color:#f1f2f7;font-size:15px;font-weight:600;width:100%;padding:0" />
+          </label>
+          <label style="display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.42)">Pessoas</span>
+            <input value="{{ busca.pessoas }}" onChange="{{ setPessoas }}" style="background:none;border:none;outline:none;color:#f1f2f7;font-size:15px;font-weight:600;width:100%;padding:0" />
+          </label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:10px">
+          <label style="display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.42)">Orçamento total</span>
+            <input value="{{ busca.orcamento }}" onChange="{{ setOrcamento }}" style="background:none;border:none;outline:none;color:#f1f2f7;font-size:15px;font-weight:600;width:100%;padding:0" />
+          </label>
+          <label style="display:flex;flex-direction:column;gap:5px;padding:10px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.42)">Tipo de viagem</span>
+            <select value="{{ busca.tipo }}" onChange="{{ setTipo }}" style="background:none;border:none;outline:none;color:#f1f2f7;font-size:15px;font-weight:600;width:100%;padding:0;appearance:none;cursor:pointer">
+              <option style="background:#14161d">Casal</option>
+              <option style="background:#14161d">Família</option>
+              <option style="background:#14161d">Mochilão</option>
+              <option style="background:#14161d">Luxo</option>
+              <option style="background:#14161d">Aventura</option>
+              <option style="background:#14161d">Trabalho</option>
+            </select>
+          </label>
+          <button onClick="{{ abrirApp }}" data-magnetic="" style="border:none;cursor:pointer;padding:0 34px;border-radius:16px;background:linear-gradient(135deg,var(--acc,#55dbd0),var(--acc2,#b18cf7));color:#08090d;font-size:15.5px;font-weight:800;letter-spacing:-.01em;box-shadow:0 12px 34px rgba(85,219,208,.32);transition:all .35s cubic-bezier(.2,.8,.2,1)" style-hover="box-shadow:0 18px 54px rgba(177,140,247,.5)">Planejar viagem</button>
+        </div>
+      </div>
+
+      <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .32s,transform .9s cubic-bezier(.2,.8,.2,1) .32s;display:flex;gap:38px;margin:38px 0 0">
+        <div>
+          <div style="font-size:32px;font-weight:800;letter-spacing:-.03em"><span data-count="34">0</span>%</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.44);margin-top:4px">economia média</div>
+        </div>
+        <div>
+          <div style="font-size:32px;font-weight:800;letter-spacing:-.03em"><span data-count="11">0</span>s</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.44);margin-top:4px">roteiro completo</div>
+        </div>
+        <div>
+          <div style="font-size:32px;font-weight:800;letter-spacing:-.03em"><span data-count="890">0</span>k</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.44);margin-top:4px">viagens planejadas</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative;height:660px" data-par="0.08">
+      <div data-tilt="" style="position:absolute;top:0;right:0;width:330px;padding:16px;border-radius:24px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));backdrop-filter:blur(22px);box-shadow:0 34px 80px -34px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.1);animation:bibFloat 9s ease-in-out infinite;transform-style:preserve-3d">
+        <div style="height:150px;border-radius:16px;background:repeating-linear-gradient(115deg,rgba(85,219,208,.16) 0 10px,rgba(255,255,255,.03) 10px 20px);display:flex;align-items:flex-end;justify-content:space-between;padding:12px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(241,242,247,.5)">foto · orla de copacabana</span>
+          <span style="padding:4px 9px;border-radius:999px;background:rgba(8,9,13,.7);font-size:11px;font-weight:700">9,2</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:14px">
+          <div>
+            <div style="font-size:16px;font-weight:700;letter-spacing:-.02em">Copa Vista Mar</div>
+            <div style="font-size:12.5px;color:rgba(241,242,247,.5);margin-top:3px">Copacabana · 120 m da praia</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:rgba(241,242,247,.4);text-decoration:line-through">R$ 748</div>
+            <div style="font-size:19px;font-weight:800;color:var(--acc,#55dbd0);letter-spacing:-.02em">R$ 612</div>
+          </div>
+        </div>
+      </div>
+
+      <div data-tilt="" style="position:absolute;top:214px;left:0;width:318px;padding:16px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.035));backdrop-filter:blur(22px);box-shadow:0 30px 70px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.1);animation:bibFloatB 7.5s ease-in-out infinite;transform-style:preserve-3d">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.45)">
+          <span>GRU → SDU</span><span style="color:var(--acc,#55dbd0)">direto</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+          <div style="font-size:24px;font-weight:800;letter-spacing:-.03em">06:20</div>
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,var(--acc,#55dbd0),rgba(255,255,255,.15));position:relative"><span style="position:absolute;right:-2px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--acc,#55dbd0)"></span></div>
+          <div style="font-size:24px;font-weight:800;letter-spacing:-.03em">07:25</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:12px">
+          <div style="font-size:12.5px;color:rgba(241,242,247,.52)">LATAM · 1h 05m</div>
+          <div style="font-size:19px;font-weight:800;letter-spacing:-.02em">R$ 389</div>
+        </div>
+      </div>
+
+      <div data-tilt="" style="position:absolute;top:372px;right:24px;width:300px;padding:16px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(160deg,rgba(177,140,247,.14),rgba(255,255,255,.03));backdrop-filter:blur(22px);box-shadow:0 30px 70px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.1);animation:bibFloat 8.2s ease-in-out infinite .6s;transform-style:preserve-3d">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc2,#b18cf7)">roteiro · dia 3</div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:12px">
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(241,242,247,.45);width:38px">08:00</span><span style="font-size:13.5px">Café no Aprazível</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(241,242,247,.45);width:38px">10:30</span><span style="font-size:13.5px">Bondinho Pão de Açúcar</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(241,242,247,.45);width:38px">16:00</span><span style="font-size:13.5px">Praia Vermelha</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(241,242,247,.45);width:38px">20:00</span><span style="font-size:13.5px">Roda de samba na Lapa</span></div>
+        </div>
+      </div>
+
+      <div data-tilt="" style="position:absolute;top:534px;left:34px;width:246px;padding:14px 16px;border-radius:20px;border:1px solid rgba(85,219,208,.28);background:linear-gradient(160deg,rgba(85,219,208,.16),rgba(255,255,255,.03));backdrop-filter:blur(22px);box-shadow:0 24px 60px -26px rgba(0,0,0,.9);animation:bibFloatB 6.6s ease-in-out infinite .3s">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.5)">total da viagem</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px">
+          <div style="font-size:28px;font-weight:800;letter-spacing:-.035em">R$ 5.240</div>
+          <div style="font-size:12px;color:var(--acc,#55dbd0);font-weight:700">−R$ 760</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="overflow:hidden;padding:26px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);margin-top:40px;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)">
+    <div style="display:flex;gap:56px;width:max-content;animation:bibMarquee 34s linear infinite;font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(241,242,247,.34)">
+      <span>342 fontes conectadas</span><span>·</span><span>companhias aéreas</span><span>·</span><span>hotéis &amp; resorts</span><span>·</span><span>hostels</span><span>·</span><span>aluguel de temporada</span><span>·</span><span>restaurantes</span><span>·</span><span>passeios</span><span>·</span><span>eventos</span><span>·</span><span>aluguel de carros</span><span>·</span><span>seguro viagem</span><span>·</span><span>pacotes</span><span>·</span>
+      <span>342 fontes conectadas</span><span>·</span><span>companhias aéreas</span><span>·</span><span>hotéis &amp; resorts</span><span>·</span><span>hostels</span><span>·</span><span>aluguel de temporada</span><span>·</span><span>restaurantes</span><span>·</span><span>passeios</span><span>·</span><span>eventos</span><span>·</span><span>aluguel de carros</span><span>·</span><span>seguro viagem</span><span>·</span><span>pacotes</span><span>·</span>
+    </div>
+  </div>
+
+  <section id="tudo" style="max-width:1280px;margin:0 auto;padding:110px 32px 0">
+    <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);max-width:660px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#55dbd0)">01 — tudo em um lugar</div>
+      <h2 style="font-size:50px;line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:18px 0 0">Doze abas abertas viram<br />uma tela só.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ bentoCols }};gap:16px;margin-top:48px">
+      <div data-reveal="" data-tilt="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);grid-column:span 2;padding:30px;border-radius:26px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));backdrop-filter:blur(18px);min-height:280px;display:flex;flex-direction:column;justify-content:space-between" style-hover="border-color:rgba(85,219,208,.35)">
+        <div>
+          <div style="font-size:24px;font-weight:700;letter-spacing:-.03em">Busca simultânea</div>
+          <p style="font-size:15.5px;line-height:1.6;color:rgba(241,242,247,.58);max-width:420px;margin:12px 0 0">Uma consulta dispara voos, hospedagem, passeios, restaurantes, eventos, carro e seguro ao mesmo tempo. Os resultados chegam ranqueados por custo-benefício real, não por comissão.</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px">
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Passagens</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Hotéis</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Resorts</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Hostels</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Temporada</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Restaurantes</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Passeios</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Eventos</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Carros</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Seguro</span>
+        </div>
+      </div>
+      <div data-reveal="" data-tilt="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .1s,transform .9s cubic-bezier(.2,.8,.2,1) .1s;padding:30px;border-radius:26px;border:1px solid rgba(85,219,208,.24);background:linear-gradient(160deg,rgba(85,219,208,.13),rgba(255,255,255,.02));backdrop-filter:blur(18px);display:flex;flex-direction:column;justify-content:space-between">
+        <div style="font-size:24px;font-weight:700;letter-spacing:-.03em">Melhor preço garantido</div>
+        <div>
+          <div style="font-size:58px;font-weight:800;letter-spacing:-.045em;line-height:1">−<span data-count="34">0</span>%</div>
+          <p style="font-size:14.5px;line-height:1.55;color:rgba(241,242,247,.6);margin:10px 0 0">Achou mais barato em outro lugar em até 24h? Devolvemos a diferença em crédito.</p>
+        </div>
+      </div>
+      <div data-reveal="" data-tilt="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .05s,transform .9s cubic-bezier(.2,.8,.2,1) .05s;padding:30px;border-radius:26px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));backdrop-filter:blur(18px)">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.03em">Roteiro em timeline</div>
+        <p style="font-size:14.5px;line-height:1.6;color:rgba(241,242,247,.58);margin:12px 0 0">Dias, horários, deslocamentos e custo previsto. Arraste para reorganizar; a IA recalcula o trajeto.</p>
+      </div>
+      <div data-reveal="" data-tilt="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .12s,transform .9s cubic-bezier(.2,.8,.2,1) .12s;padding:30px;border-radius:26px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));backdrop-filter:blur(18px)">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.03em">Favoritos e comparação</div>
+        <p style="font-size:14.5px;line-height:1.6;color:rgba(241,242,247,.58);margin:12px 0 0">Salve voos, quartos e passeios; compare até quatro opções lado a lado com taxas e cancelamento visíveis.</p>
+      </div>
+      <div data-reveal="" data-tilt="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .18s,transform .9s cubic-bezier(.2,.8,.2,1) .18s;padding:30px;border-radius:26px;border:1px solid rgba(177,140,247,.22);background:linear-gradient(160deg,rgba(177,140,247,.12),rgba(255,255,255,.02));backdrop-filter:blur(18px)">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.03em">Bia, sua copiloto</div>
+        <p style="font-size:14.5px;line-height:1.6;color:rgba(241,242,247,.58);margin:12px 0 0">Pergunte em português. Ela remonta a viagem inteira, com preço atualizado, em segundos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparar" style="max-width:1280px;margin:0 auto;padding:120px 32px 0">
+    <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap">
+      <div style="max-width:620px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#55dbd0)">02 — comparador</div>
+        <h2 style="font-size:50px;line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:18px 0 0">O mesmo quarto,<br />sete preços diferentes.</h2>
+      </div>
+      <p style="font-size:16px;line-height:1.6;color:rgba(241,242,247,.58);max-width:360px;margin:0">Mostramos taxa de serviço, política de cancelamento e o que está realmente incluído. Nada de preço que cresce no checkout.</p>
+    </div>
+
+    <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .1s,transform .9s cubic-bezier(.2,.8,.2,1) .1s;margin-top:44px;border-radius:28px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(20px);overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 26px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:44px;height:44px;border-radius:12px;background:repeating-linear-gradient(115deg,rgba(85,219,208,.18) 0 8px,rgba(255,255,255,.04) 8px 16px)"></div>
+          <div>
+            <div style="font-size:16.5px;font-weight:700;letter-spacing:-.02em">Ipanema Arpoador Suítes · quarto duplo vista mar</div>
+            <div style="font-size:12.5px;color:rgba(241,242,247,.5);margin-top:2px">7 noites · 12–19 set · 2 adultos</div>
+          </div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.45)">preço final, com taxas</span>
+      </div>
+      <sc-for list="{{ comparador }}" as="linha" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:{{ compCols }};gap:20px;align-items:center;padding:16px 26px;border-bottom:1px solid rgba(255,255,255,.045)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:14.5px;font-weight:700;letter-spacing:-.01em;color:{{ linha.cor }}">{{ linha.fonte }}</span>
+          </div>
+          <div style="height:10px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden">
+            <div style="height:100%;border-radius:999px;width:{{ linha.largura }};background:{{ linha.barra }};transition:width 1.2s cubic-bezier(.2,.8,.2,1)"></div>
+          </div>
+          <div style="font-size:13px;color:rgba(241,242,247,.5)">{{ linha.nota }}</div>
+          <div style="text-align:right;font-size:18px;font-weight:800;letter-spacing:-.02em;color:{{ linha.cor }}">{{ linha.preco }}</div>
+        </div>
+      </sc-for>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 26px;background:linear-gradient(90deg,rgba(85,219,208,.1),transparent)">
+        <span style="font-size:14.5px;color:rgba(241,242,247,.66)">Sua economia com a BI&amp;B nesta reserva</span>
+        <span style="font-size:22px;font-weight:800;letter-spacing:-.025em;color:var(--acc,#55dbd0)">R$ 1.036</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="roteiro" style="max-width:1280px;margin:0 auto;padding:120px 32px 0">
+    <div style="display:grid;grid-template-columns:{{ secCols }};gap:64px;align-items:center">
+      <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#55dbd0)">03 — roteiro inteligente</div>
+        <h2 style="font-size:50px;line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:18px 0 0">Sete dias no Rio,<br />montados em 11 segundos.</h2>
+        <p style="font-size:17px;line-height:1.6;color:rgba(241,242,247,.6);margin:22px 0 0;max-width:460px;text-wrap:pretty">A IA cruza clima, distância, horário de funcionamento, fila e seu orçamento. Praia quando o sol colabora, museu quando chove, jantar perto de onde você já está.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:26px">
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(85,219,208,.3);background:rgba(85,219,208,.1);font-size:12.5px;color:#f1f2f7">Gastronomia</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Natureza</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Vida noturna</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Cultura</span>
+          <span style="padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(241,242,247,.7)">Casal</span>
+        </div>
+        <button onClick="{{ irRoteiro }}" style="margin-top:34px;padding:14px 26px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#f1f2f7;font-size:14.5px;font-weight:600;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1)" style-hover="background:rgba(255,255,255,.1);transform:translateY(-2px)">Ver o roteiro completo →</button>
+      </div>
+      <div data-reveal="" data-par="0.05" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .12s,transform .9s cubic-bezier(.2,.8,.2,1) .12s;padding:26px;border-radius:28px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));backdrop-filter:blur(22px);box-shadow:0 40px 90px -40px rgba(0,0,0,.9)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">dia 3 · quinta · 28°C sol</div>
+          <div style="font-size:12.5px;color:var(--acc,#55dbd0);font-weight:700">R$ 318 previstos</div>
+        </div>
+        <sc-for list="{{ timelinePreview }}" as="it" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:52px 1fr;gap:16px;position:relative;padding-bottom:14px">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(241,242,247,.42);padding-top:14px">{{ it.hora }}</div>
+            <div style="padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);transition:all .35s cubic-bezier(.2,.8,.2,1)" style-hover="transform:translateX(6px);border-color:rgba(85,219,208,.35);background:rgba(85,219,208,.07)">
+              <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+                <span style="font-size:15px;font-weight:650;letter-spacing:-.015em">{{ it.titulo }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(241,242,247,.42);white-space:nowrap">{{ it.custo }}</span>
+              </div>
+              <div style="font-size:12.5px;color:rgba(241,242,247,.5);margin-top:4px">{{ it.local }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="bia" style="max-width:1280px;margin:0 auto;padding:120px 32px 0">
+    <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);text-align:center;max-width:640px;margin:0 auto">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2,#b18cf7)">04 — assistente</div>
+      <h2 style="font-size:50px;line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:18px 0 0">Converse. Ela reserva.</h2>
+      <p style="font-size:17px;line-height:1.6;color:rgba(241,242,247,.6);margin:20px 0 0">“Quero 4 dias no Rio com R$ 3 mil, sem acordar cedo.” A Bia entende, monta e mostra o preço final.</p>
+    </div>
+    <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .1s,transform .9s cubic-bezier(.2,.8,.2,1) .1s;max-width:820px;margin:44px auto 0;border-radius:28px;border:1px solid rgba(177,140,247,.22);background:linear-gradient(160deg,rgba(177,140,247,.1),rgba(255,255,255,.02));backdrop-filter:blur(22px);padding:26px;box-shadow:0 40px 90px -44px rgba(0,0,0,.9)">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ chat }}" as="m" hint-placeholder-count="3">
+          <div style="display:flex;justify-content:{{ m.align }}">
+            <div style="max-width:76%;padding:14px 18px;border-radius:{{ m.raio }};background:{{ m.bg }};border:1px solid {{ m.borda }};font-size:15px;line-height:1.55;color:{{ m.cor }}">{{ m.t }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <input value="{{ chatInput }}" onChange="{{ setChatInput }}" onKeyDown="{{ chatKey }}" placeholder="Pergunte à Bia: quanto vou gastar em 5 dias?" style="flex:1;padding:15px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#f1f2f7;font-size:14.5px;outline:none;transition:border-color .3s ease" style-focus="border-color:var(--acc2,#b18cf7)" />
+        <button onClick="{{ enviarChat }}" style="padding:0 26px;border-radius:16px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--acc2,#b18cf7),var(--acc,#55dbd0));color:#08090d;font-size:14.5px;font-weight:750;transition:all .3s cubic-bezier(.2,.8,.2,1)" style-hover="transform:translateY(-2px);box-shadow:0 14px 34px rgba(177,140,247,.42)">Enviar</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+        <sc-for list="{{ sugestoes }}" as="s" hint-placeholder-count="4">
+          <button onClick="{{ s.onClick }}" style="padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.035);color:rgba(241,242,247,.66);font-size:12.5px;cursor:pointer;transition:all .3s ease" style-hover="color:#f1f2f7;border-color:rgba(255,255,255,.28)">{{ s.t }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ mostrarSocial }}" hint-placeholder-val="{{ true }}">
+  <section style="max-width:1280px;margin:0 auto;padding:120px 32px 0">
+    <div style="display:grid;grid-template-columns:{{ secCols }};gap:56px;align-items:center">
+      <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);border-radius:28px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(20px);padding:26px;position:relative;overflow:hidden;min-height:380px">
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0 1px,transparent 1px 44px),repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 1px,transparent 1px 44px);opacity:.6"></div>
+        <div style="position:absolute;top:22%;left:18%;width:14px;height:14px;border-radius:50%;background:var(--acc,#55dbd0);box-shadow:0 0 0 8px rgba(85,219,208,.16),0 0 24px var(--acc,#55dbd0);animation:bibPulse 3s ease-in-out infinite"></div>
+        <div style="position:absolute;top:52%;left:44%;width:14px;height:14px;border-radius:50%;background:var(--acc2,#b18cf7);box-shadow:0 0 0 8px rgba(177,140,247,.16);animation:bibPulse 3s ease-in-out infinite .7s"></div>
+        <div style="position:absolute;top:34%;left:70%;width:14px;height:14px;border-radius:50%;background:var(--acc,#55dbd0);box-shadow:0 0 0 8px rgba(85,219,208,.16);animation:bibPulse 3s ease-in-out infinite 1.4s"></div>
+        <div style="position:absolute;bottom:24px;left:26px;right:26px;padding:16px 18px;border-radius:18px;background:rgba(11,12,17,.82);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">mesmo voo · GRU → SDU · 12 set</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+            <span style="font-size:15px;font-weight:650">7 viajantes toparam dividir o Uber do aeroporto</span>
+            <span style="padding:6px 12px;border-radius:999px;background:var(--acc,#55dbd0);color:#08090d;font-size:12px;font-weight:750">Entrar</span>
+          </div>
+        </div>
+      </div>
+      <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .1s,transform .9s cubic-bezier(.2,.8,.2,1) .1s">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc,#55dbd0)">05 — companhia</div>
+        <h2 style="font-size:50px;line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:18px 0 0">Quem mais vai<br />estar lá.</h2>
+        <p style="font-size:17px;line-height:1.6;color:rgba(241,242,247,.6);margin:22px 0 0;max-width:440px;text-wrap:pretty">Descubra pessoas indo para o mesmo destino, no mesmo período, no mesmo voo ou evento. Crie grupos, divida corrida e hospedagem, troque roteiros. Você controla o que aparece — o modo invisível é o padrão.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:28px">
+          <div style="display:flex;gap:12px;align-items:center;font-size:15px;color:rgba(241,242,247,.76)"><span style="width:6px;height:6px;border-radius:50%;background:var(--acc,#55dbd0)"></span>Grupos por destino, voo, hotel ou evento</div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:15px;color:rgba(241,242,247,.76)"><span style="width:6px;height:6px;border-radius:50%;background:var(--acc,#55dbd0)"></span>Chat, roteiros compartilhados e divisão de custos</div>
+          <div style="display:flex;gap:12px;align-items:center;font-size:15px;color:rgba(241,242,247,.76)"><span style="width:6px;height:6px;border-radius:50%;background:var(--acc,#55dbd0)"></span>Privacidade granular e verificação de perfil</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <section style="max-width:1280px;margin:0 auto;padding:130px 32px 0">
+    <div data-reveal="" style="opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);border-radius:34px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(150deg,rgba(85,219,208,.14),rgba(177,140,247,.12) 60%,rgba(255,255,255,.02));backdrop-filter:blur(22px);padding:70px 56px;text-align:center;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:-40% 30% auto;height:280px;background:radial-gradient(50% 50% at 50% 50%,rgba(255,255,255,.14),transparent 70%);filter:blur(30px)"></div>
+      <h2 style="font-size:56px;line-height:1;letter-spacing:-.045em;font-weight:800;margin:0;position:relative">Sua próxima viagem<br />começa em uma linha.</h2>
+      <p style="font-size:18px;color:rgba(241,242,247,.66);margin:22px 0 0;position:relative">Grátis para planejar. Você só paga o que reservar — sempre no melhor preço.</p>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:38px;position:relative">
+        <button onClick="{{ abrirApp }}" data-magnetic="" style="padding:17px 38px;border-radius:999px;border:none;cursor:pointer;background:#f1f2f7;color:#08090d;font-size:16px;font-weight:750;letter-spacing:-.01em;transition:all .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 14px 40px rgba(255,255,255,.16)" style-hover="transform:translateY(-3px);box-shadow:0 22px 60px rgba(255,255,255,.3)">Planejar o Rio agora</button>
+        <button style="padding:17px 32px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:#f1f2f7;font-size:16px;font-weight:600;cursor:pointer;transition:all .35s cubic-bezier(.2,.8,.2,1)" style-hover="background:rgba(255,255,255,.13)">Falar com a Bia</button>
+      </div>
+    </div>
+  </section>
+
+  <footer style="max-width:1280px;margin:0 auto;padding:90px 32px 60px">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-top:40px;border-top:1px solid rgba(255,255,255,.07)">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:1px;font-size:22px;font-weight:800;letter-spacing:-.045em">BI<span style="color:var(--acc,#55dbd0);font-weight:300;padding:0 1px">&amp;</span>B</div>
+        <p style="font-size:14px;line-height:1.6;color:rgba(241,242,247,.44);margin:14px 0 0;max-width:280px">Planejamento de viagem inteligente. Voo, hotel e roteiro em uma busca só. Feito no Rio de Janeiro.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:rgba(241,242,247,.52)">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.34)">produto</span>
+        <a href="#tudo" style="color:inherit" style-hover="color:#f1f2f7">Busca</a>
+        <a href="#comparar" style="color:inherit" style-hover="color:#f1f2f7">Comparador</a>
+        <a href="#roteiro" style="color:inherit" style-hover="color:#f1f2f7">Roteiro IA</a>
+        <a href="#bia" style="color:inherit" style-hover="color:#f1f2f7">Assistente</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:rgba(241,242,247,.52)">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.34)">destinos</span>
+        <a href="#topo" style="color:inherit" style-hover="color:#f1f2f7">Rio de Janeiro</a>
+        <span style="color:rgba(241,242,247,.28)">São Paulo · em breve</span>
+        <span style="color:rgba(241,242,247,.28)">Salvador · em breve</span>
+        <span style="color:rgba(241,242,247,.28)">Lisboa · em breve</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:rgba(241,242,247,.52)">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.34)">empresa</span>
+        <a href="#topo" style="color:inherit" style-hover="color:#f1f2f7">Sobre</a>
+        <a href="#topo" style="color:inherit" style-hover="color:#f1f2f7">Privacidade</a>
+        <a href="#topo" style="color:inherit" style-hover="color:#f1f2f7">Termos</a>
+        <a href="#topo" style="color:inherit" style-hover="color:#f1f2f7">Contato</a>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:46px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:rgba(241,242,247,.3)">
+      <span>© 2026 BI&amp;B tecnologia</span><span>melhor preço garantido</span>
+    </div>
+  </footer>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;z-index:1;min-height:100vh" data-screen-label="Plataforma">
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(20px) saturate(150%);background:linear-gradient(180deg,rgba(11,12,17,.92),rgba(11,12,17,.7));border-bottom:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1400px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:22px">
+      <button onClick="{{ voltarSite }}" style="display:flex;align-items:baseline;gap:1px;font-size:20px;font-weight:800;letter-spacing:-.045em;background:none;border:none;color:#f1f2f7;cursor:pointer;padding:0">BI<span style="color:var(--acc,#55dbd0);font-weight:300;padding:0 1px">&amp;</span>B</button>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);min-width:0;flex:1;max-width:480px;overflow:hidden">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.4)">busca</span>
+        <span style="font-size:14px;font-weight:600">{{ busca.destino }}</span>
+        <span style="color:rgba(255,255,255,.18)">|</span>
+        <span style="font-size:13.5px;color:rgba(241,242,247,.6)">{{ busca.datas }}</span>
+        <span style="color:rgba(255,255,255,.18)">|</span>
+        <span style="font-size:13.5px;color:rgba(241,242,247,.6)">{{ busca.pessoas }}</span>
+        <div style="flex:1"></div>
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--acc,#55dbd0);animation:bibPulse 2s ease-in-out infinite"></span>
+      </div>
+      <div style="flex:1"></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:rgba(241,242,247,.44);white-space:nowrap">{{ favCount }} salvos</span>
+        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--acc,#55dbd0),var(--acc2,#b18cf7));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#08090d">L</div>
+      </div>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 28px 12px;display:flex;flex-wrap:wrap;gap:6px">
+      <sc-for list="{{ abas }}" as="ab" hint-placeholder-count="6">
+        <button onClick="{{ ab.onClick }}" style="padding:9px 17px;border-radius:11px;border:1px solid {{ ab.borda }};background:{{ ab.bg }};color:{{ ab.cor }};font-size:13.5px;font-weight:600;cursor:pointer;transition:all .28s cubic-bezier(.2,.8,.2,1)" style-hover="border-color:rgba(255,255,255,.26)">{{ ab.t }}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <div style="max-width:1400px;margin:0 auto;padding:26px 28px 90px;display:grid;grid-template-columns:{{ appCols }};gap:26px;align-items:start">
+    <aside style="position:{{ asidePos }};display:{{ filtrosDisp }};top:132px;padding:22px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(18px)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.44)">filtros</span>
+        <button onClick="{{ limparFiltros }}" style="background:none;border:none;color:var(--acc,#55dbd0);font-size:12px;cursor:pointer;padding:0">limpar</button>
+      </div>
+      <div style="margin-top:22px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:rgba(241,242,247,.7)"><span>Preço máximo</span><span style="font-weight:700;color:#f1f2f7">{{ maxPrecoFmt }}</span></div>
+        <input type="range" min="200" max="2400" step="20" value="{{ maxPreco }}" onChange="{{ setMaxPreco }}" style="width:100%;margin-top:12px;accent-color:var(--acc,#55dbd0)" />
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.07);margin:22px 0"></div>
+      <div style="font-size:13px;color:rgba(241,242,247,.7);margin-bottom:12px">Ordenar por</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ ordens }}" as="o" hint-placeholder-count="3">
+          <button onClick="{{ o.onClick }}" style="text-align:left;padding:10px 13px;border-radius:11px;border:1px solid {{ o.borda }};background:{{ o.bg }};color:{{ o.cor }};font-size:13.5px;cursor:pointer;transition:all .25s ease">{{ o.t }}</button>
+        </sc-for>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.07);margin:22px 0"></div>
+      <div style="font-size:13px;color:rgba(241,242,247,.7);margin-bottom:12px">Comodidades</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px">
+        <sc-for list="{{ comodidades }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.onClick }}" style="padding:8px 13px;border-radius:999px;border:1px solid {{ c.borda }};background:{{ c.bg }};color:{{ c.cor }};font-size:12.5px;cursor:pointer;transition:all .25s ease">{{ c.t }}</button>
+        </sc-for>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.07);margin:22px 0"></div>
+      <div style="padding:15px 16px;border-radius:16px;background:linear-gradient(150deg,rgba(85,219,208,.14),rgba(255,255,255,.02));border:1px solid rgba(85,219,208,.24)">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.5)">orçamento</div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-.025em;margin-top:6px">{{ gastoAtual }}</div>
+        <div style="height:7px;border-radius:999px;background:rgba(255,255,255,.09);margin-top:10px;overflow:hidden"><div style="height:100%;width:{{ gastoPct }};border-radius:999px;background:linear-gradient(90deg,var(--acc,#55dbd0),var(--acc2,#b18cf7));transition:width .8s cubic-bezier(.2,.8,.2,1)"></div></div>
+        <div style="font-size:12px;color:rgba(241,242,247,.5);margin-top:8px">de {{ busca.orcamento }} · sobra {{ sobra }}</div>
+      </div>
+    </aside>
+
+    <main>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px">
+        <div>
+          <h1 style="font-size:30px;font-weight:800;letter-spacing:-.035em;margin:0">{{ tituloAba }}</h1>
+          <div style="font-size:13.5px;color:rgba(241,242,247,.5);margin-top:6px">{{ subtituloAba }}</div>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(241,242,247,.4)">atualizado agora</div>
+      </div>
+
+      <sc-if value="{{ ehLista }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ resultados }}" as="r" hint-placeholder-count="4">
+          <div data-tilt="" style="display:grid;grid-template-columns:{{ cardCols }};gap:20px;padding:16px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(16px);transition:all .35s cubic-bezier(.2,.8,.2,1)" style-hover="border-color:rgba(85,219,208,.34);box-shadow:0 26px 60px -30px rgba(0,0,0,.9);transform:translateY(-3px)">
+            <div style="height:132px;border-radius:16px;background:repeating-linear-gradient(115deg,rgba(85,219,208,.15) 0 10px,rgba(255,255,255,.035) 10px 20px);display:flex;align-items:flex-end;padding:10px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.05em;color:rgba(241,242,247,.5);line-height:1.4">{{ r.foto }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;justify-content:space-between;padding:4px 0">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:18px;font-weight:700;letter-spacing:-.025em">{{ r.titulo }}</span>
+                  <span style="padding:4px 10px;border-radius:999px;background:{{ r.tagBg }};border:1px solid {{ r.tagBorda }};font-size:11px;font-weight:650;color:{{ r.tagCor }}">{{ r.tag }}</span>
+                </div>
+                <div style="font-size:13.5px;color:rgba(241,242,247,.56);margin-top:6px">{{ r.sub }}</div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+                <sc-for list="{{ r.chips }}" as="ch" hint-placeholder-count="3">
+                  <span style="padding:5px 11px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:11.5px;color:rgba(241,242,247,.62)">{{ ch.t }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:{{ precoDir }};align-items:{{ precoAlign }};justify-content:space-between;gap:12px;flex-wrap:wrap;grid-column:{{ precoCol }};padding:4px 0">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:12.5px;color:rgba(241,242,247,.5)">{{ r.notaTxt }}</span>
+                <span style="padding:5px 9px;border-radius:9px;background:rgba(85,219,208,.14);border:1px solid rgba(85,219,208,.26);font-size:12.5px;font-weight:750;color:var(--acc,#55dbd0)">{{ r.nota }}</span>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:11.5px;color:rgba(241,242,247,.38);text-decoration:line-through">{{ r.precoOutros }}</div>
+                <div style="font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1.15">{{ r.preco }}</div>
+                <div style="font-size:11.5px;color:var(--acc,#55dbd0);font-weight:700">{{ r.economia }}</div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <button onClick="{{ r.onFav }}" style="padding:9px 14px;border-radius:11px;border:1px solid {{ r.favBorda }};background:{{ r.favBg }};color:{{ r.favCor }};font-size:12.5px;font-weight:600;cursor:pointer;transition:all .28s ease">{{ r.favTxt }}</button>
+                <button style="padding:9px 16px;border-radius:11px;border:none;background:#f1f2f7;color:#08090d;font-size:12.5px;font-weight:750;cursor:pointer;transition:all .28s cubic-bezier(.2,.8,.2,1)" style-hover="transform:translateY(-2px);box-shadow:0 10px 26px rgba(255,255,255,.2)">Reservar</button>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ vazio }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:60px;text-align:center;border-radius:22px;border:1px dashed rgba(255,255,255,.14);color:rgba(241,242,247,.5);font-size:15px">Nada dentro desses filtros. Solte o preço máximo ou remova uma comodidade.</div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ ehRoteiro }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+          <sc-for list="{{ dias }}" as="d" hint-placeholder-count="7">
+            <button onClick="{{ d.onClick }}" style="padding:12px 16px;border-radius:14px;border:1px solid {{ d.borda }};background:{{ d.bg }};color:{{ d.cor }};cursor:pointer;text-align:left;transition:all .28s cubic-bezier(.2,.8,.2,1)" style-hover="transform:translateY(-2px)">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6">dia {{ d.n }}</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px">{{ d.dia }}</div>
+              <div style="font-size:11.5px;opacity:.6;margin-top:2px">{{ d.clima }}</div>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:{{ roteiroCols }};gap:20px;align-items:start">
+          <div style="padding:24px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.02));backdrop-filter:blur(18px)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px">
+              <div style="font-size:20px;font-weight:750;letter-spacing:-.025em">{{ diaAtual.titulo }}</div>
+              <div style="font-size:13px;color:var(--acc,#55dbd0);font-weight:700">{{ diaAtual.total }}</div>
+            </div>
+            <sc-for list="{{ diaAtual.itens }}" as="it" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:56px 1fr;gap:16px;padding-bottom:12px">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(241,242,247,.42);padding-top:16px">{{ it.hora }}</div>
+                <div style="padding:15px 17px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);transition:all .32s cubic-bezier(.2,.8,.2,1)" style-hover="transform:translateX(6px);border-color:rgba(85,219,208,.34);background:rgba(85,219,208,.07)">
+                  <div style="display:flex;justify-content:space-between;gap:14px;align-items:baseline">
+                    <span style="font-size:15.5px;font-weight:650;letter-spacing:-.015em">{{ it.titulo }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(241,242,247,.44);white-space:nowrap">{{ it.custo }}</span>
+                  </div>
+                  <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
+                    <span style="font-size:12.5px;color:rgba(241,242,247,.5)">{{ it.local }}</span>
+                    <span style="padding:3px 9px;border-radius:7px;background:rgba(255,255,255,.05);font-size:11px;color:rgba(241,242,247,.58)">{{ it.tipo }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="padding:20px;border-radius:20px;border:1px solid rgba(177,140,247,.24);background:linear-gradient(150deg,rgba(177,140,247,.13),rgba(255,255,255,.02))">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.5)">bia sugere</div>
+              <p style="font-size:14px;line-height:1.55;color:rgba(241,242,247,.78);margin:10px 0 0">{{ diaAtual.dica }}</p>
+              <button onClick="{{ irBia }}" style="margin-top:14px;padding:10px 16px;border-radius:11px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#f1f2f7;font-size:12.5px;cursor:pointer">Ajustar com a Bia</button>
+            </div>
+            <div style="padding:20px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045)">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">deslocamento do dia</div>
+              <div style="font-size:26px;font-weight:800;letter-spacing:-.03em;margin-top:8px">{{ diaAtual.km }}</div>
+              <div style="font-size:12.5px;color:rgba(241,242,247,.5);margin-top:4px">{{ diaAtual.transporte }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ ehMapa }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:{{ roteiroCols }};gap:20px;align-items:start">
+        <div style="position:relative;height:560px;border-radius:24px;border:1px solid rgba(255,255,255,.09);overflow:hidden;background:linear-gradient(160deg,#101219,#0b0c11)">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 46px),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 46px)"></div>
+          <div style="position:absolute;left:-6%;right:-6%;top:58%;height:46%;background:linear-gradient(180deg,rgba(85,219,208,.1),rgba(85,219,208,.02));border-top:1px solid rgba(85,219,208,.2);transform:rotate(-4deg)"></div>
+          <span style="position:absolute;left:26px;bottom:22px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(241,242,247,.32)">mapa · zona sul do rio de janeiro</span>
+          <sc-for list="{{ pins }}" as="p" hint-placeholder-count="6">
+            <button onClick="{{ p.onClick }}" style="position:absolute;left:{{ p.x }};top:{{ p.y }};transform:translate(-50%,-50%);background:none;border:none;cursor:pointer;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px">
+              <span style="width:{{ p.tam }};height:{{ p.tam }};border-radius:50%;background:{{ p.cor }};box-shadow:0 0 0 {{ p.anel }} {{ p.aneloCor }},0 0 20px {{ p.cor }};transition:all .3s cubic-bezier(.2,.8,.2,1)"></span>
+              <span style="font-size:11.5px;font-weight:650;color:{{ p.rotuloCor }};white-space:nowrap;padding:3px 8px;border-radius:7px;background:rgba(11,12,17,.72)">{{ p.nome }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="padding:22px;border-radius:22px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(18px)">
+          <div style="height:120px;border-radius:14px;background:repeating-linear-gradient(115deg,rgba(85,219,208,.15) 0 10px,rgba(255,255,255,.035) 10px 20px);display:flex;align-items:flex-end;padding:10px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:rgba(241,242,247,.5)">{{ pinAtivo.foto }}</span>
+          </div>
+          <div style="font-size:18px;font-weight:750;letter-spacing:-.025em;margin-top:14px">{{ pinAtivo.nome }}</div>
+          <div style="font-size:13px;color:rgba(241,242,247,.55);margin-top:5px">{{ pinAtivo.sub }}</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:16px">
+            <span style="font-size:13px;color:rgba(241,242,247,.5)">{{ pinAtivo.detalhe }}</span>
+            <span style="font-size:19px;font-weight:800;letter-spacing:-.02em">{{ pinAtivo.preco }}</span>
+          </div>
+          <button style="width:100%;margin-top:16px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--acc,#55dbd0),var(--acc2,#b18cf7));color:#08090d;font-size:13.5px;font-weight:750;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1)" style-hover="transform:translateY(-2px);box-shadow:0 14px 34px rgba(85,219,208,.34)">Adicionar ao roteiro</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ ehDashboard }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:{{ dashCols }};gap:14px">
+        <div style="grid-column:span 2;padding:24px;border-radius:22px;border:1px solid rgba(85,219,208,.22);background:linear-gradient(150deg,rgba(85,219,208,.13),rgba(255,255,255,.02));backdrop-filter:blur(18px)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.5)">próxima viagem</div>
+          <div style="font-size:34px;font-weight:800;letter-spacing:-.04em;margin-top:10px">Rio de Janeiro</div>
+          <div style="font-size:14px;color:rgba(241,242,247,.6);margin-top:6px">12–19 set · 7 noites · 2 adultos · faltam 37 dias</div>
+          <div style="display:flex;flex-wrap:wrap;gap:26px;margin-top:22px">
+            <div><div style="font-size:20px;font-weight:800;letter-spacing:-.02em;white-space:nowrap">R$ 5.240</div><div style="font-size:11.5px;color:rgba(241,242,247,.45);margin-top:3px">gasto previsto</div></div>
+            <div><div style="font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--acc,#55dbd0);white-space:nowrap">R$ 1.796</div><div style="font-size:11.5px;color:rgba(241,242,247,.45);margin-top:3px">economia obtida</div></div>
+            <div><div style="font-size:20px;font-weight:800;letter-spacing:-.02em">4</div><div style="font-size:11.5px;color:rgba(241,242,247,.45);margin-top:3px">reservas confirmadas</div></div>
+          </div>
+        </div>
+        <div style="padding:22px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);backdrop-filter:blur(16px)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">alertas</div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+            <div style="font-size:13.5px;line-height:1.45"><span style="color:var(--acc,#55dbd0);font-weight:700">Preço caiu</span> · voo de volta −R$ 62</div>
+            <div style="font-size:13.5px;line-height:1.45"><span style="color:var(--acc2,#b18cf7);font-weight:700">Check-in</span> abre em 12 dias</div>
+            <div style="font-size:13.5px;line-height:1.45;color:rgba(241,242,247,.62)">Chuva prevista no dia 5 — roteiro já ajustado</div>
+          </div>
+        </div>
+        <div style="padding:22px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);backdrop-filter:blur(16px)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">documentos</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+            <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:rgba(241,242,247,.72)">RG / CPF</span><span style="color:var(--acc,#55dbd0)">ok</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:rgba(241,242,247,.72)">Seguro viagem</span><span style="color:var(--acc,#55dbd0)">ok</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:rgba(241,242,247,.72)">Febre amarela</span><span style="color:rgba(241,242,247,.44)">opcional</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:rgba(241,242,247,.72)">Cartão de embarque</span><span style="color:rgba(241,242,247,.44)">em 12 d</span></div>
+          </div>
+        </div>
+        <div style="grid-column:span 2;padding:24px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);backdrop-filter:blur(16px)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">checklist</div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-top:16px">
+            <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+              <button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:13px;border:1px solid {{ c.borda }};background:{{ c.bg }};cursor:pointer;text-align:left;transition:all .26s ease">
+                <span style="width:17px;height:17px;border-radius:6px;border:1px solid {{ c.caixaBorda }};background:{{ c.caixaBg }};flex:none"></span>
+                <span style="font-size:14px;color:{{ c.cor }};text-decoration:{{ c.risco }}">{{ c.t }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="grid-column:span 2;padding:24px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);backdrop-filter:blur(16px)">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(241,242,247,.45)">favoritos</div>
+            <span style="font-size:12px;color:rgba(241,242,247,.44)">{{ favCount }} itens</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-top:16px">
+            <sc-for list="{{ favoritos }}" as="f" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+                <div>
+                  <div style="font-size:14px;font-weight:650">{{ f.titulo }}</div>
+                  <div style="font-size:12px;color:rgba(241,242,247,.48);margin-top:3px">{{ f.sub }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="font-size:15px;font-weight:750">{{ f.preco }}</span>
+                  <button onClick="{{ f.onRemove }}" style="background:none;border:1px solid rgba(255,255,255,.14);color:rgba(241,242,247,.6);border-radius:9px;padding:6px 10px;font-size:11.5px;cursor:pointer">remover</button>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ semFavoritos }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:26px;text-align:center;border-radius:14px;border:1px dashed rgba(255,255,255,.13);color:rgba(241,242,247,.45);font-size:13.5px">Nada salvo ainda. Toque em “Salvar” em qualquer voo, hotel ou passeio.</div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ ehBia }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:840px">
+        <div style="padding:24px;border-radius:24px;border:1px solid rgba(177,140,247,.22);background:linear-gradient(160deg,rgba(177,140,247,.1),rgba(255,255,255,.02));backdrop-filter:blur(20px);min-height:420px;display:flex;flex-direction:column;justify-content:space-between">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ chat }}" as="m" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:{{ m.align }}">
+                <div style="max-width:78%;padding:14px 18px;border-radius:{{ m.raio }};background:{{ m.bg }};border:1px solid {{ m.borda }};font-size:15px;line-height:1.55;color:{{ m.cor }}">{{ m.t }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div>
+            <div style="display:flex;gap:10px;margin-top:22px">
+              <input value="{{ chatInput }}" onChange="{{ setChatInput }}" onKeyDown="{{ chatKey }}" placeholder="Escreva para a Bia…" style="flex:1;padding:15px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#f1f2f7;font-size:14.5px;outline:none" style-focus="border-color:var(--acc2,#b18cf7)" />
+              <button onClick="{{ enviarChat }}" style="padding:0 26px;border-radius:16px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--acc2,#b18cf7),var(--acc,#55dbd0));color:#08090d;font-size:14.5px;font-weight:750">Enviar</button>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+              <sc-for list="{{ sugestoes }}" as="s" hint-placeholder-count="4">
+                <button onClick="{{ s.onClick }}" style="padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.035);color:rgba(241,242,247,.66);font-size:12.5px;cursor:pointer;transition:all .3s ease" style-hover="color:#f1f2f7;border-color:rgba(255,255,255,.28)">{{ s.t }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#55dbd0&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#55dbd0&quot;,&quot;#7fd7a4&quot;,&quot;#f0a05a&quot;,&quot;#6ea8fe&quot;],&quot;section&quot;:&quot;Marca&quot;},&quot;accent2&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#b18cf7&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#b18cf7&quot;,&quot;#f28fb1&quot;,&quot;#8fd0f2&quot;,&quot;#d9c46a&quot;],&quot;section&quot;:&quot;Marca&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:10,&quot;min&quot;:0,&quot;max&quot;:10,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Movimento&quot;},&quot;mostrarSocial&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conteúdo&quot;}}">
+class Component extends DCLogic {
+  state = {
+    view: 'home', tab: 'voos', dia: 3, pin: 'p1',
+    w: typeof window !== 'undefined' ? window.innerWidth : 1440,
+    maxPreco: 2400, ordenar: 'melhor',
+    amen: { piscina: false, cafe: false, pet: false, cancel: false },
+    favs: ['h2'],
+    chatInput: '',
+    chat: [
+      { r: 'bot', t: 'Oi! Sou a Bia, sua copiloto de viagem. Diga o destino, os dias e o orçamento — eu cuido do resto.' },
+      { r: 'user', t: 'Roteiro de 7 dias no Rio, R$ 6 mil pra dois, gosto de praia e comida boa.' },
+      { r: 'bot', t: 'Fechado. Montei 7 dias entre Zona Sul e Centro histórico: praia de manhã, cultura à tarde, gastronomia à noite. Voo direto GRU→SDU, hotel em Ipanema e 9 experiências. Total previsto: R$ 5.240 — R$ 760 abaixo do seu orçamento.' }
+    ],
+    check: { doc: true, seguro: true, checkin: false, cambio: false, mala: false },
+    busca: { destino: 'Rio de Janeiro, Brasil', datas: '12 – 19 set', pessoas: '2 adultos', orcamento: 'R$ 6.000', tipo: 'Casal' }
+  };
+
+  voos = [
+    { id: 'v1', titulo: 'LATAM · GRU → SDU', sub: '06:20 → 07:25 · 1h05 · direto · bagagem de mão inclusa', preco: 389, outros: 512, nota: 8.9, escalas: 0, tag: 'Mais rápido', foto: 'foto · aeronave no pátio', chips: ['Direto', 'Bagagem de mão', 'Assento à escolha'] },
+    { id: 'v2', titulo: 'GOL · GRU → GIG', sub: '09:45 → 10:55 · 1h10 · direto · cancelamento grátis em 24h', preco: 342, outros: 448, nota: 8.6, escalas: 0, tag: 'Melhor escolha', foto: 'foto · asa sobre a baía', chips: ['Direto', 'Cancelamento grátis', 'Wi-Fi a bordo'] },
+    { id: 'v3', titulo: 'Azul · VCP → SDU', sub: '13:10 → 14:20 · 1h10 · direto · traslado de ônibus incluso', preco: 407, outros: 498, nota: 8.8, escalas: 0, tag: 'Mais confortável', foto: 'foto · cabine', chips: ['Direto', 'Traslado incluso', 'Espaço extra'] },
+    { id: 'v4', titulo: 'GOL · GRU → GIG', sub: '18:30 → 21:40 · 3h10 · 1 parada em CNF · só bagagem pessoal', preco: 298, outros: 372, nota: 7.4, escalas: 1, tag: 'Mais barato', foto: 'foto · painel de embarque', chips: ['1 parada', 'Sem bagagem', 'Madrugada livre'] },
+    { id: 'v5', titulo: 'LATAM · CGH → SDU', sub: '20:15 → 21:20 · 1h05 · direto · ponte aérea, sala VIP', preco: 465, outros: 560, nota: 9.1, escalas: 0, tag: 'Ponte aérea', foto: 'foto · pista ao anoitecer', chips: ['Direto', 'Sala VIP', 'Bagagem 23kg'] }
+  ];
+
+  hoteis = [
+    { id: 'h1', titulo: 'Copa Vista Mar', sub: 'Copacabana · 120 m da praia · 4 estrelas · café da manhã', preco: 612, outros: 748, nota: 9.2, avaliacoes: 1842, foto: 'foto · quarto com vista da orla', chips: ['Piscina', 'Café incluso', 'Cancelamento grátis'], amen: { piscina: true, cafe: true, pet: false, cancel: true }, tag: 'Custo-benefício' },
+    { id: 'h2', titulo: 'Ipanema Arpoador Suítes', sub: 'Ipanema · 2 min do Arpoador · 4 estrelas · rooftop', preco: 890, outros: 1094, nota: 9.5, avaliacoes: 2317, foto: 'foto · rooftop ao pôr do sol', chips: ['Piscina', 'Academia', 'Cancelamento grátis'], amen: { piscina: true, cafe: false, pet: false, cancel: true }, tag: 'Mais amado' },
+    { id: 'h3', titulo: 'Casa Santa Teresa', sub: 'Santa Teresa · casarão restaurado · 12 quartos · pet friendly', preco: 430, outros: 512, nota: 9.0, avaliacoes: 764, foto: 'foto · varanda com vista da cidade', chips: ['Pet friendly', 'Café incluso', 'Wi-Fi rápido'], amen: { piscina: false, cafe: true, pet: true, cancel: false }, tag: 'Charme' },
+    { id: 'h4', titulo: 'Lapa Social Hostel', sub: 'Lapa · quarto duplo privativo · rooftop bar · 24h', preco: 186, outros: 232, nota: 8.4, avaliacoes: 3105, foto: 'foto · área comum colorida', chips: ['Café incluso', 'Cancelamento grátis'], amen: { piscina: false, cafe: true, pet: false, cancel: true }, tag: 'Mais barato' },
+    { id: 'h5', titulo: 'Leblon Garden Flat', sub: 'Leblon · apartamento com cozinha · 7 noites mínimo', preco: 735, outros: 848, nota: 9.3, avaliacoes: 512, foto: 'foto · sala do flat', chips: ['Pet friendly', 'Estacionamento'], amen: { piscina: false, cafe: false, pet: true, cancel: false }, tag: 'Para ficar' },
+    { id: 'h6', titulo: 'Resort Barra Ocean', sub: 'Barra da Tijuca · resort pé na areia · 5 estrelas · all inclusive', preco: 1480, outros: 1790, nota: 9.1, avaliacoes: 986, foto: 'foto · piscina de borda infinita', chips: ['Piscina', 'Academia', 'Café incluso'], amen: { piscina: true, cafe: true, pet: false, cancel: true }, tag: 'Luxo' }
+  ];
+
+  passeios = [
+    { id: 'p1', titulo: 'Cristo Redentor · trem do Corcovado', sub: 'Ingresso com horário marcado · 2h30 · sem fila', preco: 135, outros: 178, nota: 9.4, foto: 'foto · vista do mirante', chips: ['Sem fila', 'Guia opcional', 'Cancelamento grátis'], amen: { piscina: false, cafe: false, pet: false, cancel: true }, tag: 'Imperdível' },
+    { id: 'p2', titulo: 'Bondinho Pão de Açúcar', sub: 'Dois trechos · 3h · melhor no fim da tarde', preco: 189, outros: 216, nota: 9.3, foto: 'foto · bondinho sobre a baía', chips: ['Sem fila', 'Pôr do sol'], amen: { piscina: false, cafe: false, pet: false, cancel: true }, tag: 'Pôr do sol' },
+    { id: 'p3', titulo: 'Trilha Dois Irmãos', sub: 'Vidigal · 2h · guia local · nível moderado', preco: 95, outros: 120, nota: 9.6, foto: 'foto · trilha com vista do mar', chips: ['Guia local', 'Nível moderado'], amen: { piscina: false, cafe: false, pet: false, cancel: true }, tag: 'Melhor avaliado' },
+    { id: 'p4', titulo: 'Jardim Botânico + Parque Lage', sub: 'Manhã guiada · 3h · café no Parque Lage incluso', preco: 78, outros: 96, nota: 9.0, foto: 'foto · alameda das palmeiras', chips: ['Café incluso', 'Sombra'], amen: { piscina: false, cafe: true, pet: false, cancel: false }, tag: 'Tranquilo' },
+    { id: 'p5', titulo: 'Roda de samba na Lapa', sub: 'Noite guiada · 4h · entrada em duas casas', preco: 145, outros: 190, nota: 9.2, foto: 'foto · arcos da lapa à noite', chips: ['Vida noturna', 'Guia local'], amen: { piscina: false, cafe: false, pet: false, cancel: true }, tag: 'Vida noturna' },
+    { id: 'p6', titulo: 'Museu do Amanhã + Boulevard Olímpico', sub: 'Centro · 3h · ideal em dia de chuva', preco: 60, outros: 74, nota: 8.7, foto: 'foto · fachada do museu', chips: ['Coberto', 'Sem fila'], amen: { piscina: false, cafe: false, pet: false, cancel: true }, tag: 'Dia de chuva' }
+  ];
+
+  roteiro = [
+    { n: 1, dia: 'seg', clima: '29° sol', titulo: 'Chegada e Copacabana', total: 'R$ 240', km: '11 km', transporte: '2 corridas + metrô', dica: 'Chegue no hotel, deixe as malas e vá direto à praia — o check-in só libera às 14h.', itens: [
+      { hora: '07:25', titulo: 'Pouso no Santos Dumont', local: 'SDU · traslado 20 min', tipo: 'voo', custo: '—' },
+      { hora: '09:00', titulo: 'Café no Posto 6', local: 'Copacabana', tipo: 'gastronomia', custo: 'R$ 45' },
+      { hora: '11:00', titulo: 'Praia de Copacabana', local: 'Posto 5', tipo: 'praia', custo: 'R$ 60' },
+      { hora: '14:00', titulo: 'Check-in Ipanema Arpoador', local: 'Ipanema', tipo: 'hotel', custo: 'reservado' },
+      { hora: '19:30', titulo: 'Jantar de boas-vindas', local: 'Rua Farme de Amoedo', tipo: 'gastronomia', custo: 'R$ 135' }
+    ] },
+    { n: 2, dia: 'ter', clima: '30° sol', titulo: 'Cristo e Santa Teresa', total: 'R$ 395', km: '26 km', transporte: 'trem do Corcovado + Uber', dica: 'Ingresso das 8h tem menos fila e a luz é melhor para as fotos do mirante.', itens: [
+      { hora: '08:00', titulo: 'Trem do Corcovado', local: 'Cosme Velho', tipo: 'passeio', custo: 'R$ 135' },
+      { hora: '11:30', titulo: 'Almoço em Santa Teresa', local: 'Largo dos Guimarães', tipo: 'gastronomia', custo: 'R$ 120' },
+      { hora: '14:00', titulo: 'Bondinho de Santa Teresa', local: 'Centro → Dois Irmãos', tipo: 'passeio', custo: 'R$ 20' },
+      { hora: '16:30', titulo: 'Escadaria Selarón', local: 'Lapa', tipo: 'cultura', custo: 'grátis' },
+      { hora: '20:00', titulo: 'Roda de samba na Lapa', local: 'Arcos da Lapa', tipo: 'noite', custo: 'R$ 120' }
+    ] },
+    { n: 3, dia: 'qua', clima: '28° sol', titulo: 'Pão de Açúcar e Urca', total: 'R$ 318', km: '18 km', transporte: 'bondinho + caminhada', dica: 'Suba às 15h30: você vê a cidade de dia e desce com a baía iluminada.', itens: [
+      { hora: '08:00', titulo: 'Café no Aprazível', local: 'Santa Teresa', tipo: 'gastronomia', custo: 'R$ 68' },
+      { hora: '10:30', titulo: 'Pista Cláudio Coutinho', local: 'Urca', tipo: 'trilha', custo: 'grátis' },
+      { hora: '13:00', titulo: 'Almoço no Bar Urca', local: 'Mureta da Urca', tipo: 'gastronomia', custo: 'R$ 90' },
+      { hora: '15:30', titulo: 'Bondinho Pão de Açúcar', local: 'Praia Vermelha', tipo: 'passeio', custo: 'R$ 189' },
+      { hora: '20:00', titulo: 'Jantar em Botafogo', local: 'Rua Nelson Mandela', tipo: 'gastronomia', custo: 'R$ 150' }
+    ] },
+    { n: 4, dia: 'qui', clima: '24° chuva', titulo: 'Centro histórico (plano B)', total: 'R$ 210', km: '14 km', transporte: 'metrô + VLT', dica: 'Chuva prevista para a tarde: troquei a praia por museus climatizados e um café coberto.', itens: [
+      { hora: '09:30', titulo: 'Museu do Amanhã', local: 'Praça Mauá', tipo: 'cultura', custo: 'R$ 60' },
+      { hora: '12:00', titulo: 'Almoço na Confeitaria Colombo', local: 'Centro', tipo: 'gastronomia', custo: 'R$ 110' },
+      { hora: '14:30', titulo: 'Real Gabinete Português', local: 'Centro', tipo: 'cultura', custo: 'grátis' },
+      { hora: '17:00', titulo: 'Café no Boulevard Olímpico', local: 'Porto Maravilha', tipo: 'gastronomia', custo: 'R$ 40' },
+      { hora: '20:30', titulo: 'Cinema no hotel', local: 'Ipanema', tipo: 'descanso', custo: '—' }
+    ] },
+    { n: 5, dia: 'sex', clima: '31° sol', titulo: 'Trilha e praia selvagem', total: 'R$ 265', km: '22 km', transporte: 'Uber + caminhada', dica: 'Saia às 7h: a trilha esvazia e você pega a Joatinga na maré baixa.', itens: [
+      { hora: '07:00', titulo: 'Trilha Dois Irmãos', local: 'Vidigal', tipo: 'trilha', custo: 'R$ 95' },
+      { hora: '11:00', titulo: 'Praia da Joatinga', local: 'Joá · maré baixa', tipo: 'praia', custo: 'grátis' },
+      { hora: '14:00', titulo: 'Almoço no Leblon', local: 'Rua Dias Ferreira', tipo: 'gastronomia', custo: 'R$ 130' },
+      { hora: '17:30', titulo: 'Pôr do sol no Arpoador', local: 'Ipanema', tipo: 'praia', custo: 'grátis' },
+      { hora: '21:00', titulo: 'Bar de vinhos', local: 'Leblon', tipo: 'noite', custo: 'R$ 40' }
+    ] },
+    { n: 6, dia: 'sáb', clima: '30° sol', titulo: 'Feira, Jardim Botânico e show', total: 'R$ 288', km: '19 km', transporte: 'metrô + Uber', dica: 'Sábado o Jardim Botânico abre mais cedo; a Feira de São Cristóvão pega o fim da noite.', itens: [
+      { hora: '09:00', titulo: 'Jardim Botânico + Parque Lage', local: 'Jardim Botânico', tipo: 'passeio', custo: 'R$ 78' },
+      { hora: '13:00', titulo: 'Almoço no Cosme Velho', local: 'Cosme Velho', tipo: 'gastronomia', custo: 'R$ 95' },
+      { hora: '16:00', titulo: 'Praia do Leme', local: 'Leme', tipo: 'praia', custo: 'grátis' },
+      { hora: '21:00', titulo: 'Feira de São Cristóvão', local: 'São Cristóvão', tipo: 'noite', custo: 'R$ 115' }
+    ] },
+    { n: 7, dia: 'dom', clima: '29° sol', titulo: 'Última manhã e volta', total: 'R$ 175', km: '12 km', transporte: 'Uber para SDU', dica: 'Voo às 18h: dá tempo de praia até 13h com o late check-out que já pedi.', itens: [
+      { hora: '08:30', titulo: 'Feirinha de Ipanema', local: 'Praça General Osório', tipo: 'compras', custo: 'R$ 90' },
+      { hora: '10:30', titulo: 'Última praia', local: 'Posto 9', tipo: 'praia', custo: 'grátis' },
+      { hora: '13:00', titulo: 'Almoço leve + late check-out', local: 'Ipanema', tipo: 'gastronomia', custo: 'R$ 85' },
+      { hora: '16:00', titulo: 'Traslado para SDU', local: 'Santos Dumont', tipo: 'voo', custo: 'incluso' },
+      { hora: '18:10', titulo: 'Voo de volta SDU → CGH', local: 'LATAM · 1h05', tipo: 'voo', custo: 'reservado' }
+    ] }
+  ];
+
+  mapaPins = [
+    { id: 'p1', nome: 'Ipanema Arpoador Suítes', x: '38%', y: '62%', tipo: 'hotel', sub: 'Hotel · Ipanema · 4 estrelas', detalhe: '7 noites · nota 9,5', preco: 'R$ 890', foto: 'foto · fachada do hotel' },
+    { id: 'p2', nome: 'Pão de Açúcar', x: '72%', y: '38%', tipo: 'passeio', sub: 'Passeio · Urca · bondinho', detalhe: '3h · melhor às 15h30', preco: 'R$ 189', foto: 'foto · bondinho' },
+    { id: 'p3', nome: 'Cristo Redentor', x: '30%', y: '24%', tipo: 'passeio', sub: 'Passeio · Corcovado · trem', detalhe: '2h30 · sem fila', preco: 'R$ 135', foto: 'foto · mirante' },
+    { id: 'p4', nome: 'Dias Ferreira', x: '18%', y: '56%', tipo: 'restaurante', sub: 'Restaurantes · Leblon', detalhe: '14 opções · nota 9,1', preco: 'R$ 130', foto: 'foto · rua de restaurantes' },
+    { id: 'p5', nome: 'Arcos da Lapa', x: '52%', y: '18%', tipo: 'noite', sub: 'Vida noturna · Lapa', detalhe: 'Sáb · roda de samba', preco: 'R$ 145', foto: 'foto · arcos iluminados' },
+    { id: 'p6', nome: 'Posto 9', x: '44%', y: '74%', tipo: 'praia', sub: 'Praia · Ipanema', detalhe: 'Guarda-sol + cadeira', preco: 'R$ 40', foto: 'foto · praia lotada' }
+  ];
+
+  fmt(n) { return 'R$ ' + Number(n).toLocaleString('pt-BR'); }
+
+  componentDidMount() {
+    this.applyAccents();
+    this.sky();
+    this.pointer();
+    this.scrollFx();
+    this.initFx();
+    this._onW = () => {
+      cancelAnimationFrame(this._wraf);
+      this._wraf = requestAnimationFrame(() => {
+        if (window.innerWidth !== this.state.w) this.setState({ w: window.innerWidth });
+      });
+    };
+    window.addEventListener('resize', this._onW);
+  }
+  componentDidUpdate() {
+    this.applyAccents();
+    this.initFx();
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._onW) window.removeEventListener('resize', this._onW);
+    if (this._ro) this._ro.disconnect();
+    if (this._onMove) window.removeEventListener('pointermove', this._onMove);
+  }
+
+  root() { return this._rootEl || (this._rootEl = document.querySelector('x-dc') || document.body); }
+  q(sel) { return Array.prototype.slice.call(this.root().querySelectorAll(sel)); }
+  motion() { const m = this.props.motion; return m === undefined || m === null ? 10 : Number(m); }
+
+  applyAccents() {
+    const r = document.documentElement;
+    r.style.setProperty('--acc', this.props.accent || '#55dbd0');
+    r.style.setProperty('--acc2', this.props.accent2 || '#b18cf7');
+  }
+
+  sky() {
+    const c = this.root().querySelector('[data-sky]');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const lvl = this.motion();
+    let w = 0, h = 0, parts = [], arcs = [];
+    const acc = this.props.accent || '#55dbd0';
+    const resize = () => {
+      w = c.clientWidth; h = c.clientHeight;
+      c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      parts = [];
+      const n = Math.round((w * h) / 26000 * (lvl / 10));
+      for (let i = 0; i < n; i++) parts.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.5 + .3, s: Math.random() * .18 + .04, o: Math.random() * .5 + .15 });
+      arcs = [];
+      const na = Math.max(1, Math.round(5 * (lvl / 10)));
+      for (let i = 0; i < na; i++) {
+        const y1 = Math.random() * h * .8 + h * .08;
+        arcs.push({ x1: -60, y1, x2: w + 60, y2: Math.random() * h * .8 + h * .08, lift: (Math.random() * .3 + .12) * h * (Math.random() < .5 ? 1 : -1), t: Math.random(), sp: Math.random() * .0009 + .0004 });
+      }
+    };
+    resize();
+    requestAnimationFrame(resize);
+    window.addEventListener('resize', resize);
+    if (window.ResizeObserver) { const ro = new ResizeObserver(() => resize()); ro.observe(c); this._ro = ro; }
+    const pt = (a, t) => {
+      const mx = (a.x1 + a.x2) / 2, my = (a.y1 + a.y2) / 2 - a.lift;
+      const u = 1 - t;
+      return { x: u * u * a.x1 + 2 * u * t * mx + t * t * a.x2, y: u * u * a.y1 + 2 * u * t * my + t * t * a.y2 };
+    };
+    const frame = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of parts) {
+        p.y -= p.s; if (p.y < -4) { p.y = h + 4; p.x = Math.random() * w; }
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        ctx.fillStyle = 'rgba(241,242,247,' + p.o * .5 + ')'; ctx.fill();
+      }
+      for (const a of arcs) {
+        a.t += a.sp; if (a.t > 1.25) a.t = -.25;
+        const mx = (a.x1 + a.x2) / 2, my = (a.y1 + a.y2) / 2 - a.lift;
+        ctx.beginPath(); ctx.moveTo(a.x1, a.y1); ctx.quadraticCurveTo(mx, my, a.x2, a.y2);
+        ctx.strokeStyle = 'rgba(241,242,247,.055)'; ctx.lineWidth = 1; ctx.stroke();
+        const t = Math.max(0, Math.min(1, a.t));
+        const head = pt(a, t), tail = pt(a, Math.max(0, t - .12));
+        const g = ctx.createLinearGradient(tail.x, tail.y, head.x, head.y);
+        g.addColorStop(0, 'rgba(85,219,208,0)'); g.addColorStop(1, acc);
+        ctx.beginPath(); ctx.moveTo(tail.x, tail.y); ctx.lineTo(head.x, head.y);
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.stroke();
+        if (a.t > 0 && a.t < 1) {
+          ctx.beginPath(); ctx.arc(head.x, head.y, 2.2, 0, 6.2832);
+          ctx.fillStyle = acc; ctx.globalAlpha = .9; ctx.fill(); ctx.globalAlpha = 1;
+        }
+      }
+      this._raf = requestAnimationFrame(frame);
+    };
+    if (lvl > 0) frame();
+  }
+
+  pointer() {
+    if (this.motion() < 4 || window.matchMedia('(pointer:coarse)').matches) return;
+    const ring = this.root().querySelector('[data-cursor]');
+    const dot = this.root().querySelector('[data-cursor-dot]');
+    if (!ring || !dot) return;
+    let tx = 0, ty = 0, rx = 0, ry = 0, on = false;
+    this._onMove = e => {
+      tx = e.clientX; ty = e.clientY;
+      dot.style.transform = 'translate(' + tx + 'px,' + ty + 'px) translate(-50%,-50%)';
+      if (!on) { on = true; ring.style.opacity = '.75'; dot.style.opacity = '.9'; rx = tx; ry = ty; }
+    };
+    window.addEventListener('pointermove', this._onMove, { passive: true });
+    const loop = () => {
+      rx += (tx - rx) * .16; ry += (ty - ry) * .16;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+      requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  scrollFx() {
+    const bar = this.root().querySelector('[data-progress]');
+    this._onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (bar) bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+      if (this.motion() >= 5) {
+        for (const el of this.q('[data-par]')) {
+          const sp = parseFloat(el.getAttribute('data-par')) || 0;
+          const r = el.getBoundingClientRect();
+          el.style.transform = 'translate3d(0,' + ((r.top + r.height / 2 - window.innerHeight / 2) * -sp).toFixed(1) + 'px,0)';
+        }
+      }
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+  }
+
+  initFx() {
+    const show = el => {
+      el.style.opacity = '1';
+      el.style.transform = el.hasAttribute('data-par') ? el.style.transform : 'none';
+    };
+    if (!this._io) {
+      this._io = new IntersectionObserver(es => {
+        for (const e of es) if (e.isIntersecting) { show(e.target); this._io.unobserve(e.target); }
+      }, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    }
+    const pend = this.q('[data-reveal]').filter(el => !el.dataset.seen);
+    for (const el of pend) {
+      el.dataset.seen = '1';
+      const r = el.getBoundingClientRect();
+      if (this.motion() === 0 || (r.top < window.innerHeight * .96 && r.bottom > 0)) { show(el); continue; }
+      this._io.observe(el);
+    }
+    if (pend.length) {
+      clearTimeout(this._safety);
+      this._safety = setTimeout(() => { for (const el of this.q('[data-reveal]')) show(el); }, 1800);
+    }
+    if (!this._boot) {
+      this._boot = 1;
+      for (let i = 1; i <= 4; i++) setTimeout(() => this.initFx(), i * 120);
+    }
+
+    for (const el of this.q('[data-count]')) {
+      if (el.dataset.ran) continue;
+      el.dataset.ran = '1';
+      const target = parseFloat(el.getAttribute('data-count'));
+      const io = new IntersectionObserver(es => {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        const t0 = performance.now(), dur = 1100;
+        const tick = now => {
+          const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+          el.textContent = Math.round(target * e).toLocaleString('pt-BR');
+          if (k < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }, { threshold: .4 });
+      io.observe(el);
+    }
+
+    if (this.motion() >= 6) {
+      for (const el of this.q('[data-tilt]')) {
+        if (el.dataset.tilted) continue;
+        el.dataset.tilted = '1';
+        const base = getComputedStyle(el).animationName !== 'none';
+        el.addEventListener('pointermove', e => {
+          const r = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+          el.style.animationPlayState = base ? 'paused' : '';
+          el.style.transform = 'perspective(900px) rotateY(' + (px * 7).toFixed(2) + 'deg) rotateX(' + (-py * 7).toFixed(2) + 'deg) translateZ(6px)';
+        });
+        el.addEventListener('pointerleave', () => { el.style.transform = ''; el.style.animationPlayState = ''; });
+      }
+      for (const el of this.q('[data-magnetic]')) {
+        if (el.dataset.mag) continue;
+        el.dataset.mag = '1';
+        el.addEventListener('pointermove', e => {
+          const r = el.getBoundingClientRect();
+          el.style.transform = 'translate(' + ((e.clientX - r.left - r.width / 2) * .12).toFixed(1) + 'px,' + ((e.clientY - r.top - r.height / 2) * .22).toFixed(1) + 'px)';
+        });
+        el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+      }
+    }
+  }
+
+  toggleFav(id) {
+    this.setState(s => ({ favs: s.favs.indexOf(id) > -1 ? s.favs.filter(f => f !== id) : s.favs.concat(id) }));
+  }
+
+  responder(txt) {
+    const t = txt.toLowerCase();
+    if (/gast|orçam|orcam|custo|quanto/.test(t)) return 'Com o que já está no seu roteiro, a viagem fecha em R$ 5.240 para duas pessoas: R$ 731 de voos, R$ 3.290 de hospedagem, R$ 742 de experiências e R$ 477 de comida e transporte. Sobram R$ 760 do orçamento — dá para um jantar no Leblon e o resort de uma noite na Barra.';
+    if (/hotel|hospedag|quarto|pousada/.test(t)) return 'Trocando Ipanema por Copacabana você economiza R$ 1.946 nas 7 noites e continua a 120 m da praia. Se quiser manter Ipanema, o Arpoador Suítes tem tarifa não reembolsável 12% menor — R$ 783 a noite.';
+    if (/restaurante|comer|comida|jantar/.test(t)) return 'Três a menos de 10 min do seu hotel: peixe grelhado na Farme de Amoedo (R$ 135 pra dois), boteco clássico no Arpoador (R$ 78) e o mais bem avaliado da Dias Ferreira (R$ 210, reserve com 4 dias).';
+    if (/noite|balada|samba|bar/.test(t)) return 'Sábado é o melhor dia: roda de samba na Lapa às 21h (R$ 145 com entrada em duas casas). Quarta tem jazz em Botafogo, e quinta a Pedra do Sal enche cedo — chegue às 19h.';
+    if (/escondid|secreto|fora do rot|local/.test(t)) return 'Fora do circuito: Praia da Joatinga na maré baixa, o mirante do Parque da Cidade em Niterói ao pôr do sol, e a feira de sábado do Jardim Botânico — nenhum deles aparece nas listas de turista.';
+    if (/época|epoca|quando|clima|chuva/.test(t)) return 'Setembro é a melhor janela: 28–31°C, mar a 23°C, baixa temporada e passagens 34% abaixo do pico. Só o dia 4 tem chuva prevista — já mudei aquele dia para o Centro histórico.';
+    if (/rotei|dias|planej|monte/.test(t)) return 'Refiz o roteiro: praia e trilha nas manhãs de sol, museus na quinta chuvosa, jantares perto de onde você já está. Sete dias, 9 experiências, R$ 5.240 no total. Abra a aba Roteiro para ver dia por dia.';
+    return 'Anotado. Ajustei sua busca no Rio com isso em mente — veja os resultados atualizados nas abas de voos, hotéis e passeios. Quer que eu já encaixe no roteiro de 7 dias?';
+  }
+
+  enviar(txt) {
+    const t = (txt || '').trim();
+    if (!t) return;
+    this.setState(s => ({ chat: s.chat.concat({ r: 'user', t }), chatInput: '' }));
+    setTimeout(() => this.setState(s => ({ chat: s.chat.concat({ r: 'bot', t: this.responder(t) }) })), 620);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const acc = this.props.accent || '#55dbd0';
+    const on = { borda: 'rgba(85,219,208,.4)', bg: 'rgba(85,219,208,.14)', cor: '#f1f2f7' };
+    const off = { borda: 'rgba(255,255,255,.1)', bg: 'rgba(255,255,255,.04)', cor: 'rgba(241,242,247,.62)' };
+    const pick = (a, k) => (a ? on[k] : off[k]);
+
+    const tabDefs = [
+      { k: 'voos', t: 'Voos' }, { k: 'hoteis', t: 'Hospedagem' }, { k: 'passeios', t: 'Passeios' },
+      { k: 'roteiro', t: 'Roteiro IA' }, { k: 'mapa', t: 'Mapa' }, { k: 'dashboard', t: 'Minha viagem' }, { k: 'bia', t: 'Bia · assistente' }
+    ];
+
+    const base = s.tab === 'hoteis' ? this.hoteis : s.tab === 'passeios' ? this.passeios : this.voos;
+    const amenAtivas = Object.keys(s.amen).filter(k => s.amen[k]);
+    let lista = base.filter(x => x.preco <= s.maxPreco)
+      .filter(x => amenAtivas.every(k => x.amen && x.amen[k]));
+    if (s.ordenar === 'preco') lista = lista.slice().sort((a, b) => a.preco - b.preco);
+    else if (s.ordenar === 'nota') lista = lista.slice().sort((a, b) => b.nota - a.nota);
+    else lista = lista.slice().sort((a, b) => (b.nota / b.preco) - (a.nota / a.preco));
+
+    const resultados = lista.map(x => {
+      const fav = s.favs.indexOf(x.id) > -1;
+      return {
+        ...x,
+        preco: this.fmt(x.preco), precoOutros: this.fmt(x.outros),
+        economia: '−' + this.fmt(x.outros - x.preco) + ' vs. média',
+        nota: x.nota.toFixed(1).replace('.', ','),
+        notaTxt: x.avaliacoes ? x.avaliacoes.toLocaleString('pt-BR') + ' avaliações' : 'nota BI&B',
+        chips: (x.chips || []).map(t => ({ t })),
+        tagBg: 'rgba(177,140,247,.14)', tagBorda: 'rgba(177,140,247,.3)', tagCor: '#d9c6ff',
+        favTxt: fav ? 'Salvo ✓' : 'Salvar',
+        favBg: fav ? 'rgba(85,219,208,.16)' : 'rgba(255,255,255,.04)',
+        favBorda: fav ? 'rgba(85,219,208,.4)' : 'rgba(255,255,255,.12)',
+        favCor: fav ? acc : 'rgba(241,242,247,.7)',
+        onFav: () => this.toggleFav(x.id)
+      };
+    });
+
+    const todos = this.voos.concat(this.hoteis, this.passeios);
+    const favoritos = s.favs.map(id => todos.find(x => x.id === id)).filter(Boolean).map(x => ({
+      titulo: x.titulo, sub: x.sub.split(' · ').slice(0, 2).join(' · '), preco: this.fmt(x.preco),
+      onRemove: () => this.toggleFav(x.id)
+    }));
+
+    const dia = this.roteiro.find(d => d.n === s.dia) || this.roteiro[0];
+    const pinAtivo = this.mapaPins.find(p => p.id === s.pin) || this.mapaPins[0];
+
+    const chat = s.chat.map(m => ({
+      t: m.t,
+      align: m.r === 'user' ? 'flex-end' : 'flex-start',
+      raio: m.r === 'user' ? '18px 18px 6px 18px' : '18px 18px 18px 6px',
+      bg: m.r === 'user' ? 'rgba(85,219,208,.14)' : 'rgba(255,255,255,.055)',
+      borda: m.r === 'user' ? 'rgba(85,219,208,.28)' : 'rgba(255,255,255,.09)',
+      cor: m.r === 'user' ? '#f1f2f7' : 'rgba(241,242,247,.86)'
+    }));
+
+    const sug = ['Monte um roteiro de 7 dias', 'Quanto vou gastar?', 'Encontre hotéis melhores', 'O que fazer à noite?', 'Lugares escondidos', 'Melhor época para viajar'];
+
+    const gasto = 5240, orc = 6000;
+    const compLabels = { doc: 'RG e CPF digitalizados', seguro: 'Seguro viagem contratado', checkin: 'Check-in online do voo', cambio: 'Dinheiro em espécie', mala: 'Mala pronta' };
+
+    const lista3 = ['voos', 'hoteis', 'passeios'].indexOf(s.tab) > -1;
+    const w = s.w || (typeof window !== 'undefined' ? window.innerWidth : 1440);
+    const nar = w < 1180, vnar = w < 940;
+
+    return {
+      heroCols: w < 1060 ? '1fr' : '1.04fr .96fr',
+      bentoCols: vnar ? '1fr' : nar ? 'repeat(2,1fr)' : 'repeat(3,1fr)',
+      compCols: vnar ? '110px 1fr 96px' : '190px 1fr 130px 120px',
+      secCols: w < 1060 ? '1fr' : '1fr 1.05fr',
+      appCols: lista3 && !nar ? '262px 1fr' : '1fr',
+      asidePos: nar ? 'static' : 'sticky',
+      filtrosDisp: lista3 ? 'block' : 'none',
+      cardCols: vnar ? '1fr' : nar ? '150px 1fr' : '184px 1fr 200px',
+      precoCol: nar ? 'span 2' : 'auto',
+      precoDir: nar ? 'row' : 'column',
+      precoAlign: nar ? 'center' : 'flex-end',
+      roteiroCols: nar ? '1fr' : '1fr 300px',
+      dashCols: vnar ? '1fr' : nar ? 'repeat(2,1fr)' : 'repeat(4,1fr)',
+      isHome: s.view === 'home', isApp: s.view === 'app',
+      mostrarSocial: this.props.mostrarSocial !== false,
+      busca: s.busca,
+      abrirApp: () => { this.setState({ view: 'app', tab: 'voos' }); window.scrollTo(0, 0); },
+      voltarSite: () => { this.setState({ view: 'home' }); window.scrollTo(0, 0); },
+      irRoteiro: () => { this.setState({ view: 'app', tab: 'roteiro' }); window.scrollTo(0, 0); },
+      irBia: () => { this.setState({ view: 'app', tab: 'bia' }); window.scrollTo(0, 0); },
+      setDestino: e => this.setState({ busca: { ...s.busca, destino: e.target.value } }),
+      setDatas: e => this.setState({ busca: { ...s.busca, datas: e.target.value } }),
+      setPessoas: e => this.setState({ busca: { ...s.busca, pessoas: e.target.value } }),
+      setOrcamento: e => this.setState({ busca: { ...s.busca, orcamento: e.target.value } }),
+      setTipo: e => this.setState({ busca: { ...s.busca, tipo: e.target.value } }),
+
+      comparador: [
+        { fonte: 'BI&B', preco: 'R$ 6.230', nota: 'sem taxa de serviço · cancela grátis', largura: '54%', barra: 'linear-gradient(90deg,' + acc + ',#b18cf7)', cor: acc },
+        { fonte: 'Agência A', preco: 'R$ 6.860', nota: 'taxa de R$ 180 no checkout', largura: '64%', barra: 'rgba(241,242,247,.22)', cor: '#f1f2f7' },
+        { fonte: 'Buscador B', preco: 'R$ 7.010', nota: 'cancelamento pago', largura: '69%', barra: 'rgba(241,242,247,.22)', cor: '#f1f2f7' },
+        { fonte: 'Portal C', preco: 'R$ 7.266', nota: 'café não incluído', largura: '76%', barra: 'rgba(241,242,247,.22)', cor: '#f1f2f7' },
+        { fonte: 'Site do hotel', preco: 'R$ 7.480', nota: 'tarifa balcão', largura: '84%', barra: 'rgba(241,242,247,.22)', cor: '#f1f2f7' }
+      ],
+      timelinePreview: this.roteiro[2].itens.map(i => ({ hora: i.hora, titulo: i.titulo, local: i.local, custo: i.custo })),
+
+      abas: tabDefs.map(d => ({ t: d.t, borda: pick(s.tab === d.k, 'borda'), bg: pick(s.tab === d.k, 'bg'), cor: pick(s.tab === d.k, 'cor'), onClick: () => this.setState({ tab: d.k }) })),
+      tituloAba: s.tab === 'voos' ? 'Voos para o Rio de Janeiro' : s.tab === 'hoteis' ? 'Onde ficar no Rio' : s.tab === 'passeios' ? 'Passeios e experiências' : s.tab === 'roteiro' ? 'Roteiro de 7 dias' : s.tab === 'mapa' ? 'Mapa da viagem' : s.tab === 'dashboard' ? 'Minha viagem' : 'Bia, sua copiloto',
+      subtituloAba: s.tab === 'roteiro' ? 'Gerado pela IA a partir de clima, distância e orçamento' : s.tab === 'mapa' ? 'Toque em um ponto para ver detalhes e adicionar ao roteiro' : s.tab === 'dashboard' ? 'Reservas, documentos, alertas e favoritos' : s.tab === 'bia' ? 'Pergunte em português; ela recalcula preço e roteiro' : resultados.length + ' de ' + base.length + ' opções dentro dos seus filtros · preço final com taxas',
+      ehLista: lista3,
+      ehRoteiro: s.tab === 'roteiro', ehMapa: s.tab === 'mapa', ehDashboard: s.tab === 'dashboard', ehBia: s.tab === 'bia',
+      resultados, vazio: resultados.length === 0,
+
+      maxPreco: s.maxPreco, maxPrecoFmt: this.fmt(s.maxPreco),
+      setMaxPreco: e => this.setState({ maxPreco: Number(e.target.value) }),
+      limparFiltros: () => this.setState({ maxPreco: 2400, ordenar: 'melhor', amen: { piscina: false, cafe: false, pet: false, cancel: false } }),
+      ordens: [{ k: 'melhor', t: 'Melhor custo-benefício' }, { k: 'preco', t: 'Menor preço' }, { k: 'nota', t: 'Melhor avaliado' }]
+        .map(o => ({ t: o.t, borda: pick(s.ordenar === o.k, 'borda'), bg: pick(s.ordenar === o.k, 'bg'), cor: pick(s.ordenar === o.k, 'cor'), onClick: () => this.setState({ ordenar: o.k }) })),
+      comodidades: [{ k: 'piscina', t: 'Piscina' }, { k: 'cafe', t: 'Café incluso' }, { k: 'pet', t: 'Pet friendly' }, { k: 'cancel', t: 'Cancelamento grátis' }]
+        .map(c => ({ t: c.t, borda: pick(s.amen[c.k], 'borda'), bg: pick(s.amen[c.k], 'bg'), cor: pick(s.amen[c.k], 'cor'), onClick: () => this.setState({ amen: { ...s.amen, [c.k]: !s.amen[c.k] } }) })),
+      gastoAtual: this.fmt(gasto), gastoPct: Math.round((gasto / orc) * 100) + '%', sobra: this.fmt(orc - gasto),
+
+      dias: this.roteiro.map(d => ({ n: d.n, dia: d.dia, clima: d.clima, borda: pick(s.dia === d.n, 'borda'), bg: pick(s.dia === d.n, 'bg'), cor: pick(s.dia === d.n, 'cor'), onClick: () => this.setState({ dia: d.n }) })),
+      diaAtual: dia,
+
+      pins: this.mapaPins.map(p => {
+        const a = p.id === s.pin;
+        return { nome: p.nome, x: p.x, y: p.y, tam: a ? '16px' : '11px', anel: a ? '9px' : '6px',
+          cor: p.tipo === 'hotel' ? acc : p.tipo === 'passeio' ? (this.props.accent2 || '#b18cf7') : '#f1f2f7',
+          aneloCor: a ? 'rgba(85,219,208,.22)' : 'rgba(255,255,255,.08)',
+          rotuloCor: a ? '#f1f2f7' : 'rgba(241,242,247,.55)',
+          onClick: () => this.setState({ pin: p.id }) };
+      }),
+      pinAtivo,
+
+      checklist: Object.keys(compLabels).map(k => {
+        const d = s.check[k];
+        return { t: compLabels[k], borda: d ? 'rgba(85,219,208,.3)' : 'rgba(255,255,255,.08)', bg: d ? 'rgba(85,219,208,.1)' : 'rgba(255,255,255,.035)',
+          caixaBorda: d ? acc : 'rgba(255,255,255,.2)', caixaBg: d ? acc : 'transparent',
+          cor: d ? 'rgba(241,242,247,.55)' : '#f1f2f7', risco: d ? 'line-through' : 'none',
+          onClick: () => this.setState({ check: { ...s.check, [k]: !s.check[k] } }) };
+      }),
+      favoritos, semFavoritos: favoritos.length === 0, favCount: s.favs.length,
+
+      chat, chatInput: s.chatInput,
+      setChatInput: e => this.setState({ chatInput: e.target.value }),
+      chatKey: e => { if (e.key === 'Enter') this.enviar(this.state.chatInput); },
+      enviarChat: () => this.enviar(this.state.chatInput),
+      sugestoes: sug.map(t => ({ t, onClick: () => this.enviar(t) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

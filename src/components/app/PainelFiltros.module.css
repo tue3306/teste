@@ -1,0 +1,152 @@
+.painel {
+  padding: 22px;
+  border-radius: var(--r-3xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: var(--sh-lg);
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.grupo {
+  margin-block-start: 20px;
+}
+
+.linhaPreco {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.valor {
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.slider {
+  width: 100%;
+  margin-block-start: 12px;
+  accent-color: var(--teal-strong);
+}
+
+.divisoria {
+  height: 1px;
+  background: var(--ink-a09);
+  margin-block: 20px;
+  border: 0;
+}
+
+.legenda {
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--ink-2);
+  margin-block-end: 11px;
+  padding: 0;
+}
+
+.opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.opcao {
+  text-align: left;
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 650;
+  transition:
+    border-color var(--t-fast) ease,
+    background-color var(--t-fast) ease,
+    color var(--t-fast) ease;
+}
+
+.opcao:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+.facetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.faceta {
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  transition:
+    border-color var(--t-fast) ease,
+    background-color var(--t-fast) ease,
+    color var(--t-fast) ease;
+}
+
+.faceta:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+/* Estado ligado, comum a ordenação e facetas. */
+.ativo {
+  border-color: var(--teal);
+  background: var(--mint);
+  color: var(--teal-text);
+  font-weight: 700;
+}
+
+.ativo:hover {
+  color: var(--teal-text);
+}
+
+.orcamento {
+  padding: 16px;
+  border-radius: var(--r-xl);
+  background: linear-gradient(150deg, var(--mint), #f7fcfb);
+  border: 1px solid var(--teal-border);
+}
+
+.orcamentoValor {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-block-start: 6px;
+}
+
+.trilho {
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  margin-block-start: 10px;
+  overflow: hidden;
+}
+
+.preenchimento {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--teal), var(--coral));
+  transition: width 0.8s var(--ease);
+}
+
+.orcamentoNota {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-block-start: 8px;
+}

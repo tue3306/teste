@@ -1,0 +1,75 @@
+.rodape {
+  padding-block: 80px 56px;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  padding-block-start: 38px;
+  border-block-start: 1px solid var(--ink-a09);
+}
+
+.sobre {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  margin-block-start: 14px;
+  max-width: 280px;
+}
+
+.coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  font-size: 14px;
+}
+
+.tituloColuna {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.link {
+  color: var(--ink-2);
+  width: fit-content;
+  /* Alvo de toque mínimo de 24px (WCAG 2.2 SC 2.5.8). */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+/* "em breve": mesmo padrão já usado na coluna de destinos do protótipo. */
+.emBreve {
+  color: var(--ink-3);
+}
+
+.base {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin-block-start: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+@media (min-width: 720px) {
+  .grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 940px) {
+  .grade {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  }
+}

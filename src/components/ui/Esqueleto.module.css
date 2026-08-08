@@ -1,0 +1,36 @@
+/**
+ * Esqueleto de carregamento.
+ *
+ * Ocupa exatamente o espaço do conteúdo que vai chegar, então nada se desloca
+ * quando a resposta entra — é a diferença entre um carregamento calmo e um
+ * salto de layout.
+ */
+.esqueleto {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--sand-2);
+}
+
+.esqueleto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  animation: bibBrilho 1.4s ease-in-out infinite;
+}
+
+@keyframes bibBrilho {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esqueleto::after {
+    animation: none;
+    opacity: 0.35;
+    transform: none;
+  }
+}

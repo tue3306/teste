@@ -1,0 +1,103 @@
+.grade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-block-start: 44px;
+}
+
+.cartao {
+  padding: 30px;
+  border-radius: var(--r-4xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: 0 24px 50px -40px rgba(20, 49, 47, 0.6);
+}
+
+.destaque {
+  grid-column: auto;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+}
+
+.tituloCartao {
+  font-size: var(--fs-2xl);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.tituloMenor {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.texto {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin-block-start: 12px;
+  max-width: 430px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 24px;
+}
+
+.chip {
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  background: var(--sand);
+  border: 1px solid var(--ink-a07);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+/* Cartão do preço garantido. */
+.preco {
+  border-color: var(--coral-border);
+  background: linear-gradient(160deg, var(--peach), #fff7f0);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  box-shadow: none;
+}
+
+.percentual {
+  font-size: clamp(2.75rem, 1.9rem + 3.4vw, 3.875rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--coral-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cartão da Bia. */
+.bia {
+  border-color: var(--teal-border);
+  background: linear-gradient(160deg, var(--mint), #f5fcfb);
+  box-shadow: none;
+}
+
+@media (min-width: 940px) {
+  .grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .destaque {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1180px) {
+  .grade {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

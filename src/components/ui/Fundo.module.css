@@ -1,0 +1,66 @@
+.canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Sol quente no canto superior direito. */
+.sol {
+  position: fixed;
+  inset-block-start: -22vh;
+  inset-inline-end: -10vw;
+  width: 70vw;
+  height: 70vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 199, 110, 0.5),
+    rgba(255, 199, 110, 0.12) 45%,
+    transparent 68%
+  );
+  filter: blur(6px);
+  z-index: 0;
+  pointer-events: none;
+  animation: bibSun 9s ease-in-out infinite;
+}
+
+/* Reflexo de água no canto inferior esquerdo. */
+.agua {
+  position: fixed;
+  inset-block-end: -20vh;
+  inset-inline-start: -14vw;
+  width: 80vw;
+  height: 60vw;
+  max-width: 1000px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(14, 154, 167, 0.22), transparent 68%);
+  filter: blur(14px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Barra de progresso de leitura, no topo da janela. */
+.progresso {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--coral));
+  z-index: 90;
+  border-start-end-radius: 3px;
+  border-end-end-radius: 3px;
+  transform-origin: left center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sol {
+    animation: none;
+  }
+}

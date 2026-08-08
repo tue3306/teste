@@ -1,0 +1,22 @@
+.pagina {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+.corpo {
+  padding-block: 26px 90px;
+}
+
+.painelBia {
+  max-width: 860px;
+  padding: 24px;
+  border-radius: var(--r-4xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: 0 24px 50px -48px rgba(20, 49, 47, 0.9);
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

@@ -1,0 +1,153 @@
+.cabecalho {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 60;
+  padding-block: 14px;
+  backdrop-filter: blur(16px) saturate(150%);
+  background: rgba(251, 246, 238, 0.82);
+  border-block-end: 1px solid var(--ink-a07);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
+.link {
+  color: inherit;
+  font-weight: 600;
+  /* Alvo de toque mínimo de 24px (WCAG 2.2 SC 2.5.8). */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding-block: 4px;
+  /* Item de menu nunca quebra em duas linhas: se não couber, a barra inteira
+     recolhe no breakpoint abaixo. */
+  white-space: nowrap;
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+.espaco {
+  flex: 1;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+/* Botão do menu compacto — escondido enquanto a navegação inline couber. */
+.gatilhoMenu {
+  display: none;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  gap: 4px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+}
+
+.barra {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: var(--ink);
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.barra + .barra {
+  margin-block-start: 4px;
+}
+
+.gatilhoMenu[aria-expanded='true'] .barra:first-child {
+  transform: translateY(5.5px) rotate(45deg);
+}
+
+.gatilhoMenu[aria-expanded='true'] .barra:nth-child(2) {
+  opacity: 0;
+}
+
+.gatilhoMenu[aria-expanded='true'] .barra:last-child {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+.painel {
+  display: none;
+}
+
+/**
+ * Abaixo de 1000px a navegação inline não cabe mais ao lado do logotipo e das
+ * duas ações, e o painel recolhível assume.
+ *
+ * O limite era 900px enquanto o menu tinha quatro itens. Com a entrada de
+ * "Destinos" a barra passou a se espremer entre 900 e 935px — "Como funciona",
+ * "Roteiro IA" e o botão principal quebravam em duas linhas. O protótipo
+ * original nem tinha esse recolhimento: mantinha tudo em `display: flex` em
+ * qualquer largura e estourava a tela no celular.
+ */
+@media (max-width: 1000px) {
+  .links {
+    display: none;
+  }
+
+  .acoes .entrarDesktop {
+    display: none;
+  }
+
+  .gatilhoMenu {
+    display: grid;
+  }
+
+  .painel {
+    display: block;
+    margin-block-start: 14px;
+    padding: 16px;
+    border-radius: var(--r-3xl);
+    border: 1px solid var(--ink-a07);
+    background: var(--surface);
+    box-shadow: var(--sh-xl);
+  }
+
+  .painelLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .painelLink {
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+    font-size: var(--fs-base);
+    font-weight: 650;
+    color: var(--ink);
+  }
+
+  .painelLink:hover {
+    background: var(--sand);
+    color: var(--ink);
+  }
+
+  .painelAcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-block-start: 12px;
+    padding-block-start: 14px;
+    border-block-start: 1px solid var(--ink-a07);
+  }
+}

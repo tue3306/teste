@@ -1,0 +1,26 @@
+/**
+ * Link de pulo para o conteúdo principal.
+ *
+ * Fica fora da tela até receber foco pelo teclado. É o primeiro elemento
+ * focável do documento, então quem navega por Tab pode saltar o cabeçalho
+ * inteiro em vez de percorrer a navegação a cada página.
+ */
+.pular {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  translate: -50% -120%;
+  z-index: 200;
+  padding: 12px 22px;
+  border-radius: 0 0 var(--r-md) var(--r-md);
+  background: var(--ink);
+  color: var(--on-brand);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  transition: translate var(--t-fast) var(--ease);
+}
+
+.pular:focus-visible {
+  translate: -50% 0;
+  color: var(--on-brand);
+}

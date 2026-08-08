@@ -1,0 +1,146 @@
+/**
+ * Régua de categorias.
+ *
+ * Era uma faixa com `overflow-x: auto`: no celular metade das categorias ficava
+ * escondida atrás de um arrasto que ninguém adivinha que existe. Agora é uma
+ * grade que quebra — tudo visível, em qualquer largura, sem gesto nenhum.
+ */
+
+/**
+ * `minmax(0, ...)` em todas as faixas.
+ *
+ * `1fr` sozinho equivale a `minmax(auto, 1fr)`, e esse mínimo é o `min-content`
+ * do cartão — selo de 46px, texto e recuos somam 150px. Em duas colunas isso
+ * dava 310px de trilha dentro dos 280px úteis de uma tela de 320px, e a segunda
+ * coluna vazava. Com o mínimo em zero, a coluna manda e o conteúdo se ajusta.
+ */
+.grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 400px) {
+  .grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.cartao {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: var(--r-2xl);
+  border: 1px solid var(--ink-a09);
+  background: var(--surface);
+  color: var(--ink);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cartao:hover,
+.cartao:focus-visible {
+  color: var(--ink);
+  transform: translateY(-4px);
+  border-color: var(--teal-border);
+  box-shadow: 0 16px 30px -20px rgba(20, 49, 47, 0.75);
+}
+
+.cartao:active {
+  transform: translateY(-1px) scale(0.985);
+}
+
+.cartao {
+  transition:
+    transform var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
+/* Véu de cor que sobe do rodapé do cartão no hover. Fica atrás do conteúdo e
+   não desloca nada — animar `opacity` de um pseudo-elemento não força layout. */
+.cartao::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(160deg, var(--mint), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+}
+
+.cartao:hover::before,
+.cartao:focus-visible::before {
+  opacity: 1;
+}
+
+.selo {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(20, 49, 47, 0.06);
+}
+
+.texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nome {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  /* Quebra livremente: em duas colunas de 375px, "Gastronomia" ao lado do selo
+     de 46px não cabe numa linha só. */
+  text-wrap: balance;
+}
+
+.contagem {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  margin-block-start: 1px;
+}
+
+@media (min-width: 560px) {
+  .grade {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 860px) {
+  .grade {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Sete colunas na largura cheia: a régua inteira numa linha só, como no
+   desenho original — mas sem depender de arrasto para chegar ao sétimo. */
+@media (min-width: 1140px) {
+  .grade {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .cartao {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 18px 12px;
+  }
+
+  .texto {
+    align-items: center;
+  }
+}

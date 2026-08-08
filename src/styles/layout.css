@@ -1,0 +1,117 @@
+/**
+ * Primitivas de layout e tipografia.
+ *
+ * Estas poucas classes são globais de propósito: são o vocabulário que todas as
+ * seções compartilham. Tudo que é específico de um componente mora no CSS
+ * Module dele.
+ */
+
+/* Faixa de conteúdo do site institucional. */
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Faixa de conteúdo da plataforma, mais larga. */
+.shell-app {
+  width: 100%;
+  max-width: var(--shell-app);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Espaçamento vertical entre seções do site. */
+.secao {
+  padding-block-start: clamp(3.5rem, 1.8rem + 7vw, 6rem);
+}
+
+/* Rótulo curto acima do título ("01 — tudo em um lugar"). */
+.eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral-text);
+}
+
+/* Título de seção. */
+.titulo {
+  font-size: var(--fs-4xl);
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  margin-block-start: 1rem;
+  text-wrap: balance;
+}
+
+/* Trecho em serifada itálica que assina cada título. */
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--teal-text);
+}
+
+/* Parágrafo de apoio. */
+.lead {
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Cartão branco padrão. */
+.cartao {
+  border-radius: var(--r-3xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: var(--sh-lg);
+}
+
+/* Rótulo miúdo em caixa alta usado nos cabeçalhos de painel. */
+.rotulo {
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/**
+ * Superfície que substitui uma foto ainda não produzida.
+ *
+ * A legenda descreve a imagem pretendida; como não existe `<img>`, ela é o
+ * conteúdo acessível do bloco — e vira o `alt` no dia em que a foto entrar.
+ */
+.foto-placeholder {
+  display: flex;
+  align-items: flex-end;
+  border-radius: var(--r-xl);
+  background: var(--grad-praia);
+  padding: 10px;
+}
+
+.foto-placeholder > span {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  line-height: 1.4;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Aplica o tilt do ponteiro sem brigar com a animação de flutuação. */
+.tilt {
+  transform: perspective(900px) rotateY(var(--tilt-y, 0deg)) rotateX(var(--tilt-x, 0deg))
+    translateZ(var(--tilt-z, 0));
+  transition: transform var(--t-mid) var(--ease);
+}
+
+/* Deslocamento magnético do botão principal. */
+.magnetico {
+  transform: translate(var(--mag-x, 0), var(--mag-y, 0));
+}

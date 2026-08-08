@@ -1,0 +1,70 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.entrada {
+  padding: 14px 16px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-a12);
+  background: var(--sand);
+  font-size: var(--fs-base);
+  transition: border-color var(--t-fast) ease;
+}
+
+.entrada:hover {
+  border-color: var(--ink-a16);
+}
+
+.entrada[aria-invalid='true'] {
+  border-color: var(--coral-strong);
+  background: var(--peach-2);
+}
+
+.erro {
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--coral-text);
+}
+
+.aviso {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+.sucesso {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--teal-border);
+  background: var(--mint);
+}
+
+.sucessoTitulo {
+  font-size: var(--fs-base);
+  font-weight: 750;
+  color: var(--teal-text);
+}
+
+.sucessoTexto {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.55;
+  margin: 0;
+}

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="mar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9BE0DF"/>
+      <stop offset="1" stop-color="#BFECEA"/>
+    </linearGradient>
+    <radialGradient id="sol" cx="50%" cy="50%">
+      <stop offset="0" stop-color="#FFC76E" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#FFC76E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#FBF6EE"/>
+  <circle cx="1010" cy="120" r="260" fill="url(#sol)"/>
+  <path d="M-40 470 Q 300 430 600 470 T 1240 460 L1240 630 L-40 630 Z" fill="url(#mar)" opacity=".9"/>
+  <path d="M-40 520 Q 320 486 620 520 T 1240 512 L1240 630 L-40 630 Z" fill="#0E9AA7" opacity=".18"/>
+
+  <text x="90" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34"
+        font-weight="700" letter-spacing="6" fill="#0E9AA7">BI &amp; B</text>
+
+  <text x="90" y="285" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="82"
+        font-weight="800" letter-spacing="-3" fill="#14312F">Voo, hotel e roteiro.</text>
+  <text x="90" y="378" font-family="Georgia, Times New Roman, serif" font-size="82"
+        font-style="italic" fill="#0E9AA7">Uma busca só.</text>
+
+  <text x="90" y="452" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="30"
+        fill="#4A5F5D">Compare tudo lado a lado. Melhor preço garantido.</text>
+
+  <rect x="90" y="500" width="232" height="62" rx="31" fill="#CF471E"/>
+  <text x="206" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="24"
+        font-weight="700" fill="#fff" text-anchor="middle">Planejar viagem</text>
+</svg>

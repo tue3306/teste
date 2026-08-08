@@ -1,0 +1,67 @@
+.faixa {
+  overflow: hidden;
+  padding-block: 20px;
+  margin-block-start: 34px;
+  background: linear-gradient(90deg, var(--teal-strong), #0e8a94 50%, var(--teal-strong));
+  /* Esmaece as duas pontas: o texto surge e some em vez de ser cortado na
+     borda da tela. */
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.trilho {
+  display: flex;
+  width: max-content;
+  /* Sem `gap` aqui de propósito: a folga entre os grupos quebraria o cálculo
+     de -50% e a repetição saltaria a cada volta. O espaçamento é interno. */
+  animation: bibMarquee 38s linear infinite;
+  will-change: transform;
+}
+
+.grupo {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 34px;
+  padding-inline-end: 34px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.94);
+  white-space: nowrap;
+}
+
+.separador {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 15px;
+}
+
+/**
+ * Sem movimento, a faixa vira uma lista que quebra em linhas dentro da própria
+ * largura — nada de rolagem lateral. O componente já reduz o conteúdo a um
+ * grupo nesse caso, então não há repetição visível.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .faixa {
+    padding-inline: var(--gutter);
+    mask-image: none;
+  }
+
+  .trilho {
+    animation: none;
+    width: auto;
+  }
+
+  .grupo {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 0;
+    max-width: var(--shell);
+    margin-inline: auto;
+  }
+}

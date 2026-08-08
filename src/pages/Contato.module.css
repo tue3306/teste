@@ -1,0 +1,179 @@
+.pagina {
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 44px;
+  align-items: start;
+}
+
+.titulo {
+  font-size: var(--fs-5xl);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+  margin: 12px 0 0;
+}
+
+.chamada {
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin-block-start: 20px;
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.canais {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-block-start: 32px;
+}
+
+.canal {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 18px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+}
+
+.canalRotulo {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.canalValor {
+  font-size: var(--fs-base);
+  font-weight: 700;
+}
+
+/* --- formulário --- */
+.form {
+  padding: 26px;
+  border-radius: var(--r-4xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: var(--sh-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.opcional {
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+.entrada,
+.area,
+.select {
+  padding: 13px 16px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-a12);
+  background: var(--sand);
+  font-size: var(--fs-base);
+  min-height: 24px;
+  transition: border-color var(--t-fast) ease;
+}
+
+.entrada:hover,
+.area:hover,
+.select:hover {
+  border-color: var(--ink-a16);
+}
+
+.area {
+  resize: vertical;
+  min-height: 128px;
+  line-height: 1.55;
+  font-family: inherit;
+}
+
+.select {
+  cursor: pointer;
+}
+
+.entrada[aria-invalid='true'],
+.area[aria-invalid='true'] {
+  border-color: var(--coral-strong);
+  background: var(--peach-2);
+}
+
+.erro {
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--coral-text);
+}
+
+.contador {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.nota {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.sucesso {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 26px;
+  border-radius: var(--r-4xl);
+  border: 1px solid var(--teal-border);
+  background: linear-gradient(150deg, var(--mint), var(--mint-2));
+}
+
+.sucessoTitulo {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--teal-text);
+}
+
+.sucessoTexto {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* Isca de robô: invisível para gente, preenchida por bot. */
+.armadilha {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (min-width: 940px) {
+  .pagina {
+    grid-template-columns: 1fr 1.1fr;
+    gap: 64px;
+  }
+}

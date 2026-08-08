@@ -1,0 +1,82 @@
+.painel {
+  padding: 20px;
+  border-radius: var(--r-2xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.fonte {
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+/**
+ * Os sete dias cabem sempre, sem rolagem lateral: a grade divide o espaço
+ * disponível em partes iguais e as colunas encolhem junto com o painel.
+ */
+.lista {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  margin-block-start: 14px;
+}
+
+.dia {
+  min-width: 0;
+  text-align: center;
+  padding: 10px 2px;
+  border-radius: var(--r-md);
+  background: var(--sand);
+  border: 1px solid transparent;
+}
+
+.diaAtivo {
+  background: var(--mint);
+  border-color: var(--teal-border);
+}
+
+.rotulo {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.icone {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.max {
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.min {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.chuva {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--teal-text);
+  margin-block-start: 2px;
+}
+
+.aviso {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  margin-block-start: 12px;
+  line-height: 1.5;
+}

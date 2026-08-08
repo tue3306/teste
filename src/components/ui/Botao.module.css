@@ -1,0 +1,124 @@
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  padding: 11px 22px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.botao:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Resposta ao toque: o botão cede um pouco sob o dedo e volta. Em CSS, não em
+   JavaScript — precisa acontecer no mesmo quadro do toque. */
+.botao:active:not(:disabled) {
+  transform: translateY(0) scale(0.975);
+  transition-duration: 0.06s;
+}
+
+/* Ação principal: coral sólido. O tom é o `--coral-strong`, não o `--coral`
+   decorativo — só ele alcança 4,5:1 com texto branco. */
+.primario {
+  background: var(--coral-strong);
+  color: var(--on-brand);
+  box-shadow: var(--sh-coral);
+}
+
+.primario:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px -12px rgba(207, 71, 30, 0.7);
+}
+
+/* Ação secundária: contorno sobre superfície clara. */
+.secundario {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--ink-a16);
+}
+
+.secundario:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--ink-a22);
+  box-shadow: var(--sh-sm);
+}
+
+/* Ação de contraste máximo: verde-escuro da marca. */
+.escuro {
+  background: var(--ink);
+  color: var(--on-brand);
+}
+
+.escuro:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--coral-strong);
+  box-shadow: var(--sh-coral);
+}
+
+/* Ação de apoio dentro da plataforma. */
+.teal {
+  background: var(--teal-strong);
+  color: var(--on-brand);
+  box-shadow: var(--sh-teal);
+}
+
+.teal:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -12px rgba(12, 123, 133, 0.6);
+}
+
+/* Ação textual, sem caixa. */
+.texto {
+  background: none;
+  padding: 0;
+  color: var(--coral-text);
+  font-size: var(--fs-xs);
+  box-shadow: none;
+}
+
+.texto:hover:not(:disabled) {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+/* Tamanhos */
+.lg {
+  padding: 17px 36px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.sm {
+  padding: 9px 15px;
+  font-size: var(--fs-xs);
+}
+
+.bloco {
+  width: 100%;
+}
+
+/* Cantos suaves em vez de pílula — usado nos botões dentro de cartões. */
+.quadrado {
+  border-radius: var(--r-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .botao:hover:not(:disabled) {
+    transform: none;
+  }
+}

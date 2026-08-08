@@ -1,0 +1,118 @@
+/**
+ * Keyframes compartilhados e a garantia global de movimento reduzido.
+ *
+ * As durações são escritas direto, sem indireção. A versão anterior dividia
+ * cada duração por um token que ia a zero (`calc(9s / var(--motion))`) e
+ * dependia de a divisão por zero invalidar a declaração — funcionava por
+ * acidente, e qualquer animação nova precisava lembrar de participar do truque.
+ *
+ * O bloco `prefers-reduced-motion` no fim desta folha desliga tudo de uma vez,
+ * inclusive o que for acrescentado depois. É a rede que não depende de ninguém
+ * lembrar de nada.
+ */
+
+@keyframes bibFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -15px, 0);
+  }
+}
+
+@keyframes bibFloatB {
+  0%,
+  100% {
+    transform: translate3d(0, -9px, 0);
+  }
+  50% {
+    transform: translate3d(0, 11px, 0);
+  }
+}
+
+@keyframes bibMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes bibPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes bibSun {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes bibFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/**
+ * Entrada por scroll. O elemento nasce deslocado e o hook `useReveal` adiciona
+ * `data-revealed` quando ele cruza a viewport. Com movimento reduzido o hook
+ * revela tudo imediatamente, então o estado inicial nunca prende conteúdo.
+ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--t-slow) var(--ease) var(--reveal-delay, 0s),
+    transform var(--t-slow) var(--ease) var(--reveal-delay, 0s);
+}
+
+.reveal[data-revealed='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /**
+   * Rede de segurança global.
+   *
+   * Zera qualquer animação e transição que tenha escapado de uma regra
+   * específica — inclusive as que forem escritas no futuro. Os valores não são
+   * `0s` de propósito: uma duração mínima preserva o disparo de `transitionend`
+   * e `animationend`, de que algum componente pode depender para limpar estado.
+   */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

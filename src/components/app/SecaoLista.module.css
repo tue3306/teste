@@ -1,0 +1,65 @@
+.grade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.filtros {
+  position: static;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vazio {
+  padding: 60px 24px;
+  text-align: center;
+  border-radius: var(--r-3xl);
+  border: 1px dashed var(--ink-a16);
+  color: var(--ink-2);
+  font-size: var(--fs-base);
+}
+
+.filtroCategoria {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-block-end: 14px;
+  padding: 8px 8px 8px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--teal-border);
+  background: var(--mint);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--teal-text);
+}
+
+.limparCategoria {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface);
+  color: var(--teal-text);
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* A coluna de filtros só ganha espaço próprio — e só gruda — quando há largura
+   para as duas colunas conviverem. */
+@media (min-width: 1180px) {
+  .grade {
+    grid-template-columns: 264px 1fr;
+  }
+
+  .filtros {
+    position: sticky;
+    inset-block-start: 136px;
+  }
+}

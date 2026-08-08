@@ -1,0 +1,196 @@
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.painel {
+  margin-block-start: 36px;
+  border-radius: var(--r-4xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: 0 30px 60px -46px rgba(20, 49, 47, 0.7);
+  overflow: hidden;
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px 26px;
+  border-block-end: 1px solid var(--ink-a07);
+}
+
+.identificacao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.miniatura {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-md);
+  background: linear-gradient(150deg, #9be0df, #ffd9a0);
+  flex: none;
+}
+
+.quarto {
+  font-size: 16.5px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.estadia {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-block-start: 2px;
+}
+
+.aviso {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.linha {
+  border-block-end: 1px solid var(--ink-a05);
+}
+
+.celula {
+  padding: 16px 26px;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.fonte {
+  font-size: 14.5px;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  width: 190px;
+}
+
+.fonteDestaque {
+  color: var(--teal-text);
+}
+
+.barraCelula {
+  width: auto;
+}
+
+.barra {
+  height: 12px;
+  border-radius: var(--r-pill);
+  background: var(--sand-2);
+  overflow: hidden;
+}
+
+.preenchimento {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--sand-3);
+  transition: width 1.2s var(--ease);
+}
+
+.preenchimentoDestaque {
+  background: linear-gradient(90deg, var(--teal), var(--coral));
+}
+
+.condicao {
+  font-size: 13px;
+  color: var(--ink-3);
+  width: 190px;
+}
+
+.preco {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-align: right;
+  width: 120px;
+  white-space: nowrap;
+}
+
+.precoDestaque {
+  color: var(--teal-text);
+}
+
+.rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 20px 26px;
+  background: linear-gradient(90deg, var(--mint), #fff);
+}
+
+.rodapeTexto {
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
+.rodapeValor {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--teal-text);
+}
+
+/**
+ * Abaixo de 940px a tabela vira lista.
+ *
+ * O protótipo declarava três colunas de grid nessa largura mas continuava
+ * renderizando quatro células: o preço caía numa linha implícita, desalinhado
+ * do resto. Empilhar resolve de verdade e ainda deixa o preço legível.
+ */
+@media (max-width: 940px) {
+  .tabela,
+  .tabela tbody,
+  .linha,
+  .celula {
+    display: block;
+    width: auto;
+  }
+
+  .linha {
+    padding: 16px 20px;
+  }
+
+  .celula {
+    padding: 0;
+  }
+
+  .fonte {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-size: var(--fs-base);
+  }
+
+  .barraCelula {
+    margin-block: 10px;
+  }
+
+  .preco {
+    text-align: left;
+    font-size: 17px;
+  }
+
+  /* Preço sobe para a mesma linha do nome da fonte. */
+  .precoInline {
+    float: none;
+  }
+}

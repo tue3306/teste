@@ -1,0 +1,305 @@
+/**
+ * Pilha de cartões que ilustra o hero.
+ *
+ * No protótipo os quatro cartões eram `position: absolute` dentro de um bloco
+ * de 640px de altura fixa, com deslocamentos em pixel. Abaixo de 1060px o hero
+ * vira uma coluna só e esses deslocamentos passavam a apontar para fora da
+ * tela — cartões sobrepostos e cortados no celular.
+ *
+ * Aqui o posicionamento absoluto existe apenas onde há espaço para ele; abaixo
+ * disso a pilha vira um grid comum que empilha e centraliza.
+ *
+ * A camada externa (`.camada`) carrega o deslocamento de parallax e a interna
+ * (`.cartao`) carrega a flutuação contínua. Separar os dois evita que as duas
+ * animações disputem a mesma propriedade `transform`.
+ */
+
+.palco {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.camada {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cartao {
+  width: 100%;
+  max-width: 330px;
+  padding: 14px;
+  border-radius: var(--r-3xl);
+  border: 1px solid var(--ink-a07);
+  background: var(--surface);
+  box-shadow: var(--sh-xl);
+}
+
+.foto {
+  position: relative;
+  height: 170px;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+
+.fotoImg {
+  width: 100%;
+  height: 100%;
+}
+
+.nota {
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline-end: 12px;
+  padding: 5px 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink);
+  box-shadow: 0 4px 12px -6px rgba(20, 49, 47, 0.8);
+}
+
+.hotelRodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-block-start: 14px;
+  padding: 0 4px 4px;
+}
+
+.hotelNome {
+  font-size: 16.5px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.hotelLocal {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-block-start: 3px;
+}
+
+.precoAntes {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+
+.precoAgora {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--teal-text);
+  letter-spacing: -0.025em;
+}
+
+/* --- voo --- */
+.vooTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.direto {
+  color: var(--teal-text);
+}
+
+.vooHorarios {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-block-start: 12px;
+}
+
+.hora {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.trilho {
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--ink-a12));
+  position: relative;
+}
+
+.trilho::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: -3px;
+  inset-block-start: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.vooRodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-block-start: 12px;
+}
+
+.cia {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.vooPreco {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+/* --- roteiro --- */
+.roteiroTitulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--coral-text);
+}
+
+.roteiroLista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-block-start: 12px;
+}
+
+.roteiroItem {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.roteiroHora {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-3);
+  width: 38px;
+  flex: none;
+}
+
+.roteiroNome {
+  font-size: 14px;
+}
+
+/* --- total --- */
+.total {
+  border-color: var(--teal-border);
+  background: linear-gradient(150deg, #dff5f2, #fff);
+  max-width: 260px;
+}
+
+.totalRotulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.totalValores {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-block-start: 6px;
+  flex-wrap: wrap;
+}
+
+.totalPreco {
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.totalEconomia {
+  font-size: 12.5px;
+  color: var(--coral-text);
+  font-weight: 800;
+}
+
+.compacto {
+  padding: 16px 18px;
+}
+
+/* A composição solta só entra quando a coluna direita do hero existe. */
+@media (min-width: 1060px) {
+  .palco {
+    display: block;
+    position: relative;
+    min-height: 660px;
+  }
+
+  .camada {
+    position: absolute;
+    display: block;
+    width: auto;
+  }
+
+  .cartao {
+    width: 330px;
+    max-width: none;
+  }
+
+  .camada:nth-child(1) {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+  }
+
+  .camada:nth-child(2) {
+    inset-block-start: 232px;
+    inset-inline-start: 0;
+  }
+
+  .camada:nth-child(3) {
+    inset-block-start: 398px;
+    inset-inline-end: 20px;
+  }
+
+  .camada:nth-child(4) {
+    inset-block-start: 560px;
+    inset-inline-start: 28px;
+  }
+
+  .hotel {
+    animation: bibFloat 9s ease-in-out infinite;
+  }
+
+  .voo {
+    width: 314px;
+    animation: bibFloatB 7.5s ease-in-out infinite;
+  }
+
+  .roteiro {
+    width: 302px;
+    animation: bibFloat 8.2s ease-in-out infinite 0.6s;
+  }
+
+  .total {
+    width: 250px;
+    animation: bibFloatB 6.6s ease-in-out infinite 0.3s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotel,
+  .voo,
+  .roteiro,
+  .total {
+    animation: none;
+  }
+}

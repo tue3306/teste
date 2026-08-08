@@ -1,0 +1,57 @@
+/**
+ * Moldura da imagem.
+ *
+ * O LQIP entra como `background-image` e a foto real cobre por cima. Como a
+ * moldura já tem tamanho antes de a foto chegar, o layout nunca pula — CLS zero
+ * sem precisar cravar altura em pixel em cada lugar de uso.
+ */
+.moldura {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--sand-2);
+  background-size: cover;
+  background-position: center;
+  isolation: isolate;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+}
+
+.carregada {
+  opacity: 1;
+}
+
+/* Véu escuro sutil para o texto sobreposto continuar legível sobre céu claro. */
+.veu::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(20, 49, 47, 0.55));
+  pointer-events: none;
+}
+
+.zoom .img {
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.6s var(--ease);
+}
+
+.zoom:hover .img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img {
+    transition: none;
+  }
+
+  .zoom:hover .img {
+    transform: none;
+  }
+}

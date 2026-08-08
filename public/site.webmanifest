@@ -1,0 +1,19 @@
+{
+  "name": "BI&B — planejamento de viagem inteligente",
+  "short_name": "BI&B",
+  "description": "Voo, hotel e roteiro em uma busca só.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FBF6EE",
+  "theme_color": "#FBF6EE",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
