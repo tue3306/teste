@@ -53,13 +53,25 @@ ol {
   list-style: none;
 }
 
-a {
+/**
+ * Cor padrão de link — dentro de `:where()`, de propósito.
+ *
+ * `:where()` zera a especificidade da regra. Sem isso, `a:hover` vale (0,1,1) e
+ * vence qualquer classe de componente, que vale (0,1,0): o botão "Abrir
+ * plataforma" — fundo coral com texto branco — ficava com **texto coral sobre
+ * fundo coral** ao passar o mouse, praticamente invisível. Valia para todo
+ * botão renderizado como link.
+ *
+ * Com especificidade zero, esta regra é só um padrão: qualquer componente que
+ * defina a própria cor ganha, sem precisar brigar por especificidade.
+ */
+:where(a) {
   color: var(--teal-text);
   text-decoration: none;
   transition: color var(--t-fast) ease;
 }
 
-a:hover {
+:where(a:hover) {
   color: var(--coral-text);
 }
 

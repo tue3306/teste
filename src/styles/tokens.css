@@ -123,13 +123,22 @@
 }
 
 /**
- * Movimento reduzido: as transições encurtam a ponto de não serem percebidas.
+ * Movimento reduzido — reduzido, não abolido.
  *
- * As animações contínuas são desligadas pelo reset global em `animations.css`,
- * que age sobre tudo — inclusive sobre o que for escrito depois destas linhas.
+ * A primeira versão zerava tudo: transição, hover, fade, cor. O site ficava
+ * duro como uma página de 1998. Isso extrapola o que a preferência pede.
+ *
+ * `prefers-reduced-motion` existe para transtorno vestibular, e o que provoca
+ * enjoo é movimento amplo e contínuo: parallax, marquee em laço, cartões
+ * flutuando, deslocamentos grandes. Mudança de cor e um fade curto não causam
+ * nada disso — e é assim que Apple, Stripe e Linear tratam o caso.
+ *
+ * Então aqui as transições apenas encurtam, e continuam existindo. O que some
+ * de fato — animação contínua e parallax — está desligado em `animations.css` e
+ * nos componentes.
  */
 :root[data-motion='reduzido'] {
-    --t-fast: 0.01ms;
-    --t-mid: 0.01ms;
-    --t-slow: 0.01ms;
-  }
+  --t-fast: 0.12s;
+  --t-mid: 0.14s;
+  --t-slow: 0.18s;
+}

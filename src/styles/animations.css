@@ -91,26 +91,41 @@
   transform: none;
 }
 
+/**
+ * Sem movimento amplo, a entrada perde o deslocamento e mantém o fade.
+ *
+ * Antes o elemento simplesmente aparecia, sem transição alguma. Um fade de
+ * 0,18s não desloca nada na tela e não incomoda ninguém — o que incomodava era
+ * o `translateY` de 24px, e é só ele que sai.
+ */
 :root[data-motion='reduzido'] .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  transform: none;
+  transition: opacity var(--t-slow) var(--ease) var(--reveal-delay, 0s);
+}
+
+:root[data-motion='reduzido'] .reveal[data-revealed='true'] {
+  transform: none;
+}
 
 /**
-   * Rede de segurança global.
-   *
-   * Zera qualquer animação e transição que tenha escapado de uma regra
-   * específica — inclusive as que forem escritas no futuro. Os valores não são
-   * `0s` de propósito: uma duração mínima preserva o disparo de `transitionend`
-   * e `animationend`, de que algum componente pode depender para limpar estado.
-   */
+ * Rede de segurança global.
+ *
+ * Desliga **animação contínua** que tenha escapado de uma regra específica —
+ * inclusive a que for escrita no futuro. É o que provoca desconforto
+ * vestibular: coisa que se move sozinha, em laço, sem o usuário pedir.
+ *
+ * As **transições** ficam de fora de propósito. Elas só acontecem em resposta a
+ * uma ação — passar o mouse, focar, clicar — são curtas e não deslocam a página.
+ * Zerá-las, como a versão anterior fazia, deixava o site sem nenhuma resposta ao
+ * toque, o que não é acessibilidade: é uma interface pior para todo mundo.
+ *
+ * A duração não é `0s`: um mínimo preserva o disparo de `animationend`, de que
+ * algum componente pode depender para limpar estado.
+ */
 :root[data-motion='reduzido'] *,
 :root[data-motion='reduzido'] *::before,
 :root[data-motion='reduzido'] *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
-    scroll-behavior: auto !important;
-  }
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
