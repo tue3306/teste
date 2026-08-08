@@ -46,11 +46,39 @@ export const ITEM_ESCALA: Variants = {
 }
 
 /**
- * A entrada por scroll é comandada pelo hook `useNaTela`, e não pelo
- * `whileInView` do Motion.
+ * Regra do projeto: **Motion nunca anima `opacity` de conteúdo.**
  *
- * Motivo: `whileInView` deixa o elemento no estado inicial para sempre se o
- * `IntersectionObserver` não disparar — e como esse estado é `opacity: 0`, o
- * resultado é conteúdo invisível de forma permanente. `useNaTela` tem prazo de
- * segurança: passado ele, revela de qualquer jeito.
+ * O Motion escreve estilo inline a cada quadro de `requestAnimationFrame`, e
+ * aba em segundo plano não recebe quadro nenhum. Um elemento com
+ * `initial={{ opacity: 0 }}` ficaria invisível até o usuário focar a aba — e um
+ * `whileInView` que nunca dispara o deixa invisível para sempre.
+ *
+ * Por isso a divisão: a **visibilidade** é do CSS (classe `.reveal`, com alvo
+ * declarativo e rede de segurança de 1,2s) e o **movimento** é do Motion, só em
+ * `transform`. Se um quadro faltar, o pior caso é um elemento alguns pixels
+ * fora do lugar — nunca um elemento que sumiu.
  */
+
+/** Deslize de entrada, sem tocar em opacidade. */
+export const DESLIZE: Variants = {
+  oculto: { y: 26 },
+  visivel: { y: 0, transition: MOLA_SUAVE },
+}
+
+/** Deslize lateral, para colunas que entram de lado. */
+export const DESLIZE_LATERAL: Variants = {
+  oculto: { x: 22 },
+  visivel: { x: 0, transition: MOLA_SUAVE },
+}
+
+/** Cartão que assenta crescendo — escala é transform, então é seguro. */
+export const ASSENTA: Variants = {
+  oculto: { y: 20, scale: 0.97 },
+  visivel: { y: 0, scale: 1, transition: MOLA_SUAVE },
+}
+
+/** Elevação padrão no hover, usada nos cartões clicáveis. */
+export const HOVER_CARTAO = { y: -6, transition: MOLA } as const
+
+/** Resposta ao toque. */
+export const TAP_CARTAO = { scale: 0.985, transition: MOLA } as const

@@ -1,8 +1,13 @@
+import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { Icone } from '@/components/ui/Icone'
 import { Reveal } from '@/components/ui/Reveal'
+import { useNaTela } from '@/hooks/useNaTela'
 import { CATEGORIAS } from '@/data/site'
+import { ASSENTA, CONTAINER, HOVER_CARTAO, TAP_CARTAO } from '@/lib/motion'
 import css from './Categorias.module.css'
+
+const CartaoMovel = motion.create(Link)
 
 /**
  * Régua de categorias.
@@ -22,27 +27,45 @@ import css from './Categorias.module.css'
  * visível ou não. Movimento fica onde só ele resolve: hover, layout e parallax.
  */
 export function Categorias() {
+  const [gradeRef, visivel] = useNaTela<HTMLUListElement>()
+
   return (
     <section className="shell" style={{ paddingBlockStart: 26 }} aria-labelledby="categorias-titulo">
       <h2 id="categorias-titulo" className="sr-only">
         Buscar por categoria
       </h2>
 
-      <ul className={css['grade']}>
+      {/* Dois sistemas em camadas: o `Reveal` externo desvanece em CSS (que
+          nunca deixa conteúdo preso) e o Motion interno assenta os cartões um a
+          um, com mola. */}
+      <motion.ul
+        ref={gradeRef}
+        className={css['grade']}
+        variants={CONTAINER}
+        initial="oculto"
+        animate={visivel ? 'visivel' : 'oculto'}
+      >
         {CATEGORIAS.map((c, i) => (
-          <Reveal key={c.id} como="li" atraso={i * 0.055}>
-            <Link to={`/plataforma/hoteis?cat=${c.id}`} className={css['cartao']}>
-              <span className={css['selo']} style={{ background: c.grad }}>
-                <Icone nome={c.icone} tamanho={24} />
-              </span>
-              <span className={css['texto']}>
-                <span className={css['nome']}>{c.label}</span>
-                <span className={css['contagem']}>{c.contagem}</span>
-              </span>
-            </Link>
+          <Reveal key={c.id} como="li" atraso={i * 0.05}>
+            <motion.span variants={ASSENTA} style={{ display: 'block', height: '100%' }}>
+              <CartaoMovel
+                to={`/plataforma/hoteis?cat=${c.id}`}
+                className={css['cartao']}
+                whileHover={HOVER_CARTAO}
+                whileTap={TAP_CARTAO}
+              >
+                <span className={css['selo']} style={{ background: c.grad }}>
+                  <Icone nome={c.icone} tamanho={24} />
+                </span>
+                <span className={css['texto']}>
+                  <span className={css['nome']}>{c.label}</span>
+                  <span className={css['contagem']}>{c.contagem}</span>
+                </span>
+              </CartaoMovel>
+            </motion.span>
           </Reveal>
         ))}
-      </ul>
+      </motion.ul>
     </section>
   )
 }

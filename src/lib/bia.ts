@@ -10,20 +10,40 @@
  * O ponto de troca por uma API real é `responder()`: basta torná-la assíncrona
  * e chamar o backend, mantendo esta tabela como resposta de contingência.
  */
+import { COMPOSICAO, ECONOMIA, GASTO, SOBRA, VIAGEM } from '@/data/viagem'
+import { moeda } from './format'
 
 interface Regra {
   /** Assunto que a regra cobre — serve de documentação e de chave de teste. */
   assunto: string
   padrao: RegExp
-  resposta: string
+  /** Texto fixo, ou função quando a resposta depende dos números da viagem. */
+  resposta: string | (() => string)
+}
+
+/**
+ * A resposta sobre dinheiro é montada na hora, a partir de `data/viagem.ts`.
+ *
+ * Antes era um texto fixo citando "R$ 5.240, sendo R$ 3.290 de hospedagem" —
+ * valores que não batiam com a hospedagem de fato reservada (R$ 890 × 7 =
+ * R$ 6.230). Assistente que erra a conta do próprio produto é pior que
+ * assistente nenhuma.
+ */
+function respostaOrcamento(): string {
+  const linhas = COMPOSICAO.map((l) => `${moeda(l.valor)} de ${l.rotulo.toLowerCase()}`)
+  const ultima = linhas.pop()
+  return (
+    `Com o que já está reservado, a viagem fecha em ${moeda(GASTO)} para ${String(VIAGEM.pessoas)} pessoas: ` +
+    `${linhas.join(', ')} e ${ultima ?? ''}. ` +
+    `Sobram ${moeda(SOBRA)} do seu orçamento de ${moeda(VIAGEM.orcamento)}, e você já economizou ${moeda(ECONOMIA)} em relação à média do mercado.`
+  )
 }
 
 const REGRAS: Regra[] = [
   {
     assunto: 'orçamento',
     padrao: /gast|orçam|orcam|custo|quanto/i,
-    resposta:
-      'Com o que já está no seu roteiro, a viagem fecha em R$ 5.240 para duas pessoas: R$ 731 de voos, R$ 3.290 de hospedagem, R$ 742 de experiências e R$ 477 de comida e transporte. Sobram R$ 760 do orçamento.',
+    resposta: respostaOrcamento,
   },
   {
     assunto: 'hospedagem',
@@ -68,7 +88,8 @@ const PADRAO = 'Anotado. Ajustei sua busca no Rio com isso em mente — veja os 
 /** Resposta da Bia para uma pergunta livre. */
 export function responder(pergunta: string): string {
   const regra = REGRAS.find((r) => r.padrao.test(pergunta))
-  return regra ? regra.resposta : PADRAO
+  if (!regra) return PADRAO
+  return typeof regra.resposta === 'function' ? regra.resposta() : regra.resposta
 }
 
 /** Quanto a Bia "pensa" antes de responder, em milissegundos. */

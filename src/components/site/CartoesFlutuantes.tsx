@@ -5,6 +5,7 @@ import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { useTilt } from '@/hooks/useTilt'
 import { DIA_DESTAQUE } from '@/data/roteiro'
 import { HOTEIS, VOOS } from '@/data/ofertas'
+import { ECONOMIA, GASTO } from '@/data/viagem'
 import { moeda, nota, resumo } from '@/lib/format'
 import { MOLA_SUAVE } from '@/lib/motion'
 import css from './CartoesFlutuantes.module.css'
@@ -150,8 +151,8 @@ export function CartoesFlutuantes() {
         <div className={`${css['cartao']} ${css['total']} ${css['compacto']}`}>
           <div className={css['totalRotulo']}>total da viagem</div>
           <div className={css['totalValores']}>
-            <div className={css['totalPreco']}>R$ 5.240</div>
-            <div className={css['totalEconomia']}>−R$ 760</div>
+            <div className={css['totalPreco']}>{moeda(GASTO)}</div>
+            <div className={css['totalEconomia']}>−{moeda(ECONOMIA)}</div>
           </div>
         </div>
       </motion.div>

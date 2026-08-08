@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { FACETAS_POR_VERTICAL } from '@/data/ofertas'
-import { ORCAMENTO } from '@/data/site'
+import { GASTO, SOBRA, USO_DO_ORCAMENTO, VIAGEM } from '@/data/viagem'
 import { moeda } from '@/lib/format'
 import type { Ordenacao, Vertical } from '@/types'
 import css from './PainelFiltros.module.css'
@@ -47,7 +47,7 @@ export function PainelFiltros({
 }: Props) {
   const sliderId = useId()
   const facetas = FACETAS_POR_VERTICAL[vertical]
-  const pct = Math.round((ORCAMENTO.gasto / ORCAMENTO.total) * 100)
+  const pct = Math.round(USO_DO_ORCAMENTO * 100)
 
   return (
     <aside className={css['painel']} aria-label="Filtros de resultado">
@@ -135,7 +135,7 @@ export function PainelFiltros({
 
       <div className={css['orcamento']}>
         <h3 className="rotulo">orçamento</h3>
-        <p className={css['orcamentoValor']}>{moeda(ORCAMENTO.gasto)}</p>
+        <p className={css['orcamentoValor']}>{moeda(GASTO)}</p>
         <div
           className={css['trilho']}
           role="progressbar"
@@ -147,7 +147,7 @@ export function PainelFiltros({
           <div className={css['preenchimento']} style={{ width: `${String(pct)}%` }} />
         </div>
         <p className={css['orcamentoNota']}>
-          de {moeda(ORCAMENTO.total)} · sobra {moeda(ORCAMENTO.total - ORCAMENTO.gasto)}
+          de {moeda(VIAGEM.orcamento)} · sobra {moeda(SOBRA)}
         </p>
       </div>
     </aside>

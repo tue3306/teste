@@ -45,23 +45,19 @@
   isolation: isolate;
 }
 
+/* O deslocamento no hover é do Motion; aqui ficam só cor e sombra, que não
+   disputam a propriedade `transform` com ele. */
+.cartao {
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
 .cartao:hover,
 .cartao:focus-visible {
   color: var(--ink);
-  transform: translateY(-4px);
   border-color: var(--teal-border);
   box-shadow: 0 16px 30px -20px rgba(20, 49, 47, 0.75);
-}
-
-.cartao:active {
-  transform: translateY(-1px) scale(0.985);
-}
-
-.cartao {
-  transition:
-    transform var(--t-fast) var(--ease),
-    border-color var(--t-fast) var(--ease),
-    box-shadow var(--t-fast) var(--ease);
 }
 
 /* Véu de cor que sobe do rodapé do cartão no hover. Fica atrás do conteúdo e

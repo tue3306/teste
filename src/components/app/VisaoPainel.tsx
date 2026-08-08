@@ -1,6 +1,7 @@
 import { useViagem } from '@/context/ViagemContext'
 import { TODAS_OFERTAS } from '@/data/ofertas'
-import { ALERTAS, CHECKLIST, DOCUMENTOS, RESUMO_VIAGEM } from '@/data/site'
+import { ALERTAS, CHECKLIST, DOCUMENTOS } from '@/data/site'
+import { COMPOSICAO, ECONOMIA, GASTO, VIAGEM } from '@/data/viagem'
 import { moeda, resumo } from '@/lib/format'
 import css from './VisaoPainel.module.css'
 
@@ -24,18 +25,20 @@ export function VisaoPainel() {
     <div className={css['grade']}>
       <section className={`${css['cartao']} ${css['resumo']} ${css['largo']}`}>
         <h2 className="rotulo">próxima viagem</h2>
-        <p className={css['destino']}>{RESUMO_VIAGEM.destino}</p>
-        <p className={css['periodo']}>{RESUMO_VIAGEM.periodo}</p>
+        <p className={css['destino']}>{VIAGEM.destino}</p>
+        <p className={css['periodo']}>
+          {VIAGEM.periodo} · {VIAGEM.noites} noites · {VIAGEM.pessoas} adultos
+        </p>
         <dl className={css['numeros']}>
           <div>
             <dd className={css['numero']} style={{ margin: 0 }}>
-              {RESUMO_VIAGEM.gastoPrevisto}
+              {moeda(GASTO)}
             </dd>
             <dt className={css['numeroLegenda']}>gasto previsto</dt>
           </div>
           <div>
             <dd className={`${css['numero']} ${css['numeroTeal']}`} style={{ margin: 0 }}>
-              {RESUMO_VIAGEM.economia}
+              {moeda(ECONOMIA)}
             </dd>
             <dt className={css['numeroLegenda']}>economia obtida</dt>
           </div>
@@ -44,6 +47,24 @@ export function VisaoPainel() {
               {reservas.length}
             </dd>
             <dt className={css['numeroLegenda']}>reservas confirmadas</dt>
+          </div>
+        </dl>
+
+        {/* A conta aberta: cada linha e a soma que fecha no gasto previsto.
+            Sem isso o total é um número que o usuário precisa aceitar. */}
+        <dl className={css['composicao']}>
+          {COMPOSICAO.map((linha) => (
+            <div key={linha.rotulo} className={css['linhaGasto']}>
+              <dt>
+                <span className={css['gastoRotulo']}>{linha.rotulo}</span>
+                <span className={css['gastoDetalhe']}>{linha.detalhe}</span>
+              </dt>
+              <dd className={css['gastoValor']}>{moeda(linha.valor)}</dd>
+            </div>
+          ))}
+          <div className={`${css['linhaGasto']} ${css['linhaTotal']}`}>
+            <dt className={css['gastoRotulo']}>Total previsto</dt>
+            <dd className={css['gastoValor']}>{moeda(GASTO)}</dd>
           </div>
         </dl>
       </section>

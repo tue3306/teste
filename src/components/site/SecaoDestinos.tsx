@@ -1,8 +1,12 @@
+import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { Imagem } from '@/components/ui/Imagem'
 import { Reveal } from '@/components/ui/Reveal'
 import { DESTINOS, DESTINOS_ATIVOS } from '@/data/destinos'
+import { HOVER_CARTAO, TAP_CARTAO } from '@/lib/motion'
 import css from './SecaoDestinos.module.css'
+
+const CartaoMovel = motion.create(Link)
 
 /** Larguras candidatas por breakpoint — 1, 2 ou 5 colunas dentro da faixa. */
 const SIZES = '(min-width: 1140px) 246px, (min-width: 600px) 46vw, 92vw'
@@ -58,13 +62,15 @@ export function SecaoDestinos() {
           return (
             <Reveal key={d.id} como="li" atraso={Math.min(i, 6) * 0.05}>
               {d.disponivel ? (
-                <Link
+                <CartaoMovel
                   to="/plataforma/hoteis"
                   className={`${css['item']} ${css['clicavel']}`}
                   aria-label={`${d.nome}, ${d.uf} — abrir na plataforma`}
+                  whileHover={HOVER_CARTAO}
+                  whileTap={TAP_CARTAO}
                 >
                   {interno}
-                </Link>
+                </CartaoMovel>
               ) : (
                 /* Sem hover de elevação: levantar um cartão "em breve"
                    prometeria uma interação que não existe. */

@@ -125,6 +125,24 @@ export function Mapa({ pontos, ativo, aoEscolher, rotulo, className }: Props) {
 
     const limites = L.latLngBounds(pontos.map((p) => [p.latitude, p.longitude] as [number, number]))
     mapa.fitBounds(limites, { padding: [48, 48], maxZoom: 14 })
+
+    /**
+     * Nome acessível dos marcadores.
+     *
+     * Aplicado depois do laço, e não durante: o Leaflet só cria o elemento do
+     * ícone ao encaixar o marcador no mapa, e chamar `getElement()` no meio da
+     * criação devolvia `null` — os atributos não chegavam a ser escritos.
+     *
+     * `title` sozinho não basta: é o último recurso do algoritmo de nome
+     * acessível e vários leitores de tela o ignoram.
+     */
+    for (const [id, marcador] of marcadoresRef.current) {
+      const el = marcador.getElement()
+      if (!el) continue
+      const ponto = pontos.find((p) => p.id === id)
+      if (ponto) el.setAttribute('aria-label', ponto.nome)
+      el.setAttribute('aria-pressed', String(id === ativo))
+    }
   }, [pontos, ativo])
 
   return (

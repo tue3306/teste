@@ -1,4 +1,19 @@
-import type { DiaRoteiro, PinMapa } from '@/types'
+import { moeda } from '@/lib/format'
+import type { DiaRoteiro, ItemRoteiro, PinMapa } from '@/types'
+
+/**
+ * Soma os custos de um dia.
+ *
+ * Só entram valores em reais: "grátis", "reservado", "incluso" e "—" não somam.
+ * O total de cada dia é calculado a partir disto, e não escrito à mão — a
+ * versão anterior declarava R$ 318 no dia 3 quando os itens somavam R$ 497.
+ */
+function somarDia(itens: ItemRoteiro[]): number {
+  return itens.reduce((soma, item) => {
+    const valor = /^R\$\s*([\d.]+)$/.exec(item.custo.trim())
+    return soma + (valor ? Number(valor[1]?.replace('.', '')) : 0)
+  }, 0)
+}
 
 /**
  * Roteiro de sete dias no Rio.
@@ -7,14 +22,13 @@ import type { DiaRoteiro, PinMapa } from '@/types'
  * da seção do site trazia "quinta" escrito à mão para o dia 3 — que é quarta.
  * Agora o rótulo sai do próprio dado e a divergência não tem como voltar.
  */
-export const ROTEIRO: DiaRoteiro[] = [
+const DIAS: Omit<DiaRoteiro, 'total'>[] = [
   {
     n: 1,
     dia: 'seg',
     diaLongo: 'segunda',
     clima: '29° sol',
     titulo: 'Chegada e Copacabana',
-    total: 'R$ 240',
     km: '11 km',
     transporte: '2 corridas + metrô',
     dica: 'Chegue no hotel, deixe as malas e vá direto à praia — o check-in só libera às 14h.',
@@ -56,7 +70,6 @@ export const ROTEIRO: DiaRoteiro[] = [
     diaLongo: 'terça',
     clima: '30° sol',
     titulo: 'Cristo e Santa Teresa',
-    total: 'R$ 395',
     km: '26 km',
     transporte: 'trem do Corcovado + Uber',
     dica: 'Ingresso das 8h tem menos fila e a luz é melhor para as fotos do mirante.',
@@ -92,7 +105,6 @@ export const ROTEIRO: DiaRoteiro[] = [
     diaLongo: 'quarta',
     clima: '28° sol',
     titulo: 'Pão de Açúcar e Urca',
-    total: 'R$ 318',
     km: '18 km',
     transporte: 'bondinho + caminhada',
     dica: 'Suba às 15h30: você vê a cidade de dia e desce com a baía iluminada.',
@@ -134,7 +146,6 @@ export const ROTEIRO: DiaRoteiro[] = [
     diaLongo: 'quinta',
     clima: '24° chuva',
     titulo: 'Centro histórico (plano B)',
-    total: 'R$ 210',
     km: '14 km',
     transporte: 'metrô + VLT',
     dica: 'Chuva prevista para a tarde: troquei a praia por museus climatizados e um café coberto.',
@@ -164,7 +175,6 @@ export const ROTEIRO: DiaRoteiro[] = [
     diaLongo: 'sexta',
     clima: '31° sol',
     titulo: 'Trilha e praia selvagem',
-    total: 'R$ 265',
     km: '22 km',
     transporte: 'Uber + caminhada',
     dica: 'Saia às 7h: a trilha esvazia e você pega a Joatinga na maré baixa.',
@@ -188,7 +198,6 @@ export const ROTEIRO: DiaRoteiro[] = [
     diaLongo: 'sábado',
     clima: '30° sol',
     titulo: 'Feira, Jardim Botânico e show',
-    total: 'R$ 288',
     km: '19 km',
     transporte: 'metrô + Uber',
     dica: 'Sábado o Jardim Botânico abre mais cedo; a Feira de São Cristóvão pega o fim da noite.',
@@ -223,7 +232,6 @@ export const ROTEIRO: DiaRoteiro[] = [
     diaLongo: 'domingo',
     clima: '29° sol',
     titulo: 'Última manhã e volta',
-    total: 'R$ 175',
     km: '12 km',
     transporte: 'Uber para SDU',
     dica: 'Voo às 18h: dá tempo de praia até 13h com o late check-out que já pedi.',
@@ -254,6 +262,12 @@ export const ROTEIRO: DiaRoteiro[] = [
     ],
   },
 ]
+
+/** O roteiro, com o total de cada dia calculado a partir das paradas. */
+export const ROTEIRO: DiaRoteiro[] = DIAS.map((dia) => ({
+  ...dia,
+  total: moeda(somarDia(dia.itens)),
+}))
 
 /** Dia exibido como prévia na seção "Roteiro inteligente" do site. */
 export const DIA_DESTAQUE = ROTEIRO[2]

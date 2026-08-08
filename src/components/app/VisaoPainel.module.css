@@ -54,6 +54,57 @@
   margin-block-start: 3px;
 }
 
+/* --- composição do gasto --- */
+.composicao {
+  margin-block-start: 22px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--teal-border);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.linhaGasto {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.gastoRotulo {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.gastoDetalhe {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  margin-block-start: 1px;
+}
+
+.gastoValor {
+  margin: 0;
+  font-size: var(--fs-base);
+  font-weight: 750;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.linhaTotal {
+  margin-block-start: 4px;
+  padding-block-start: 10px;
+  border-block-start: 1px solid var(--teal-border);
+}
+
+.linhaTotal .gastoValor {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
 .lista {
   display: flex;
   flex-direction: column;

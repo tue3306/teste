@@ -130,16 +130,12 @@
   backdrop-filter: blur(6px);
 }
 
-/* Só o cartão que leva a algum lugar reage ao ponteiro. */
+/* Só o cartão que leva a algum lugar reage ao ponteiro. O deslocamento é do
+   Motion; aqui fica a sombra, que o acompanha sem disputar `transform`. */
 .clicavel:hover,
 .clicavel:focus-visible {
   color: inherit;
-  transform: translateY(-6px);
   box-shadow: var(--sh-xl);
-}
-
-.clicavel:active {
-  transform: translateY(-2px);
 }
 
 @media (min-width: 600px) {

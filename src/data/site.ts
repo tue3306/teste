@@ -1,3 +1,5 @@
+import { moeda } from '@/lib/format'
+import { VIAGEM as VIAGEM_BASE } from './viagem'
 import type { CardCategoria, ItemChecklist, LinhaComparador } from '@/types'
 
 /** Régua de categorias do site — cada cartão abre a plataforma já filtrada. */
@@ -116,17 +118,12 @@ export const CHECKLIST: ItemChecklist[] = [
 /** Itens marcados por padrão no checklist. */
 export const CHECKLIST_INICIAL = ['doc', 'seguro']
 
-/** Orçamento e gasto previsto da viagem em foco. */
-export const ORCAMENTO = { gasto: 5240, total: 6000 } as const
-
-/** Números do resumo em "Minha viagem". */
-export const RESUMO_VIAGEM = {
-  destino: 'Rio de Janeiro',
-  periodo: '12–19 set · 7 noites · 2 adultos · faltam 37 dias',
-  gastoPrevisto: 'R$ 5.240',
-  economia: 'R$ 1.796',
-  reservas: 4,
-} as const
+/**
+ * Orçamento, gasto e economia vêm de `data/viagem.ts`, calculados a partir do
+ * que está reservado. Os valores fixos que existiam aqui se contradiziam: o
+ * gasto declarado era menor que a própria hospedagem.
+ */
+export { COMPOSICAO, ECONOMIA, GASTO, SOBRA, USO_DO_ORCAMENTO, VIAGEM } from './viagem'
 
 /** Alertas exibidos em "Minha viagem". */
 export const ALERTAS = [
@@ -225,11 +222,11 @@ export const VIAJANTES: Viajante[] = [
 /** Tipos de viagem oferecidos no formulário de busca. */
 export const TIPOS_DE_VIAGEM = ['Casal', 'Família', 'Mochilão', 'Luxo', 'Aventura', 'Trabalho']
 
-/** Valores iniciais do formulário de busca. */
+/** Valores iniciais do formulário de busca, coerentes com a viagem em foco. */
 export const BUSCA_INICIAL = {
-  destino: 'Rio de Janeiro, Brasil',
-  datas: '12 – 19 set',
-  pessoas: '2 adultos',
-  orcamento: 'R$ 6.000',
+  destino: `${VIAGEM_BASE.destino}, Brasil`,
+  datas: VIAGEM_BASE.periodo,
+  pessoas: `${String(VIAGEM_BASE.pessoas)} adultos`,
+  orcamento: moeda(VIAGEM_BASE.orcamento),
   tipo: 'Casal',
 }

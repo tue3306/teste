@@ -1,13 +1,16 @@
+import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import { Botao } from '@/components/ui/Botao'
 import { Icone } from '@/components/ui/Icone'
 import { Imagem } from '@/components/ui/Imagem'
 import { Reveal } from '@/components/ui/Reveal'
+import { HOVER_CARTAO, TAP_CARTAO } from '@/lib/motion'
 import { HOTEIS } from '@/data/ofertas'
 import { desconto, moeda, nota, resumo } from '@/lib/format'
 import css from './Vitrine.module.css'
 
 const EM_DESTAQUE = HOTEIS.slice(0, 4)
+const ItemMovel = motion.create(Link)
 
 /**
  * Vitrine de hospedagem.
@@ -32,7 +35,12 @@ export function Vitrine() {
       <ul className={css['grade']}>
         {EM_DESTAQUE.map((h, i) => (
           <Reveal key={h.id} como="li" atraso={i * 0.06}>
-            <Link to={`/plataforma/hoteis?oferta=${h.id}`} className={css['item']}>
+            <ItemMovel
+              to={`/plataforma/hoteis?oferta=${h.id}`}
+              className={css['item']}
+              whileHover={HOVER_CARTAO}
+              whileTap={TAP_CARTAO}
+            >
               <div className={css['moldura']}>
                 <Imagem
                   slug={h.foto}
@@ -65,7 +73,7 @@ export function Vitrine() {
                 </span>
                 <span className={css['economia']}>{desconto(h.preco, h.outros)}</span>
               </p>
-            </Link>
+            </ItemMovel>
           </Reveal>
         ))}
       </ul>
