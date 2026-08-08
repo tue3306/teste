@@ -46,22 +46,20 @@
  * largura — nada de rolagem lateral. O componente já reduz o conteúdo a um
  * grupo nesse caso, então não há repetição visível.
  */
-@media (prefers-reduced-motion: reduce) {
-  .faixa {
+:root[data-motion='reduzido'] .faixa {
     padding-inline: var(--gutter);
     mask-image: none;
   }
 
-  .trilho {
+:root[data-motion='reduzido'] .trilho {
     animation: none;
     width: auto;
   }
 
-  .grupo {
+:root[data-motion='reduzido'] .grupo {
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px 0;
     max-width: var(--shell);
     margin-inline: auto;
   }
-}

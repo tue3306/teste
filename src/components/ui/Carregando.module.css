@@ -35,9 +35,7 @@
   color: var(--ink-3);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ponto {
+:root[data-motion='reduzido'] .ponto {
     animation: none;
     opacity: 0.7;
   }
-}

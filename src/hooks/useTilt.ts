@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { usePonteiroFino, useReducedMotion } from './useMediaQuery'
+import { usePonteiroFino } from './useMediaQuery'
+import { useMovimentoReduzido } from './useMovimento'
 
 /**
  * Inclina o cartão seguindo o ponteiro.
@@ -12,7 +13,7 @@ import { usePonteiroFino, useReducedMotion } from './useMediaQuery'
 export function useTilt<T extends HTMLElement>(intensidade = 6) {
   const ref = useRef<T>(null)
   const ponteiroFino = usePonteiroFino()
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   useEffect(() => {
     const el = ref.current
@@ -70,7 +71,7 @@ export function useTilt<T extends HTMLElement>(intensidade = 6) {
 export function useMagnetic<T extends HTMLElement>() {
   const ref = useRef<T>(null)
   const ponteiroFino = usePonteiroFino()
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   useEffect(() => {
     const el = ref.current

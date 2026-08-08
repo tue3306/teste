@@ -125,12 +125,10 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .mensagens {
+:root[data-motion='reduzido'] .mensagens {
     scroll-behavior: auto;
   }
 
-  .ponto {
+:root[data-motion='reduzido'] .ponto {
     animation: none;
   }
-}

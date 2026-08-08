@@ -13,6 +13,29 @@
     <meta name="theme-color" content="#FBF6EE" />
     <meta name="color-scheme" content="light" />
 
+    <!--
+      Preferência de movimento, resolvida antes da primeira pintura.
+
+      Precisa ser embutido e síncrono: se esperasse o React montar, a página
+      apareceria animada por um instante antes de ser corrigida — exatamente o
+      susto que quem pediu movimento reduzido quer evitar. Todo o CSS depende do
+      atributo `data-motion`, não da media query, para que a escolha explícita
+      do usuário possa vencer o padrão do sistema.
+    -->
+    <script>
+      ;(function () {
+        try {
+          var escolha = localStorage.getItem('bib:movimento')
+          var reduzido =
+            escolha === 'reduzido' ||
+            (escolha !== 'ligado' && matchMedia('(prefers-reduced-motion: reduce)').matches)
+          document.documentElement.dataset.motion = reduzido ? 'reduzido' : 'ok'
+        } catch (e) {
+          document.documentElement.dataset.motion = 'ok'
+        }
+      })()
+    </script>
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />

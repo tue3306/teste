@@ -128,10 +128,8 @@
  * As animações contínuas são desligadas pelo reset global em `animations.css`,
  * que age sobre tudo — inclusive sobre o que for escrito depois destas linhas.
  */
-@media (prefers-reduced-motion: reduce) {
-  :root {
+:root[data-motion='reduzido'] {
     --t-fast: 0.01ms;
     --t-mid: 0.01ms;
     --t-slow: 0.01ms;
   }
-}

@@ -79,11 +79,21 @@ cores de marca ganharam três papéis distintos, porque um tom só não dá cont
 `#FF7A59` com texto branco dá 2,57:1 — bonito e ilegível. `--coral-strong`
 (`#CF471E`) mantém a família e passa em 4,6:1.
 
-**Movimento.** O token `--motion` vale `1` por padrão e `0` sob
-`prefers-reduced-motion`. Animação contínua divide a duração por ele
-(`calc(9s / var(--motion))`), então o navegador congela no primeiro quadro em vez
-de rodar para sempre. Os hooks de tilt e magnético nem registram os ouvintes
-nesse caso.
+**Movimento.** Todo o CSS depende do atributo `data-motion` no `<html>`, e não
+da media query `prefers-reduced-motion` direto. O atributo carrega a preferência
+**resolvida**: o pedido do sistema operacional, que pode ser sobreposto por uma
+escolha explícita guardada no aparelho (`bib:movimento`).
+
+Isso resolve um problema concreto. No Windows, desligar "efeitos de animação"
+faz o navegador anunciar `prefers-reduced-motion: reduce` para **todo** site — e
+quem mexeu naquele interruptor pensando no desempenho da máquina raramente
+imagina que apagou a animação da web inteira. O padrão continua sendo obedecer
+ao sistema; o que existe agora é como dizer o contrário, pelo seletor no rodapé.
+
+O valor é calculado por um script embutido no `index.html`, antes da primeira
+pintura — sem ele a página apareceria animada por um instante antes de o React
+montar e corrigir. `src/hooks/useMovimento.ts` é a fonte de verdade única,
+consumida tanto pelo CSS quanto pelo `MotionConfig`.
 
 ---
 

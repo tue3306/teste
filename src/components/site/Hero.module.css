@@ -76,8 +76,6 @@
   margin-block-start: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .pulso {
+:root[data-motion='reduzido'] .pulso {
     animation: none;
   }
-}

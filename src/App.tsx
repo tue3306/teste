@@ -4,6 +4,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { BarraProgresso, Fundo } from '@/components/ui/Fundo'
 import { PularParaConteudo } from '@/components/ui/PularParaConteudo'
 import { Carregando } from '@/components/ui/Carregando'
+import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { Landing } from '@/pages/Landing'
 
 /**
@@ -26,15 +27,16 @@ const NaoEncontrada = lazy(() =>
 
 export function App() {
   const location = useLocation()
+  const semMovimento = useMovimentoReduzido()
 
   return (
     /**
-     * `reducedMotion="user"` desliga deslocamento e escala em toda a árvore
-     * quando o sistema pede menos animação, preservando só as transições de
-     * opacidade. Um interruptor no topo vale mais que uma checagem esquecida em
-     * cada componente.
+     * O Motion segue a mesma preferência resolvida que o CSS, e não a media
+     * query crua: usar `reducedMotion="user"` faria a biblioteca consultar o
+     * sistema por conta própria e ignorar a escolha explícita do usuário — o
+     * site ficaria metade animado, metade parado.
      */
-    <MotionConfig reducedMotion="user">
+    <MotionConfig reducedMotion={semMovimento ? 'always' : 'never'}>
       <PularParaConteudo />
       <Fundo />
       <BarraProgresso />

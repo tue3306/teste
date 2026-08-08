@@ -162,8 +162,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .aoVivo {
+:root[data-motion='reduzido'] .aoVivo {
     animation: none;
   }
-}

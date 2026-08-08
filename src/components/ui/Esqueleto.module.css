@@ -27,10 +27,8 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .esqueleto::after {
+:root[data-motion='reduzido'] .esqueleto::after {
     animation: none;
     opacity: 0.35;
     transform: none;
   }
-}

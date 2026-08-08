@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { Imagem } from '@/components/ui/Imagem'
-import { useReducedMotion } from '@/hooks/useMediaQuery'
+import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { useTilt } from '@/hooks/useTilt'
 import { DIA_DESTAQUE } from '@/data/roteiro'
 import { HOTEIS, VOOS } from '@/data/ofertas'
@@ -47,7 +47,7 @@ export function CartoesFlutuantes() {
   const refRoteiro = useTilt<HTMLDivElement>()
 
   const palcoRef = useRef<HTMLDivElement>(null)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   const { scrollYProgress } = useScroll({
     target: palcoRef,

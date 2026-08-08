@@ -117,8 +117,6 @@
   border-radius: var(--r-md);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .botao:hover:not(:disabled) {
+:root[data-motion='reduzido'] .botao:hover:not(:disabled) {
     transform: none;
   }
-}

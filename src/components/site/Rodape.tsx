@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '@/components/ui/Logo'
-import { Creditos } from './Creditos'
+import { ControleMovimento } from './ControleMovimento'
 import css from './Rodape.module.css'
 
 const PRODUTO = [
@@ -67,10 +67,9 @@ export function Rodape() {
         </nav>
       </div>
 
-      <Creditos />
-
       <div className={css['base']}>
         <span>© {new Date().getFullYear()} BI&amp;B tecnologia</span>
+        <ControleMovimento />
         <span>melhor preço garantido</span>
       </div>
     </footer>

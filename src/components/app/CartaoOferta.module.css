@@ -209,8 +209,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .cartao:hover {
+:root[data-motion='reduzido'] .cartao:hover {
     transform: none;
   }
-}

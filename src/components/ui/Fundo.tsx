@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from '@/hooks/useMediaQuery'
+import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { useScrollProgress } from '@/hooks/useScrollProgress'
 import css from './Fundo.module.css'
 
@@ -29,7 +29,7 @@ const TETO_DPR = 2
  */
 export function Fundo() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   useEffect(() => {
     const canvas = canvasRef.current

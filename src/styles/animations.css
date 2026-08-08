@@ -91,14 +91,13 @@
   transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
+:root[data-motion='reduzido'] .reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
 
-  /**
+/**
    * Rede de segurança global.
    *
    * Zera qualquer animação e transição que tenha escapado de uma regra
@@ -106,13 +105,12 @@
    * `0s` de propósito: uma duração mínima preserva o disparo de `transitionend`
    * e `animationend`, de que algum componente pode depender para limpar estado.
    */
-  *,
-  *::before,
-  *::after {
+:root[data-motion='reduzido'] *,
+:root[data-motion='reduzido'] *::before,
+:root[data-motion='reduzido'] *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
-}

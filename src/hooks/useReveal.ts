@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from './useMediaQuery'
+import { useMovimentoReduzido } from './useMovimento'
 
 /**
  * Revela um elemento quando ele entra na viewport.
@@ -11,6 +11,20 @@ import { useReducedMotion } from './useMediaQuery'
  */
 
 type Callback = (alvo: Element) => void
+
+/**
+ * Marca o elemento como revelado.
+ *
+ * Numa aba em segundo plano o navegador não entrega quadro nenhum, e uma
+ * transição de opacidade simplesmente não avança — o elemento ficaria em
+ * `opacity: 0` mesmo com o alvo declarado corretamente. Nesse caso a transição
+ * é dispensada e o conteúdo aparece de imediato: a animação de entrada seria
+ * perdida de qualquer forma, já que ninguém está olhando.
+ */
+function revelar(el: HTMLElement) {
+  if (document.hidden) el.style.transition = 'none'
+  el.dataset['revealed'] = 'true'
+}
 
 let observer: IntersectionObserver | null = null
 const inscritos = new Map<Element, Callback>()
@@ -55,26 +69,26 @@ function desinscrever(el: Element) {
  */
 export function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null)
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
     if (semMovimento) {
-      el.dataset['revealed'] = 'true'
+      revelar(el)
       return
     }
 
     // Já visível na carga (acima da dobra): revela sem esperar o observer.
     const r = el.getBoundingClientRect()
     if (r.top < window.innerHeight * 0.96 && r.bottom > 0) {
-      el.dataset['revealed'] = 'true'
+      revelar(el)
       return
     }
 
     inscrever(el, (alvo) => {
-      ;(alvo as HTMLElement).dataset['revealed'] = 'true'
+      revelar(alvo as HTMLElement)
     })
 
     /**
@@ -86,7 +100,7 @@ export function useReveal<T extends HTMLElement>() {
      * o conteúdo não pode depender dela.
      */
     const rede = setTimeout(() => {
-      el.dataset['revealed'] = 'true'
+      revelar(el)
       desinscrever(el)
     }, 1200)
 

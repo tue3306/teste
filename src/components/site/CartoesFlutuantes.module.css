@@ -295,11 +295,9 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hotel,
-  .voo,
-  .roteiro,
-  .total {
+:root[data-motion='reduzido'] .hotel,
+:root[data-motion='reduzido'] .voo,
+:root[data-motion='reduzido'] .roteiro,
+:root[data-motion='reduzido'] .total {
     animation: none;
   }
-}

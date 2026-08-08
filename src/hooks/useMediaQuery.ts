@@ -23,10 +23,12 @@ export function useMediaQuery(query: string): boolean {
   )
 }
 
-/** Verdadeiro quando o sistema pede menos animação. */
-export function useReducedMotion(): boolean {
-  return useMediaQuery('(prefers-reduced-motion: reduce)')
-}
+/**
+ * A decisão sobre movimento não mora aqui.
+ *
+ * Ela combina o pedido do sistema com uma escolha explícita do usuário, e vive
+ * em `useMovimento.ts`. Consultar a media query direto ignoraria essa escolha.
+ */
 
 /** Verdadeiro em ponteiro fino com hover — mouse e trackpad, não toque. */
 export function usePonteiroFino(): boolean {

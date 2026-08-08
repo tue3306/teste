@@ -93,8 +93,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ponto {
+:root[data-motion='reduzido'] .ponto {
     animation: none;
   }
-}

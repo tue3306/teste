@@ -1,4 +1,4 @@
-import { useReducedMotion } from '@/hooks/useMediaQuery'
+import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { FONTES_CONECTADAS } from '@/data/site'
 import css from './Marquee.module.css'
 
@@ -15,7 +15,7 @@ import css from './Marquee.module.css'
  * antes a faixa virava rolável nesse caso, criando 4.359px de arrasto lateral.
  */
 export function Marquee() {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
 
   const grupo = (
     <div className={css['grupo']}>

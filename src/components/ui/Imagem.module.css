@@ -46,12 +46,10 @@
   transform: scale(1.05);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .img {
+:root[data-motion='reduzido'] .img {
     transition: none;
   }
 
-  .zoom:hover .img {
+:root[data-motion='reduzido'] .zoom:hover .img {
     transform: none;
   }
-}

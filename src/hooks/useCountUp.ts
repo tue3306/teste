@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useReducedMotion } from './useMediaQuery'
+import { useMovimentoReduzido } from './useMovimento'
 
 const DURACAO = 1100
 
@@ -11,7 +11,7 @@ const DURACAO = 1100
  * protótipo deixava ambos pendurados.
  */
 export function useCountUp(alvo: number) {
-  const semMovimento = useReducedMotion()
+  const semMovimento = useMovimentoReduzido()
   /** Fração já percorrida da contagem, de 0 a 1. */
   const [progresso, setProgresso] = useState(0)
   const ref = useRef<HTMLSpanElement>(null)

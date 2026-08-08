@@ -242,8 +242,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .dia:hover {
+:root[data-motion='reduzido'] .dia:hover {
     transform: none;
   }
-}
