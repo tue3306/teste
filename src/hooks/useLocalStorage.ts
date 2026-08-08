@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { podeGuardar } from './useConsentimento'
 
 /**
  * Estado espelhado em `localStorage`.
@@ -19,7 +20,9 @@ export function useLocalStorage<T>(chave: string, inicial: T) {
       setValor((atual) => {
         const resolvido = typeof proximo === 'function' ? (proximo as (a: T) => T)(atual) : proximo
         try {
-          window.localStorage.setItem(chave, JSON.stringify(resolvido))
+          // Quem recusou o armazenamento continua usando o site normalmente —
+          // o estado só deixa de sobreviver ao fechar a aba.
+          if (podeGuardar()) window.localStorage.setItem(chave, JSON.stringify(resolvido))
         } catch {
           // Armazenamento indisponível ou cheio: segue só em memória.
         }

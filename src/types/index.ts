@@ -88,9 +88,9 @@ export interface DiaRoteiro {
 export interface PinMapa {
   id: string
   nome: string
-  /** Posição percentual dentro do mapa ("38%"). */
-  x: string
-  y: string
+  /** Coordenadas reais, usadas pelo mapa. */
+  latitude: number
+  longitude: number
   tipo: 'hotel' | 'passeio' | 'restaurante' | 'noite' | 'praia'
   sub: string
   detalhe: string

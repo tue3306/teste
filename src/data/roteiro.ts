@@ -258,13 +258,19 @@ export const ROTEIRO: DiaRoteiro[] = [
 /** Dia exibido como prévia na seção "Roteiro inteligente" do site. */
 export const DIA_DESTAQUE = ROTEIRO[2]
 
-/** Pontos do mapa da viagem, posicionados em porcentagem sobre a planta. */
+/**
+ * Pontos do mapa da viagem, com coordenadas reais.
+ *
+ * Antes eram porcentagens sobre uma planta desenhada à mão — o "mapa" era uma
+ * grade com bolinhas, sem relação nenhuma com a geografia do Rio. Com latitude
+ * e longitude de verdade, os pontos caem no lugar certo sobre o mapa real.
+ */
 export const PINS_MAPA: PinMapa[] = [
   {
     id: 'p1',
     nome: 'Ipanema Arpoador Suítes',
-    x: '38%',
-    y: '62%',
+    latitude: -22.9884,
+    longitude: -43.1916,
     tipo: 'hotel',
     sub: 'Hotel · Ipanema · 4 estrelas',
     detalhe: '7 noites · nota 9,5',
@@ -274,8 +280,8 @@ export const PINS_MAPA: PinMapa[] = [
   {
     id: 'p2',
     nome: 'Pão de Açúcar',
-    x: '72%',
-    y: '38%',
+    latitude: -22.9486,
+    longitude: -43.1566,
     tipo: 'passeio',
     sub: 'Passeio · Urca · bondinho',
     detalhe: '3h · melhor às 15h30',
@@ -285,8 +291,8 @@ export const PINS_MAPA: PinMapa[] = [
   {
     id: 'p3',
     nome: 'Cristo Redentor',
-    x: '30%',
-    y: '24%',
+    latitude: -22.9519,
+    longitude: -43.2106,
     tipo: 'passeio',
     sub: 'Passeio · Corcovado · trem',
     detalhe: '2h30 · sem fila',
@@ -296,8 +302,8 @@ export const PINS_MAPA: PinMapa[] = [
   {
     id: 'p4',
     nome: 'Dias Ferreira',
-    x: '18%',
-    y: '56%',
+    latitude: -22.9847,
+    longitude: -43.2236,
     tipo: 'restaurante',
     sub: 'Restaurantes · Leblon',
     detalhe: '14 opções · nota 9,1',
@@ -307,8 +313,8 @@ export const PINS_MAPA: PinMapa[] = [
   {
     id: 'p5',
     nome: 'Arcos da Lapa',
-    x: '52%',
-    y: '18%',
+    latitude: -22.9133,
+    longitude: -43.1795,
     tipo: 'noite',
     sub: 'Vida noturna · Lapa',
     detalhe: 'Sáb · roda de samba',
@@ -318,8 +324,8 @@ export const PINS_MAPA: PinMapa[] = [
   {
     id: 'p6',
     nome: 'Posto 9',
-    x: '44%',
-    y: '74%',
+    latitude: -22.9868,
+    longitude: -43.2020,
     tipo: 'praia',
     sub: 'Praia · Ipanema',
     detalhe: 'Guarda-sol + cadeira',

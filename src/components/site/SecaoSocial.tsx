@@ -1,50 +1,81 @@
 import { Botao } from '@/components/ui/Botao'
 import { Reveal } from '@/components/ui/Reveal'
-import { DIFERENCIAIS_SOCIAL } from '@/data/site'
+import { DIFERENCIAIS_SOCIAL, VIAJANTES, type Viajante } from '@/data/site'
 import css from './SecaoSocial.module.css'
 
-const PONTOS = [
-  { top: '22%', left: '18%', cor: 'var(--teal)', atraso: '0s' },
-  { top: '52%', left: '44%', cor: 'var(--coral)', atraso: '0.7s' },
-  { top: '34%', left: '70%', cor: 'var(--teal)', atraso: '1.4s' },
-]
+/** Cor do avatar por tipo de coincidência — a mesma família do selo. */
+const COR_AVATAR: Record<Viajante['tipo'], string> = {
+  voo: 'var(--teal-strong)',
+  hotel: 'var(--coral-strong)',
+  passeio: '#5b8239',
+  evento: 'var(--ink)',
+}
+
+const CLASSE_SELO: Record<Viajante['tipo'], string> = {
+  voo: 'tipoVoo',
+  hotel: 'tipoHotel',
+  passeio: 'tipoPasseio',
+  evento: 'tipoEvento',
+}
 
 /**
  * Seção de viagem em grupo.
  *
- * O "Entrar" do cartão era um `<span>` pintado de botão: não recebia foco, não
- * respondia a Enter e não existia para leitor de tela. Agora é um botão de
- * verdade que leva para a plataforma.
+ * Antes era uma grade cinza com três bolinhas piscando, que não comunicava
+ * nada: parecia um mapa quebrado. Como o produto aqui é encontrar gente indo
+ * para o mesmo lugar, são as pessoas que precisam aparecer — com o que coincide
+ * com a sua viagem, o que elas curtem e se o perfil foi conferido.
  */
 export function SecaoSocial() {
   return (
     <section className="shell secao" aria-labelledby="social-titulo">
       <div className={css['grade']}>
-        <Reveal className={css['mapa']}>
-          <div className={css['malha']} aria-hidden="true" />
-          {PONTOS.map((p) => (
-            <span
-              key={p.left}
-              className={css['ponto']}
-              style={{
-                top: p.top,
-                left: p.left,
-                background: p.cor,
-                boxShadow: `0 0 0 9px color-mix(in srgb, ${p.cor} 16%, transparent)`,
-                animationDelay: p.atraso,
-              }}
-              aria-hidden="true"
-            />
-          ))}
+        <Reveal className={css['painel']}>
+          <div className={css['painelTopo']}>
+            <h3 className="rotulo">quem mais vai estar no Rio</h3>
+            <span className={css['contagem']}>12–19 set · 34 pessoas</span>
+          </div>
 
-          <div className={css['cartaoGrupo']}>
-            <p className={css['voo']}>mesmo voo · GRU → SDU · 12 set</p>
-            <div className={css['grupoLinha']}>
-              <p className={css['grupoTexto']}>7 viajantes toparam dividir o Uber do aeroporto</p>
-              <Botao para="/plataforma/dashboard" tamanho="sm">
-                Entrar no grupo
-              </Botao>
+          <ul className={css['lista']}>
+            {VIAJANTES.map((v) => (
+              <li key={v.id} className={css['viajante']}>
+                <span className={css['avatar']} style={{ background: COR_AVATAR[v.tipo] }} aria-hidden="true">
+                  {v.iniciais}
+                </span>
+
+                <div className={css['corpo']}>
+                  <div className={css['linhaNome']}>
+                    <span className={css['nome']}>{v.nome}</span>
+                    {v.verificado ? (
+                      <span className={css['verificado']}>
+                        <span aria-hidden="true">✓</span> perfil verificado
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className={css['origem']}>{v.origem}</p>
+                  <p className={`${css['coincidencia']} ${css[CLASSE_SELO[v.tipo]]}`}>
+                    {v.coincidencia}
+                  </p>
+                  <ul className={css['interesses']}>
+                    {v.interesses.map((i) => (
+                      <li key={i} className={css['interesse']}>
+                        {i}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className={css['grupo']}>
+            <div>
+              <p className={css['grupoTexto']}>7 viajantes vão dividir o Uber do aeroporto</p>
+              <p className={css['grupoSub']}>Mesmo voo · GRU → SDU · 12 set, 07:25</p>
             </div>
+            <Botao para="/plataforma/dashboard" tamanho="sm">
+              Entrar no grupo
+            </Botao>
           </div>
         </Reveal>
 
@@ -57,10 +88,9 @@ export function SecaoSocial() {
           </h2>
           <p className="lead" style={{ marginBlockStart: 20, maxWidth: 440 }}>
             Descubra pessoas indo para o mesmo destino, no mesmo período, no mesmo voo ou evento.
-            Crie grupos, divida corrida e hospedagem, troque roteiros. Você controla o que aparece —
-            o modo invisível é o padrão.
+            Crie grupos, divida corrida e hospedagem, troque roteiros.
           </p>
-          <ul className={css['lista']}>
+          <ul className={css['lista2']}>
             {DIFERENCIAIS_SOCIAL.map((d) => (
               <li key={d} className={css['item']}>
                 <span className={css['marcador']} aria-hidden="true" />
@@ -68,6 +98,10 @@ export function SecaoSocial() {
               </li>
             ))}
           </ul>
+          <p className={css['aviso']}>
+            O modo invisível é o padrão: ninguém vê que você está indo até que você decida
+            aparecer. Você escolhe o que mostrar — e para quem.
+          </p>
         </Reveal>
       </div>
     </section>

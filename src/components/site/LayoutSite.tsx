@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { AvisoPrivacidade } from './AvisoPrivacidade'
 import { Cabecalho } from './Cabecalho'
 import { Rodape } from './Rodape'
 
@@ -23,6 +24,7 @@ export function LayoutSite({ children, ancorasInternas = false }: Props) {
       <Cabecalho ancorasInternas={ancorasInternas} />
       <main id="conteudo">{children}</main>
       <Rodape />
+      <AvisoPrivacidade />
     </div>
   )
 }

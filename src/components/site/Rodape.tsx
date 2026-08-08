@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '@/components/ui/Logo'
+import { GerenciarDados } from './AvisoPrivacidade'
 import { ControleMovimento } from './ControleMovimento'
 import css from './Rodape.module.css'
 
@@ -70,7 +71,7 @@ export function Rodape() {
       <div className={css['base']}>
         <span>© {new Date().getFullYear()} BI&amp;B tecnologia</span>
         <ControleMovimento />
-        <span>melhor preço garantido</span>
+        <GerenciarDados />
       </div>
     </footer>
   )

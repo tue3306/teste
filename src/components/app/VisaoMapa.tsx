@@ -1,24 +1,28 @@
-import { useId, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { Botao } from '@/components/ui/Botao'
 import { Imagem } from '@/components/ui/Imagem'
+import { Mapa, type PontoMapa } from '@/components/ui/Mapa'
 import { useViagem } from '@/context/ViagemContext'
 import { PINS_MAPA } from '@/data/roteiro'
 import css from './VisaoMapa.module.css'
 
 const COR_POR_TIPO: Record<string, string> = {
-  hotel: 'var(--teal)',
-  passeio: 'var(--coral)',
+  hotel: 'var(--teal-strong)',
+  passeio: 'var(--coral-strong)',
   restaurante: 'var(--ink)',
   noite: 'var(--ink)',
-  praia: 'var(--ink)',
+  praia: 'var(--teal)',
 }
 
 /**
  * Mapa da viagem.
  *
- * "Adicionar ao roteiro" agora adiciona: o ponto escolhido entra no dia
- * selecionado e passa a aparecer na aba Roteiro. No protótipo o botão não tinha
- * manipulador.
+ * O mapa é real — Leaflet sobre OpenStreetMap, com as coordenadas dos pontos.
+ * A versão anterior era uma grade em CSS com bolinhas em posição percentual,
+ * que não correspondia à cidade nem servia para se localizar.
+ *
+ * A lista ao lado não é decoração: é a forma acessível de percorrer os pontos.
+ * Um mapa arrastável sozinho deixa de fora quem navega por teclado.
  */
 export function VisaoMapa() {
   const { roteiro, adicionarParada } = useViagem()
@@ -26,6 +30,18 @@ export function VisaoMapa() {
   const [dia, setDia] = useState(1)
   const [confirmacao, setConfirmacao] = useState('')
   const selectId = useId()
+
+  const pontos = useMemo<PontoMapa[]>(
+    () =>
+      PINS_MAPA.map((p) => ({
+        id: p.id,
+        nome: p.nome,
+        latitude: p.latitude,
+        longitude: p.longitude,
+        cor: COR_POR_TIPO[p.tipo] ?? 'var(--ink)',
+      })),
+    [],
+  )
 
   const pin = PINS_MAPA.find((p) => p.id === pinAtivo) ?? PINS_MAPA[0]
   if (!pin) return null
@@ -44,41 +60,42 @@ export function VisaoMapa() {
 
   return (
     <div className={css['grade']}>
-      <div className={css['mapa']}>
-        <div className={css['malha']} aria-hidden="true" />
-        <div className={css['mar']} aria-hidden="true" />
-        <span className={css['legenda']}>mapa · zona sul do rio de janeiro</span>
+      <div className={css['coluna']}>
+        <div className={css['moldura']}>
+          <Mapa
+            pontos={pontos}
+            ativo={pinAtivo}
+            aoEscolher={(id) => {
+              setPinAtivo(id)
+              setConfirmacao('')
+            }}
+            rotulo="Mapa dos pontos da viagem no Rio de Janeiro"
+          />
+        </div>
 
-        {PINS_MAPA.map((p) => {
-          const ativo = p.id === pinAtivo
-          return (
-            <button
-              key={p.id}
-              type="button"
-              className={css['pin']}
-              style={{ left: p.x, top: p.y }}
-              aria-pressed={ativo}
-              onClick={() => {
-                setPinAtivo(p.id)
-                setConfirmacao('')
-              }}
-            >
-              <span
-                className={css['marcador']}
-                style={{
-                  width: ativo ? 17 : 12,
-                  height: ativo ? 17 : 12,
-                  background: COR_POR_TIPO[p.tipo] ?? 'var(--ink)',
-                  boxShadow: `0 0 0 ${ativo ? '9px' : '5px'} ${
-                    ativo ? 'rgba(14,154,167,.22)' : 'rgba(20,49,47,.09)'
-                  }, 0 6px 14px -6px rgba(20,49,47,.9)`,
+        {/* Percorrer os pontos sem depender de arrastar o mapa. */}
+        <ul className={css['atalhos']} aria-label="Pontos da viagem">
+          {PINS_MAPA.map((p) => (
+            <li key={p.id}>
+              <button
+                type="button"
+                className={`${css['atalho']} ${p.id === pinAtivo ? css['atalhoAtivo'] : ''}`}
+                aria-pressed={p.id === pinAtivo}
+                onClick={() => {
+                  setPinAtivo(p.id)
+                  setConfirmacao('')
                 }}
-                aria-hidden="true"
-              />
-              <span className={`${css['rotulo']} ${ativo ? css['rotuloAtivo'] : ''}`}>{p.nome}</span>
-            </button>
-          )
-        })}
+              >
+                <span
+                  className={css['bolinha']}
+                  style={{ background: COR_POR_TIPO[p.tipo] ?? 'var(--ink)' }}
+                  aria-hidden="true"
+                />
+                {p.nome}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className={css['detalhe']}>

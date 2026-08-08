@@ -107,6 +107,7 @@ consumida tanto pelo CSS quanto pelo `MotionConfig`.
 | **Open-Meteo Geocoding**   | Autocomplete de cidades do BR  | `src/services/lugares.ts`             |
 | **ViaCEP**                 | Endereço a partir do CEP       | `src/services/cep.ts`                 |
 | **Wikimedia Commons**      | Fotos de destinos e pontos     | `scripts/gerar-fotos.mjs` (build)     |
+| **OpenStreetMap**          | Mapa da viagem (Leaflet)       | `src/components/ui/Mapa.tsx`          |
 
 As três primeiras são públicas, gratuitas e respondem com
 `Access-Control-Allow-Origin: *`, então o navegador chama direto — sem proxy e
@@ -216,6 +217,19 @@ ao scroll.
 `minmax(auto, 1fr)`, e esse mínimo é o `min-content` da coluna: um cartão com
 ícone de 46px e texto sem quebra estabelece piso de 150px, e duas colunas dessas
 vazam de uma tela de 320px. Com o mínimo em zero, a coluna manda no conteúdo.
+
+**Navegação nunca espera animação.** A transição entre páginas usava
+`AnimatePresence mode="wait"`, que só monta a página nova quando a saída da
+anterior termina — e uma aba em segundo plano não recebe quadro de
+`requestAnimationFrame`, então a saída nunca concluía e o clique não levava a
+lugar nenhum: a URL mudava e a tela não. Agora a `key` na rota troca a árvore na
+hora e a página entra desvanecendo por cima.
+
+**Privacidade sem teatro.** Não há cookie nem rastreador; o que existe é
+`localStorage` com preferências do próprio usuário. Pela LGPD isso não exigiria
+consentimento prévio, mas informar e permitir apagar continua valendo — por isso
+"não guardar nada" apaga de verdade e interrompe novas gravações, em vez de
+fechar uma caixa e seguir gravando igual. `src/hooks/useConsentimento.ts`.
 
 **O chat move `scrollTop`, nunca `scrollIntoView`.** `scrollIntoView` rola
 **todos** os ancestrais roláveis, inclusive o documento. Como a conversa também

@@ -157,6 +157,71 @@ export const DIFERENCIAIS_SOCIAL = [
   'Privacidade granular e verificação de perfil',
 ]
 
+/**
+ * Viajantes com planos coincidentes.
+ *
+ * Perfis de demonstração — pessoas fictícias. A seção antes mostrava uma grade
+ * cinza com três bolinhas piscando, que não comunicava nada: o produto aqui é
+ * encontrar gente, então são pessoas que precisam aparecer.
+ */
+export interface Viajante {
+  id: string
+  nome: string
+  /** Iniciais do avatar. */
+  iniciais: string
+  origem: string
+  /** O que coincide com a sua viagem. */
+  coincidencia: string
+  /** Tipo da coincidência, que define a cor do selo. */
+  tipo: 'voo' | 'hotel' | 'passeio' | 'evento'
+  interesses: string[]
+  /** Perfil com documento conferido. */
+  verificado: boolean
+}
+
+export const VIAJANTES: Viajante[] = [
+  {
+    id: 'v-ana',
+    nome: 'Ana e Rafael',
+    iniciais: 'AR',
+    origem: 'São Paulo, SP',
+    coincidencia: 'Mesmo voo · GRU → SDU · 12 set',
+    tipo: 'voo',
+    interesses: ['Trilha', 'Gastronomia'],
+    verificado: true,
+  },
+  {
+    id: 'v-marcos',
+    nome: 'Marcos',
+    iniciais: 'M',
+    origem: 'Curitiba, PR',
+    coincidencia: 'Mesmo hotel · Ipanema · 12–19 set',
+    tipo: 'hotel',
+    interesses: ['Surf', 'Vida noturna'],
+    verificado: true,
+  },
+  {
+    id: 'v-julia',
+    nome: 'Júlia',
+    iniciais: 'J',
+    origem: 'Belo Horizonte, MG',
+    coincidencia: 'Mesmo passeio · Bondinho · 15 set',
+    tipo: 'passeio',
+    interesses: ['Fotografia', 'Cultura'],
+    verificado: false,
+  },
+  {
+    id: 'v-familia',
+    nome: 'Família Duarte',
+    iniciais: 'FD',
+    origem: 'Porto Alegre, RS',
+    coincidencia: 'Mesmo período · 11–20 set',
+    tipo: 'evento',
+    interesses: ['Com crianças', 'Praia'],
+    verificado: true,
+  },
+]
+
 /** Tipos de viagem oferecidos no formulário de busca. */
 export const TIPOS_DE_VIAGEM = ['Casal', 'Família', 'Mochilão', 'Luxo', 'Aventura', 'Trabalho']
 

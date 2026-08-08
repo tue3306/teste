@@ -1,70 +1,180 @@
 .grade {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 52px;
   align-items: center;
 }
 
-.mapa {
+/* --- painel de viajantes --- */
+.painel {
+  padding: 22px;
   border-radius: var(--r-4xl);
   border: 1px solid var(--ink-a07);
-  background: linear-gradient(165deg, var(--mint), #fff7ec);
-  padding: 26px;
-  position: relative;
-  overflow: hidden;
-  min-height: 380px;
-}
-
-.malha {
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(0deg, rgba(20, 49, 47, 0.045) 0 1px, transparent 1px 44px),
-    repeating-linear-gradient(90deg, rgba(20, 49, 47, 0.045) 0 1px, transparent 1px 44px);
-}
-
-.ponto {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  animation: bibPulse 3s ease-in-out infinite;
-}
-
-.cartaoGrupo {
-  position: absolute;
-  inset-block-end: 24px;
-  inset-inline: 24px;
-  padding: 16px 18px;
-  border-radius: var(--r-xl);
   background: var(--surface);
-  border: 1px solid var(--ink-a07);
-  box-shadow: 0 18px 40px -28px rgba(20, 49, 47, 0.8);
+  box-shadow: var(--sh-xl);
 }
 
-.voo {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.painelTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-block-end: 14px;
+  border-block-end: 1px solid var(--ink-a07);
+}
+
+.contagem {
+  font-size: var(--fs-xs);
   color: var(--ink-3);
 }
 
-.grupoLinha {
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block-start: 12px;
+}
+
+.viajante {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  border-radius: var(--r-xl);
+  background: var(--sand);
+  border: 1px solid transparent;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.viajante:hover {
+  border-color: var(--ink-a09);
+  background: var(--surface);
+}
+
+.avatar {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  color: var(--on-brand);
+  letter-spacing: 0.02em;
+}
+
+.corpo {
+  min-width: 0;
+  flex: 1;
+}
+
+.linhaNome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.nome {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+/* Selo de perfil conferido — o produto promete verificação, então ela precisa
+   ser visível e distinguir quem tem de quem não tem. */
+.verificado {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--teal-text);
+}
+
+.origem {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  margin-block-start: 2px;
+}
+
+.coincidencia {
+  display: inline-block;
+  margin-block-start: 7px;
+  padding: 4px 10px;
+  border-radius: var(--r-xs);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tipoVoo {
+  background: var(--mint);
+  color: var(--teal-text);
+}
+
+.tipoHotel {
+  background: var(--peach-3);
+  color: var(--coral-text);
+}
+
+.tipoPasseio {
+  background: #eef3e6;
+  color: #4a6b2f;
+}
+
+.tipoEvento {
+  background: var(--sand-2);
+  color: var(--ink-2);
+}
+
+.interesses {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-block-start: 8px;
+}
+
+.interesse {
+  padding: 3px 9px;
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  font-size: 10.5px;
+  font-weight: 650;
+  color: var(--ink-3);
+}
+
+/* Chamada de grupo, no rodapé do painel. */
+.grupo {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  margin-block-start: 8px;
   flex-wrap: wrap;
+  margin-block-start: 14px;
+  padding: 15px 16px;
+  border-radius: var(--r-xl);
+  background: linear-gradient(150deg, var(--mint), var(--mint-2));
+  border: 1px solid var(--teal-border);
 }
 
 .grupoTexto {
-  font-size: var(--fs-base);
+  font-size: var(--fs-sm);
   font-weight: 700;
+  min-width: 0;
 }
 
-.lista {
+.grupoSub {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  margin-block-start: 2px;
+}
+
+/* --- coluna de texto --- */
+.lista2 {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -87,12 +197,16 @@
   flex: none;
 }
 
-@media (min-width: 1060px) {
-  .grade {
-    grid-template-columns: 1fr 1.05fr;
-  }
+.aviso {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  margin-block-start: 18px;
+  line-height: 1.55;
+  max-width: 46ch;
 }
 
-:root[data-motion='reduzido'] .ponto {
-    animation: none;
+@media (min-width: 1060px) {
+  .grade {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   }
+}
