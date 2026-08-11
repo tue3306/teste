@@ -5,7 +5,6 @@ import { BarraProgresso, Fundo } from "@/components/ui/Fundo";
 import { PularParaConteudo } from "@/components/ui/PularParaConteudo";
 import { Carregando } from "@/components/ui/Carregando";
 import { RotaProtegida } from "@/components/RotaProtegida";
-import { useMovimentoReduzido } from "@/hooks/useMovimento";
 import { Landing } from "@/pages/Landing";
 
 /**
@@ -30,21 +29,34 @@ const Login = lazy(() =>
 const Cadastro = lazy(() =>
   import("@/pages/Cadastro").then((m) => ({ default: m.Cadastro })),
 );
+const DestinoDetalhe = lazy(() =>
+  import("@/pages/DestinoDetalhe").then((m) => ({ default: m.DestinoDetalhe })),
+);
 const NaoEncontrada = lazy(() =>
   import("@/pages/NaoEncontrada").then((m) => ({ default: m.NaoEncontrada })),
 );
 
 export function App() {
   const location = useLocation();
-  const semMovimento = useMovimentoReduzido();
 
   return (
     /**
-     * O Motion lê a mesma decisão que o CSS, pelo hook, em vez de consultar o
-     * sistema por conta própria com `reducedMotion="user"`. Uma fonte de
-     * verdade só evita o site ficar metade animado e metade parado.
+     * `reducedMotion="never"`, sempre — e isso é deliberado.
+     *
+     * Este prop, em `"always"`, não "suaviza" nada: ele desliga **todo**
+     * `transform`, `layout` e `whileHover` da árvore inteira do Motion. Entrada
+     * de cartão, pílula que desliza entre abas, elevação no hover, parallax —
+     * tudo morre de uma vez. No Windows, desligar "efeitos de animação" (coisa
+     * que muita gente faz pensando no desempenho da máquina) liga
+     * `prefers-reduced-motion` para a web inteira, e o site chegava
+     * completamente estático para essas pessoas.
+     *
+     * A preferência continua respeitada, mas pelo critério certo: **amplitude**,
+     * declarada componente a componente. Parallax e tilt — que deslocam muito e
+     * acompanham o scroll — são contidos; entrada, hover e transição de layout
+     * continuam rodando, com deslocamento menor. Ver `src/lib/motion.ts`.
      */
-    <MotionConfig reducedMotion={semMovimento ? "always" : "never"}>
+    <MotionConfig reducedMotion="never">
       <PularParaConteudo />
       <Fundo />
       <BarraProgresso />
@@ -92,6 +104,11 @@ export function App() {
                 </RotaProtegida>
               }
             />
+
+            {/* Página pública de cada um dos 29 destinos. Fica fora da
+                plataforma de propósito: é conteúdo, indexável, e serve de porta
+                de entrada para quem chega por busca. */}
+            <Route path="/destino/:id" element={<DestinoDetalhe />} />
 
             <Route path="/contato" element={<Contato />} />
 

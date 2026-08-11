@@ -162,10 +162,6 @@
   }
 }
 
-:root[data-motion='reduzido'] .aoVivo {
-    animation: none;
-  }
-
 /* Total da viagem, sempre visível. É o número que a pessoa está tentando
    controlar — escondê-lo dentro de uma aba obrigava a ir e voltar a cada
    escolha. */
@@ -231,5 +227,22 @@
 @media (max-width: 620px) {
   .totalRotulo {
     display: none;
+  }
+}
+
+/* Definido aqui, e não no CSS global, de propósito. O CSS Modules reescreve
+   tanto o nome do `@keyframes` quanto a referência a ele — mas só dentro do
+   mesmo arquivo. Apontar para um keyframe global de dentro de um módulo faz o
+   nome ser reescrito para algo que não existe, e o navegador não cria animação
+   nenhuma. Sem erro e sem aviso: o elemento simplesmente fica parado. */
+@keyframes bibPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
   }
 }

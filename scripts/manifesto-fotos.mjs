@@ -28,8 +28,10 @@ export const MANIFESTO = [
   { slug: 'rio-das-ostras', titulo: 'Rio das Ostras', alt: 'Praia urbana de Rio das Ostras' },
 
   // Costa Verde
-  { slug: 'angra-dos-reis', titulo: 'Angra dos Reis', alt: 'Ilhas e mar calmo em Angra dos Reis' },
-  { slug: 'ilha-grande', titulo: 'Ilha Grande (Angra dos Reis)', alt: 'Vila do Abraão e a mata da Ilha Grande' },
+  // O artigo do município tem a bandeira como imagem principal, não uma foto.
+  { slug: 'angra-dos-reis', titulo: 'Baía da Ilha Grande', alt: 'Ilhas e mar calmo na Baía da Ilha Grande, em Angra dos Reis' },
+  // O artigo da ilha tem um mapa topográfico como imagem principal.
+  { slug: 'ilha-grande', titulo: 'Lopes Mendes', alt: 'Praia de Lopes Mendes, na Ilha Grande' },
   { slug: 'paraty', titulo: 'Paraty', alt: 'Casario colonial do centro histórico de Paraty' },
   { slug: 'mangaratiba', titulo: 'Mangaratiba', alt: 'Baía de Mangaratiba' },
   { slug: 'itaguai', titulo: 'Itaguaí', alt: 'Orla de Itaguaí' },
@@ -46,13 +48,15 @@ export const MANIFESTO = [
   // Norte e Noroeste Fluminense
   { slug: 'campos-dos-goytacazes', titulo: 'Campos dos Goytacazes', alt: 'Centro de Campos dos Goytacazes' },
   { slug: 'sao-joao-da-barra', titulo: 'São João da Barra', alt: 'Foz do rio Paraíba do Sul em São João da Barra' },
-  { slug: 'sao-francisco-de-itabapoana', titulo: 'São Francisco de Itabapoana', alt: 'Praia deserta em São Francisco de Itabapoana' },
+  // O artigo do município tem a bandeira como imagem principal.
+  { slug: 'sao-francisco-de-itabapoana', titulo: 'Rio Itabapoana', alt: 'Rio Itabapoana, na divisa do norte fluminense' },
   { slug: 'macae', titulo: 'Macaé', alt: 'Orla e porto de Macaé' },
   { slug: 'quissama', titulo: 'Quissamã', alt: 'Restinga e lagoas de Quissamã' },
 
   // --- pontos e bairros do Rio, usados nas ofertas e no roteiro ---
   { slug: 'cristo-redentor', titulo: 'Cristo Redentor', alt: 'Estátua do Cristo Redentor no Corcovado' },
-  { slug: 'pao-de-acucar', titulo: 'Pão de Açúcar', alt: 'Bondinho do Pão de Açúcar sobre a Baía de Guanabara' },
+  // "Pão de Açúcar" virou página de desambiguação e deixou de ter imagem principal.
+  { slug: 'pao-de-acucar', titulo: 'Pão de Açúcar (Rio de Janeiro)', alt: 'Bondinho do Pão de Açúcar sobre a Baía de Guanabara' },
   { slug: 'copacabana', titulo: 'Praia de Copacabana', alt: 'Orla da praia de Copacabana' },
   { slug: 'ipanema', titulo: 'Ipanema', alt: 'Praia de Ipanema com os Dois Irmãos ao fundo' },
   { slug: 'arpoador', titulo: 'Arpoador', alt: 'Pedra do Arpoador ao pôr do sol' },

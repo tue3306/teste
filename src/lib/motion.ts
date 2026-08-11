@@ -7,8 +7,17 @@ import type { Transition, Variants } from 'motion/react'
  * colcha de retalhos animada — dois componentes com molas diferentes parecem
  * dois produtos. Cada constante existe para um papel, não para um gosto.
  *
- * Movimento reduzido não é tratado aqui: o `<MotionConfig reducedMotion="user">`
- * em App.tsx desliga deslocamento e escala em toda a árvore de uma vez.
+ * ## Movimento reduzido
+ *
+ * O `MotionConfig` **não** desliga nada — `reducedMotion="always"` matava a
+ * árvore inteira, e o comentário anterior deste arquivo dizia que isso era o
+ * desejado. Não era: o site chegava estático para quem tem animação desligada
+ * no sistema, que é a maioria de quem mexeu naquele interruptor pensando em
+ * desempenho.
+ *
+ * A contenção agora é por **amplitude** e fica com quem anima. O que sai é
+ * movimento amplo, contínuo ou preso ao scroll — parallax, tilt, magnético. O
+ * que fica, com deslocamento menor, é entrada, hover e transição de layout.
  */
 
 /** Mola padrão de interface: assenta rápido, sem oscilar. */
@@ -82,3 +91,60 @@ export const HOVER_CARTAO = { y: -6, transition: MOLA } as const
 
 /** Resposta ao toque. */
 export const TAP_CARTAO = { scale: 0.985, transition: MOLA } as const
+
+/**
+ * Entrada escalonada de uma grade, disparada quando ela cruza a viewport.
+ *
+ * `whileInView` com `once` faz a lista se montar diante do usuário em vez de
+ * já estar montada quando ele chega. É o efeito que mais contribui para a
+ * sensação de que a página está viva, e o mais barato: nenhum ouvinte de
+ * scroll, nenhum estado em React — o Motion usa `IntersectionObserver` por
+ * baixo.
+ *
+ * `amount: 0.15` dispara quando 15% da grade apareceu. Esperar a grade inteira
+ * significaria, numa lista alta, nunca disparar.
+ */
+export const GRADE = {
+  initial: 'oculto',
+  whileInView: 'visivel',
+  viewport: { once: true, amount: 0.15 },
+  variants: CONTAINER,
+} as const
+
+/**
+ * Item de grade que sobe e assenta. Combina com `GRADE`.
+ *
+ * Só `transform` e `opacity`: as duas propriedades que o navegador anima no
+ * compositor, sem recalcular layout. Animar `height` ou `top` numa lista de
+ * vinte cartões é como se perde 60fps.
+ */
+export const ITEM_GRADE: Variants = {
+  oculto: { opacity: 0, y: 24, scale: 0.98 },
+  visivel: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  },
+}
+
+/**
+ * Amplitude do hover conforme a preferência do usuário.
+ *
+ * Seis pixels para quem não pediu nada, dois para quem pediu menos movimento.
+ * Zero seria a resposta fácil e a errada: um cartão clicável que não reage ao
+ * ponteiro não parece acessível, parece quebrado.
+ */
+export function hoverCartao(reduzido: boolean) {
+  return { y: reduzido ? -2 : -6, transition: MOLA } as const
+}
+
+/** Selo ou pílula que pulsa uma vez ao aparecer — para "novo", "escolhido". */
+export const SELO: Variants = {
+  oculto: { scale: 0.6, opacity: 0 },
+  visivel: {
+    scale: 1,
+    opacity: 1,
+    transition: { type: 'spring', stiffness: 520, damping: 24 },
+  },
+}

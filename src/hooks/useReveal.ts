@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { useMovimentoReduzido } from './useMovimento'
 
 /**
  * Revela um elemento quando ele entra na viewport.
@@ -63,22 +62,19 @@ function desinscrever(el: Element) {
 /**
  * Devolve uma ref para o elemento a ser revelado.
  *
- * Com `prefers-reduced-motion` o elemento nasce revelado — o CSS já neutraliza
- * a transição, e marcar aqui garante que nada dependa do observer para
- * aparecer.
+ * A revelação por scroll acontece **sempre**, inclusive com
+ * `prefers-reduced-motion`. Antes o elemento nascia revelado nesse caso, e a
+ * página inteira aparecia de uma vez, sem vida nenhuma — o que a preferência
+ * pede não é "nada acontece", é "nada se desloca muito". Quem cuida disso é o
+ * CSS: sob movimento reduzido a classe `.reveal` mantém o fade e descarta os
+ * 24px de `translateY`.
  */
 export function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null)
-  const semMovimento = useMovimentoReduzido()
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
-
-    if (semMovimento) {
-      revelar(el)
-      return
-    }
 
     // Já visível na carga (acima da dobra): revela sem esperar o observer.
     const r = el.getBoundingClientRect()
@@ -108,7 +104,7 @@ export function useReveal<T extends HTMLElement>() {
       clearTimeout(rede)
       desinscrever(el)
     }
-  }, [semMovimento])
+  }, [])
 
   return ref
 }

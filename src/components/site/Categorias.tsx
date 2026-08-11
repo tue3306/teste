@@ -25,6 +25,10 @@ const CartaoMovel = motion.create(Link)
  * segundo plano não recebe quadro nenhum — o cartão ficaria em `opacity: 0` até
  * o usuário focar a aba. O CSS declara o alvo e o navegador resolve sozinho,
  * visível ou não. Movimento fica onde só ele resolve: hover, layout e parallax.
+ *
+ * O destino do link mudou: apontava para `?cat=`, um parâmetro que nenhuma tela
+ * lia. Clicar em "Praia" abria a lista de hospedagem sem filtro nenhum. Agora
+ * leva para os destinos com o perfil realmente aplicado.
  */
 export function Categorias() {
   const [gradeRef, visivel] = useNaTela<HTMLUListElement>()
@@ -49,7 +53,7 @@ export function Categorias() {
           <Reveal key={c.id} como="li" atraso={i * 0.05}>
             <motion.span variants={ASSENTA} style={{ display: 'block', height: '100%' }}>
               <CartaoMovel
-                to={`/plataforma/hoteis?cat=${c.id}`}
+                to={`/plataforma/destinos?perfil=${c.id}`}
                 className={css['cartao']}
                 whileHover={HOVER_CARTAO}
                 whileTap={TAP_CARTAO}

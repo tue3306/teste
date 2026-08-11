@@ -1,0 +1,394 @@
+/* --- capa --- */
+.capa {
+  position: relative;
+  min-height: min(72vh, 620px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* A foto é maior que a moldura de propósito: o parallax a desloca 120px, e sem
+   a folga apareceria uma faixa vazia no fim do percurso. */
+.capaFoto {
+  position: absolute;
+  inset: -12% 0 -12% 0;
+  z-index: -2;
+}
+
+.capaImg {
+  width: 100%;
+  height: 100%;
+}
+
+.capaImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Véu de baixo para cima: garante contraste do texto branco sobre qualquer
+   foto, inclusive as claras de praia. */
+.capaVeu {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 49, 47, 0.15) 0%,
+    rgba(20, 49, 47, 0.45) 55%,
+    rgba(20, 49, 47, 0.88) 100%
+  );
+}
+
+.capaTexto {
+  padding-block: 60px 44px;
+  color: #fff;
+}
+
+.migalha {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.migalha a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.migalha a:hover {
+  color: #fff;
+}
+
+.titulo {
+  font-size: clamp(2.4rem, 1.6rem + 4vw, 4.6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin-block-start: 10px;
+}
+
+.chamada {
+  font-size: clamp(1rem, 0.95rem + 0.5vw, 1.35rem);
+  line-height: 1.45;
+  max-width: 42ch;
+  margin-block-start: 12px;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.fatosCapa {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin-block-start: 26px;
+}
+
+.fatoCapa {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fatoValor {
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.fatoRotulo {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --- corpo --- */
+.corpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  padding-block: 48px 72px;
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .corpo {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 48px;
+  }
+}
+
+.principal {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-width: 0;
+}
+
+.secaoTitulo {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-block-end: 14px;
+}
+
+.paragrafo {
+  font-size: var(--fs-base);
+  line-height: 1.68;
+  color: var(--ink-2);
+  max-width: 66ch;
+}
+
+.paragrafo + .paragrafo {
+  margin-block-start: 14px;
+}
+
+.ajuda {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.55;
+  max-width: 60ch;
+  margin-block-end: 14px;
+}
+
+/* --- galeria --- */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+.galeriaItem {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* --- chips de atração e praia --- */
+.listaChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 15px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  border: 1px solid var(--ink-a09);
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+.chipPraia {
+  background: var(--mint-2);
+  border-color: var(--teal-border);
+  color: var(--teal-text);
+}
+
+/* --- amostra do inventário --- */
+.verticais {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vertical {
+  min-width: 0;
+}
+
+.verticalTitulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-3);
+  margin-block-end: 10px;
+}
+
+.amostra {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.amostraItem {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  text-align: start;
+  min-width: 0;
+  box-shadow: var(--sh-sm);
+  transition: border-color var(--t-fast) var(--ease);
+}
+
+.amostraItem:hover {
+  border-color: var(--teal-border);
+}
+
+.amostraFoto {
+  flex: none;
+  width: 80px;
+  height: 58px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.amostraCorpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.amostraNome {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amostraSub {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amostraPreco {
+  flex: none;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--teal-text);
+}
+
+/* --- relacionados --- */
+.relacionados {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 12px;
+}
+
+.relacionado {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  color: var(--ink);
+  box-shadow: var(--sh-sm);
+  height: 100%;
+}
+
+.relacionado:hover {
+  color: var(--ink);
+}
+
+.relacionadoFoto {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  margin-block-end: 6px;
+}
+
+.relacionadoNome {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+}
+
+.relacionadoSub {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* --- coluna lateral --- */
+.lateral {
+  min-width: 0;
+}
+
+@media (min-width: 1000px) {
+  .lateral {
+    position: sticky;
+    /* 84px é a altura do cabeçalho fixo mais uma folga. */
+    inset-block-start: 84px;
+  }
+}
+
+.cartaoAcao {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a09);
+  box-shadow: var(--sh-lg);
+}
+
+.cartaoRotulo {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-3);
+}
+
+.cartaoValor {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.divisoria {
+  height: 1px;
+  background: var(--ink-a07);
+  margin-block: 4px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: var(--r-xs);
+  background: var(--sand-2);
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--ink-3);
+  text-transform: capitalize;
+}
+
+.cartaoNota {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  text-align: center;
+}

@@ -2,9 +2,10 @@ import { motion } from 'motion/react'
 import { NavLink } from 'react-router-dom'
 import { Logo } from '@/components/ui/Logo'
 import { Icone } from '@/components/ui/Icone'
+import { Numero } from '@/components/ui/Numero'
 import { useAuth } from '@/context/AuthContext'
 import { useViagem } from '@/context/ViagemContext'
-import { moeda } from '@/lib/format'
+
 import { ABAS } from './abas'
 import css from './CabecalhoApp.module.css'
 
@@ -65,7 +66,9 @@ export function CabecalhoApp() {
               <span className={css['totalRotulo']}>
                 {itensEscolhidos.length} {itensEscolhidos.length === 1 ? 'item' : 'itens'}
               </span>
-              <span className={css['totalValor']}>{moeda(orcamento.total)}</span>
+              {/* Percorre a distância até o valor novo em vez de saltar: é o
+                  que conecta "somei uma criança" a "o total subiu". */}
+              <Numero valor={orcamento.total} className={css['totalValor']} />
             </NavLink>
 
             <span className={css['avatar']} aria-hidden="true">

@@ -1,4 +1,5 @@
 import type { Faceta, Oferta, Vertical } from '@/types'
+import { ITENS_EXTRA } from './itens-extra'
 import { ITENS_INTERIOR } from './itens-interior'
 import { ITENS_LITORAL } from './itens-litoral'
 import { ITENS_METROPOLITANA } from './itens-metropolitana'
@@ -18,6 +19,7 @@ export const CATALOGO: Oferta[] = [
   ...ITENS_METROPOLITANA,
   ...ITENS_LITORAL,
   ...ITENS_INTERIOR,
+  ...ITENS_EXTRA,
 ]
 
 /** Índice por id, para resolver favoritos e seleções salvas sem varrer a lista. */

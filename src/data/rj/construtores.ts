@@ -110,10 +110,17 @@ interface Rest extends Comum {
   bairro: string
 }
 
-/** Restaurante: preço médio por pessoa. */
-export function restaurantes(destino: string, entradas: Rest[]): Oferta[] {
+/**
+ * Restaurante: preço médio por pessoa.
+ *
+ * `letra` existe porque o catálogo é escrito em duas passadas — a primeira por
+ * região, a segunda completando o que ficou raso. Sem ela, a segunda passada
+ * geraria `niteroi-r1` de novo e o id colidiria em silêncio: o mapa por id
+ * ficaria com um dos dois, e o outro sumiria da tela sem erro nenhum.
+ */
+export function restaurantes(destino: string, entradas: Rest[], letra = 'r'): Oferta[] {
   return entradas.map((e, i) => ({
-    ...base(destino, `${destino}-r${String(i + 1)}`, 'restaurantes', 'pessoa', e),
+    ...base(destino, `${destino}-${letra}${String(i + 1)}`, 'restaurantes', 'pessoa', e),
     cozinha: e.cozinha,
     bairro: e.bairro,
   }))
@@ -125,10 +132,10 @@ interface Ev extends Comum {
   local: string
 }
 
-/** Evento: ingresso individual. */
-export function eventos(destino: string, entradas: Ev[]): Oferta[] {
+/** Evento: ingresso individual. Ver `restaurantes` sobre `letra`. */
+export function eventos(destino: string, entradas: Ev[], letra = 'e'): Oferta[] {
   return entradas.map((e, i) => ({
-    ...base(destino, `${destino}-e${String(i + 1)}`, 'eventos', 'pessoa', e),
+    ...base(destino, `${destino}-${letra}${String(i + 1)}`, 'eventos', 'pessoa', e),
     data: e.data,
     local: e.local,
   }))

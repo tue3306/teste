@@ -89,21 +89,17 @@
   border: 1px solid var(--ink-a07);
   overflow: hidden;
   box-shadow: var(--sh-sm);
+  /* Sem `transform` aqui: quem eleva o cartão no hover é o Motion, que escreve
+     a propriedade inline a cada quadro. Declarar a mesma coisa em CSS faria os
+     dois disputarem o valor e o cartão tremeria. A sombra fica, porque ela não
+     desloca nada e o Motion não a toca. */
   transition:
     border-color var(--t-fast) var(--ease),
-    box-shadow var(--t-mid) var(--ease),
-    transform var(--t-mid) var(--ease);
+    box-shadow var(--t-mid) var(--ease);
 }
 
 .cartao:hover {
   box-shadow: var(--sh-lg);
-  transform: translateY(-3px);
-}
-
-/* O deslocamento de hover é amplitude — sai com movimento reduzido. A sombra
-   fica: ela não desloca nada. */
-:root[data-motion='reduzido'] .cartao:hover {
-  transform: none;
 }
 
 .cartaoAtivo {
@@ -248,4 +244,25 @@
   line-height: 1.5;
   padding-block-start: 4px;
   border-block-start: 1px solid var(--ink-a07);
+}
+
+/* Link para a página do destino, ao lado do botão de escolher. Discreto de
+   propósito: escolher é a ação principal, ler os detalhes é a secundária. */
+.detalhes {
+  flex: none;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.detalhes:hover {
+  border-color: var(--teal);
+  color: var(--teal-text);
 }

@@ -39,3 +39,20 @@
     animation: none;
     opacity: 0.7;
   }
+
+/* Definido aqui, e não no CSS global, de propósito. O CSS Modules reescreve
+   tanto o nome do `@keyframes` quanto a referência a ele — mas só dentro do
+   mesmo arquivo. Apontar para um keyframe global de dentro de um módulo faz o
+   nome ser reescrito para algo que não existe, e o navegador não cria animação
+   nenhuma. Sem erro e sem aviso: o elemento simplesmente fica parado. */
+@keyframes bibPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}

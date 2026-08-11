@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CabecalhoSecao } from './CabecalhoSecao'
 import { CartaoOferta } from './CartaoOferta'
@@ -33,6 +33,20 @@ export function SecaoLista({ vertical, aoAbrir }: Props) {
     [vertical, destino.id],
   )
   const faixa = useMemo(() => faixaDePreco(itens), [itens])
+  const listaRef = useRef<HTMLDivElement>(null)
+
+  /**
+   * Rola até o item apontado pela URL.
+   *
+   * A vitrine da home linka `?item=h2`, e o cartão ganhava um destaque visual
+   * que podia estar na décima posição — fora da tela, invisível. Destacar sem
+   * levar até lá é o mesmo que não destacar.
+   */
+  useEffect(() => {
+    if (!destacado) return
+    const alvo = listaRef.current?.querySelector(`[aria-labelledby="item-${destacado}"]`)
+    alvo?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }, [destacado])
 
   const [precoMax, setPrecoMax] = useState<number | null>(null)
   const [ordenacao, setOrdenacao] = useState<Ordenacao>('melhor')
@@ -87,7 +101,7 @@ export function SecaoLista({ vertical, aoAbrir }: Props) {
           />
         </div>
 
-        <div className={css['lista']}>
+        <div className={css['lista']} ref={listaRef}>
           {filtrados.length === 0 ? (
             <p className={css['vazio']}>
               {itens.length === 0

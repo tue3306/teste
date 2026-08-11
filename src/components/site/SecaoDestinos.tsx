@@ -47,9 +47,9 @@ export function SecaoDestinos() {
           return (
             <Reveal key={d.id} como="li" atraso={Math.min(i, 6) * 0.05}>
               <CartaoMovel
-                to={`/plataforma/destinos?destino=${d.id}`}
+                to={`/destino/${d.id}`}
                 className={`${css['item']} ${css['clicavel']}`}
-                aria-label={`${d.nome} — ver na plataforma`}
+                aria-label={`${d.nome} — ver o destino`}
                 whileHover={HOVER_CARTAO}
                 whileTap={TAP_CARTAO}
               >

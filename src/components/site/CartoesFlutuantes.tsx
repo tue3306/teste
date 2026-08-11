@@ -27,6 +27,19 @@ const ENTRADA = {
 }
 
 /**
+ * Exemplo mostrado enquanto a viagem está vazia.
+ *
+ * Cinco noites do hotel mais dois passageiros do voo — a mesma aritmética que o
+ * motor de orçamento faz, aplicada aos dois itens que o cartão já exibe. Antes
+ * o cartão mostrava "R$ 0" para todo visitante que ainda não tinha escolhido
+ * nada, o que lê como defeito, não como estado inicial.
+ */
+const EXEMPLO = {
+  total: HOTEL.preco * 5 + VOO.preco * 2,
+  economia: (HOTEL.outros - HOTEL.preco) * 5 + (VOO.outros - VOO.preco) * 2,
+}
+
+/**
  * Vitrine flutuante do hero.
  *
  * Os quatro cartões passaram a ler o catálogo em vez de repetir valores
@@ -44,6 +57,9 @@ const ENTRADA = {
  */
 export function CartoesFlutuantes() {
   const { orcamento } = useViagem()
+  const vazio = orcamento.total === 0
+  const total = vazio ? EXEMPLO.total : orcamento.total
+  const economia = vazio ? EXEMPLO.economia : orcamento.economia
   const refHotel = useTilt<HTMLDivElement>()
   const refVoo = useTilt<HTMLDivElement>()
   const refRoteiro = useTilt<HTMLDivElement>()
@@ -153,14 +169,15 @@ export function CartoesFlutuantes() {
         style={{ y: rapido }}
         className={css['camada']}
       >
-        {/* O total é o da viagem que está sendo montada de verdade — o cartão
-            do hero acompanha o que a pessoa escolhe na plataforma, em vez de
-            exibir um número fixo escrito no código. */}
+        {/* Acompanha a viagem real assim que houver uma; antes disso mostra um
+            exemplo do catálogo, e diz que é exemplo. */}
         <div className={`${css['cartao']} ${css['total']} ${css['compacto']}`}>
-          <div className={css['totalRotulo']}>total da viagem</div>
+          <div className={css['totalRotulo']}>
+            {vazio ? 'exemplo · 5 noites, 2 pessoas' : 'total da viagem'}
+          </div>
           <div className={css['totalValores']}>
-            <div className={css['totalPreco']}>{moeda(orcamento.total)}</div>
-            <div className={css['totalEconomia']}>−{moeda(orcamento.economia)}</div>
+            <div className={css['totalPreco']}>{moeda(total)}</div>
+            <div className={css['totalEconomia']}>−{moeda(economia)}</div>
           </div>
         </div>
       </motion.div>

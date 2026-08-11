@@ -1,76 +1,25 @@
 /**
- * Keyframes compartilhados e a garantia global de movimento reduzido.
+ * Entrada por scroll e a política global de movimento reduzido.
  *
- * As durações são escritas direto, sem indireção. A versão anterior dividia
- * cada duração por um token que ia a zero (`calc(9s / var(--motion))`) e
- * dependia de a divisão por zero invalidar a declaração — funcionava por
- * acidente, e qualquer animação nova precisava lembrar de participar do truque.
+ * ## Onde ficam os keyframes
  *
- * O desligamento por preferência de movimento é declarado componente a
- * componente, junto de quem anima — a nota no fim desta folha explica por quê.
+ * **Dentro do módulo que os usa**, e não aqui. Esta folha é global; os arquivos
+ * que animam são CSS Modules, e o CSS Modules reescreve tanto o nome de um
+ * `@keyframes` quanto a referência a ele — mas só dentro do mesmo arquivo.
+ * Referenciar um keyframe global de dentro de um módulo faz o nome virar algo
+ * como `_bibMarquee_4d82j_1`, que não existe, e o navegador então não cria
+ * animação nenhuma. Sem erro e sem aviso: o elemento fica parado.
+ *
+ * Foi exatamente o que aconteceu aqui, e por muito tempo:
+ * `document.getAnimations()` devolvia **zero** na página inteira. A faixa de
+ * fontes não deslizava, os pontinhos não pulsavam, o sol do fundo não
+ * respirava. O sintoma parecia política de movimento reduzido, e a causa era o
+ * escopo do nome.
+ *
+ * `animation: :global(nome)` **não** resolve: `:global()` vale em seletor, não
+ * em valor de propriedade — a declaração inteira é descartada, o que é ainda
+ * pior. A saída é a que está em uso: cada módulo declara os keyframes que usa.
  */
-
-@keyframes bibFloat {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -15px, 0);
-  }
-}
-
-@keyframes bibFloatB {
-  0%,
-  100% {
-    transform: translate3d(0, -9px, 0);
-  }
-  50% {
-    transform: translate3d(0, 11px, 0);
-  }
-}
-
-@keyframes bibMarquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-@keyframes bibPulse {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3);
-  }
-}
-
-@keyframes bibSun {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scale(1.06);
-  }
-}
-
-@keyframes bibFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 
 /**
  * Entrada por scroll. O elemento nasce deslocado e o hook `useReveal` adiciona

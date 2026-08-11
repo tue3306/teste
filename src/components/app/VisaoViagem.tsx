@@ -3,8 +3,10 @@ import { motion } from 'motion/react'
 import { Botao } from '@/components/ui/Botao'
 import { Icone } from '@/components/ui/Icone'
 import { Imagem } from '@/components/ui/Imagem'
+import { Numero } from '@/components/ui/Numero'
 import { SeletorPessoas } from './SeletorPessoas'
 import { useViagem } from '@/context/ViagemContext'
+import { resolverIds } from '@/services/catalogo'
 import { CHECKLIST } from '@/data/site'
 import { inteiro, moeda } from '@/lib/format'
 import type { NomeIcone } from '@/components/ui/Icone'
@@ -49,7 +51,19 @@ export function VisaoViagem() {
     limparViagem,
     checklist,
     alternarChecklist,
+    favoritos,
+    alternarFavorito,
+    quantidade,
   } = useViagem()
+
+  /**
+   * Os salvos.
+   *
+   * O botão "Salvar" existia em cada cartão e gravava no navegador desde o
+   * começo — e não havia uma tela sequer que mostrasse o resultado. Salvar sem
+   * lugar para ver é um botão que não faz nada.
+   */
+  const salvos = resolverIds(favoritos)
 
   const semDatas = contexto.noites === 0
   const vazio = orcamento.linhas.length === 0
@@ -172,7 +186,7 @@ export function VisaoViagem() {
                 </p>
                 <p className={`${css['linhaTotal']} ${css['linhaGrande']}`}>
                   <span>Total pela BI&amp;B</span>
-                  <span>{moeda(orcamento.total)}</span>
+                  <Numero valor={orcamento.total} />
                 </p>
                 <p className={css['linhaTotal']}>
                   <span>Por pessoa</span>
@@ -202,7 +216,7 @@ export function VisaoViagem() {
             </p>
           ) : (
             <>
-              <p className={css['economiaValor']}>{moeda(orcamento.economia)}</p>
+              <Numero valor={orcamento.economia} className={css['economiaValor']} />
               <p className={css['economiaPct']}>
                 {orcamento.economiaPercentual.toFixed(1).replace('.', ',')}% mais barato que a média
                 do mercado
@@ -255,6 +269,57 @@ export function VisaoViagem() {
           </p>
           <SeletorPessoas />
         </section>
+
+        {/* --- salvos --- */}
+        {salvos.length > 0 ? (
+          <section className={css['cartao']} aria-labelledby="salvos">
+            <h3 id="salvos" className={css['tituloCartao']}>
+              Salvos
+            </h3>
+            <p className={css['ajuda']}>
+              {salvos.length} {salvos.length === 1 ? 'opção guardada' : 'opções guardadas'} para
+              decidir depois.
+            </p>
+            <ul className={css['salvosLista']}>
+              {salvos.map((s) => {
+                const naViagem = quantidade(s.id) > 0
+                return (
+                  <motion.li key={s.id} layout className={css['salvo']}>
+                    <Imagem slug={s.foto} className={css['salvoFoto']} sizes="52px" />
+                    <div className={css['salvoCorpo']}>
+                      <p className={css['salvoNome']}>{s.titulo}</p>
+                      <p className={css['salvoPreco']}>
+                        {moeda(s.preco)} · {APRESENTACAO[s.vertical].label.toLowerCase()}
+                      </p>
+                    </div>
+                    <div className={css['salvoAcoes']}>
+                      <button
+                        type="button"
+                        className={css['salvoAdicionar']}
+                        disabled={naViagem}
+                        onClick={() => {
+                          adicionar(s)
+                        }}
+                      >
+                        {naViagem ? 'Na viagem' : 'Adicionar'}
+                      </button>
+                      <button
+                        type="button"
+                        className={css['remover']}
+                        aria-label={`Tirar ${s.titulo} dos salvos`}
+                        onClick={() => {
+                          alternarFavorito(s.id)
+                        }}
+                      >
+                        <Icone nome="fechar" tamanho={13} />
+                      </button>
+                    </div>
+                  </motion.li>
+                )
+              })}
+            </ul>
+          </section>
+        ) : null}
 
         {/* --- checklist --- */}
         <section className={css['cartao']} aria-labelledby="checklist">

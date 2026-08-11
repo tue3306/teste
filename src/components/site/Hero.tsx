@@ -4,6 +4,7 @@ import { ESTATISTICAS } from '@/data/site'
 import { inteiro } from '@/lib/format'
 import { CartoesFlutuantes } from './CartoesFlutuantes'
 import { FormularioBusca } from './FormularioBusca'
+import { CATALOGO, DESTINOS } from '@/data/rj'
 import css from './Hero.module.css'
 
 export function Hero() {
@@ -13,7 +14,7 @@ export function Hero() {
         <Reveal>
           <p className={css['selo']}>
             <span className={css['pulso']} aria-hidden="true" />
-            342 fontes vasculhadas a cada busca
+            {CATALOGO.length} opções comparadas em {DESTINOS.length} destinos do RJ
           </p>
         </Reveal>
 

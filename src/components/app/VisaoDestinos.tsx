@@ -1,12 +1,15 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'motion/react'
+import { Link } from 'react-router-dom'
 import { Icone } from '@/components/ui/Icone'
 import { Imagem } from '@/components/ui/Imagem'
 import { DESTINOS, NOMES_REGIAO, contarPorVertical } from '@/data/rj'
 import { useViagem } from '@/context/ViagemContext'
 import { moeda, nota } from '@/lib/format'
 import { CATEGORIAS } from '@/data/site'
+import { GRADE, ITEM_GRADE, TAP_CARTAO, hoverCartao } from '@/lib/motion'
+import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import type { Categoria, RegiaoRJ } from '@/types'
 import css from './VisaoDestinos.module.css'
 
@@ -20,11 +23,22 @@ const REGIOES = Object.keys(NOMES_REGIAO) as RegiaoRJ[]
  * código, e não havia como trocar.
  */
 export function VisaoDestinos() {
-  const { destino, definirBusca } = useViagem()
+  const { destino, definirBusca, busca } = useViagem()
   const navegar = useNavigate()
+  const [params] = useSearchParams()
+  const semMovimento = useMovimentoReduzido()
 
   const [regiao, setRegiao] = useState<RegiaoRJ | 'todas'>('todas')
-  const [categoria, setCategoria] = useState<Categoria | 'todas'>('todas')
+
+  /**
+   * Perfil inicial: o da URL, senão o escolhido no formulário do hero.
+   *
+   * Os dois caminhos existiam e nenhum chegava aqui — a régua de categorias
+   * mandava um `?cat=` que ninguém lia, e o campo "perfil da viagem" era escrito
+   * no estado e nunca consultado. Agora ambos abrem a lista já filtrada.
+   */
+  const perfilInicial = (params.get('perfil') ?? busca.tipo) as Categoria | ''
+  const [categoria, setCategoria] = useState<Categoria | 'todas'>(perfilInicial || 'todas')
 
   const lista = useMemo(
     () =>
@@ -103,15 +117,19 @@ export function VisaoDestinos() {
           Nenhum destino combina essa região com esse perfil. Solte um dos dois filtros.
         </p>
       ) : (
-        <ul className={css['grade']}>
+        <motion.ul className={css['grade']} {...GRADE}>
           {lista.map((d) => {
             const conta = contarPorVertical(d.id)
             const escolhido = d.id === destino.id
             const opcoes = Object.values(conta).reduce((s, n) => s + n, 0)
 
             return (
-              <motion.li key={d.id} layout className={css['item']}>
-                <article className={`${css['cartao']} ${escolhido ? css['cartaoAtivo'] : ''}`}>
+              <motion.li key={d.id} layout variants={ITEM_GRADE} className={css['item']}>
+                <motion.article
+                  className={`${css['cartao']} ${escolhido ? css['cartaoAtivo'] : ''}`}
+                  whileHover={hoverCartao(semMovimento)}
+                  whileTap={TAP_CARTAO}
+                >
                   <div className={css['foto']}>
                     <Imagem
                       slug={d.foto}
@@ -166,7 +184,12 @@ export function VisaoDestinos() {
                       >
                         {escolhido ? 'Ver hospedagem' : 'Escolher este destino'}
                       </button>
-                      {escolhido ? <span className={css['selo']}>Escolhido</span> : null}
+                      {/* A página do destino tem a descrição, a galeria, as
+                          atrações e as praias — conteúdo que não cabe no cartão
+                          e que antes não aparecia em lugar nenhum. */}
+                      <Link to={`/destino/${d.id}`} className={css['detalhes']}>
+                        Detalhes
+                      </Link>
                     </div>
 
                     {/* Destinos próximos: combinar duas cidades numa viagem só é
@@ -182,11 +205,11 @@ export function VisaoDestinos() {
                       </p>
                     ) : null}
                   </div>
-                </article>
+                </motion.article>
               </motion.li>
             )
           })}
-        </ul>
+        </motion.ul>
       )}
     </div>
   )

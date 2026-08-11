@@ -78,3 +78,13 @@
 :root[data-motion='reduzido'] .dialogo[open] {
     animation: none;
   }
+
+/* Ver a nota em Hero.module.css: keyframe de módulo mora no módulo. */
+@keyframes bibFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
