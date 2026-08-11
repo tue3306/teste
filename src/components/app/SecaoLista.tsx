@@ -1,150 +1,110 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CabecalhoSecao } from './CabecalhoSecao'
 import { CartaoOferta } from './CartaoOferta'
 import { PainelFiltros } from './PainelFiltros'
 import { TITULOS } from './abas'
-import { Esqueleto } from '@/components/ui/Esqueleto'
-import { Icone } from '@/components/ui/Icone'
 import { useViagem } from '@/context/ViagemContext'
-import { useRecurso } from '@/hooks/useRecurso'
-import { buscarOfertas } from '@/services/provedores'
-import { OFERTAS_POR_VERTICAL, faixaDePreco } from '@/data/ofertas'
-import { CATEGORIAS } from '@/data/site'
-import type { Categoria, Oferta, Ordenacao, Vertical } from '@/types'
+import { faixaDePreco } from '@/data/rj'
+import { SERVICOS } from '@/services/catalogo'
+import { custoBeneficio } from '@/lib/orcamento'
+import type { Oferta, Ordenacao, Vertical } from '@/types'
 import css from './SecaoLista.module.css'
 
 interface Props {
   vertical: Vertical
-  aoReservar: (oferta: Oferta) => void
+  aoAbrir: (oferta: Oferta) => void
 }
 
 /**
- * Lista de ofertas com o painel de filtros.
+ * Uma vertical do catálogo: lista, filtros e ordenação.
  *
- * O estado dos filtros mora aqui, e não na página, para que a página possa
- * remontar este bloco com `key={vertical}`: trocar de aba zera preço, ordenação
- * e facetas sem um efeito que chama `setState` — o padrão que o React 19
- * desaconselha, porque força um render em cascata a cada troca.
+ * O destino vem do contexto da viagem, e não de um prop: trocar de destino
+ * precisa reordenar as seis abas de uma vez, e passar o id por seis níveis de
+ * componente seria a mesma informação escrita seis vezes.
  */
-export function SecaoLista({ vertical, aoReservar }: Props) {
-  const [params, setParams] = useSearchParams()
-  const [precoMaximo, setPrecoMaximo] = useState<number | null>(null)
+export function SecaoLista({ vertical, aoAbrir }: Props) {
+  const { destino } = useViagem()
+  const [params] = useSearchParams()
+  const destacado = params.get('item')
+
+  const itens = useMemo(
+    () => SERVICOS[vertical].listar({ destino: destino.id }),
+    [vertical, destino.id],
+  )
+  const faixa = useMemo(() => faixaDePreco(itens), [itens])
+
+  const [precoMax, setPrecoMax] = useState<number | null>(null)
   const [ordenacao, setOrdenacao] = useState<Ordenacao>('melhor')
   const [facetas, setFacetas] = useState<string[]>([])
 
-  const { busca } = useViagem()
+  // O teto começa no máximo da faixa e só passa a existir quando o usuário
+  // mexe. Guardar `faixa.max` em estado exigiria um efeito para ressincronizar
+  // a cada troca de vertical ou destino — e efeito que corrige estado é
+  // exatamente a fonte de tela piscando.
+  const teto = precoMax ?? faixa.max
 
-  /**
-   * As ofertas passam pela camada de provedores mesmo sem backend configurado.
-   * Sem `VITE_API_BASE` a função responde do catálogo local na hora, sem tocar a
-   * rede; com a variável definida, a mesma tela passa a mostrar inventário real
-   * sem nenhuma mudança de componente.
-   */
-  const carregar = useCallback(
-    (sinal: AbortSignal) => buscarOfertas({ vertical, destino: busca.destino }, sinal),
-    [vertical, busca.destino],
-  )
-  const remoto = useRecurso(carregar)
+  const filtrados = useMemo(() => {
+    const lista = itens.filter(
+      (o) => o.preco <= teto && facetas.every((f) => o.facetas.includes(f)),
+    )
 
-  const ofertas = remoto.dados?.ofertas ?? OFERTAS_POR_VERTICAL[vertical]
-  const carregando = remoto.status === 'carregando' && !remoto.dados
-  const faixa = useMemo(() => faixaDePreco(ofertas), [ofertas])
-  const teto = precoMaximo ?? faixa.max
+    const ordenado = [...lista]
+    if (ordenacao === 'preco') ordenado.sort((a, b) => a.preco - b.preco)
+    else if (ordenacao === 'nota') ordenado.sort((a, b) => b.nota - a.nota)
+    else {
+      // "Melhor escolha" é nota por real, o mesmo critério do comparador — e
+      // não a ordem em que os itens foram escritos no arquivo.
+      const cb = custoBeneficio(lista)
+      ordenado.sort((a, b) => (cb.get(b.id) ?? 0) - (cb.get(a.id) ?? 0))
+    }
+    return ordenado
+  }, [itens, teto, facetas, ordenacao])
 
-  const categoria = params.get('cat') as Categoria | null
-  const destacada = params.get('oferta')
-
-  const resultados = useMemo(() => {
-    const filtradas = ofertas
-      .filter((o) => o.preco <= teto)
-      .filter((o) => facetas.every((f) => o.facetas.includes(f)))
-      .filter((o) => !categoria || o.categorias.includes(categoria))
-
-    const ordenadas = [...filtradas]
-    if (ordenacao === 'preco') ordenadas.sort((a, b) => a.preco - b.preco)
-    else if (ordenacao === 'nota') ordenadas.sort((a, b) => b.nota - a.nota)
-    else ordenadas.sort((a, b) => b.nota / b.preco - a.nota / a.preco)
-
-    return ordenadas
-  }, [ofertas, teto, facetas, categoria, ordenacao])
-
-  const nomeCategoria = categoria ? CATEGORIAS.find((c) => c.id === categoria)?.label : null
-
-  function limparCategoria() {
-    params.delete('cat')
-    setParams(params, { replace: true })
-  }
+  const notas = useMemo(() => custoBeneficio(filtrados), [filtrados])
+  const info = TITULOS[vertical]
 
   return (
     <>
-      <CabecalhoSecao
-        titulo={TITULOS[vertical].titulo}
-        subtitulo={`${String(resultados.length)} de ${String(ofertas.length)} opções dentro dos seus filtros · preço final com taxas`}
-      />
+      <CabecalhoSecao titulo={info.titulo(destino.nome)} subtitulo={info.subtitulo ?? ''} />
 
       <div className={css['grade']}>
         <div className={css['filtros']}>
           <PainelFiltros
             vertical={vertical}
-            precoMaximo={teto}
             faixa={faixa}
-            aoMudarPreco={setPrecoMaximo}
+            precoMax={teto}
+            aoTrocarPreco={setPrecoMax}
             ordenacao={ordenacao}
-            aoMudarOrdenacao={setOrdenacao}
-            facetasAtivas={facetas}
+            aoTrocarOrdenacao={setOrdenacao}
+            facetas={facetas}
             aoAlternarFaceta={(id) => {
               setFacetas((atual) =>
                 atual.includes(id) ? atual.filter((f) => f !== id) : [...atual, id],
               )
             }}
-            aoLimpar={() => {
-              setPrecoMaximo(null)
-              setOrdenacao('melhor')
-              setFacetas([])
-              if (categoria) limparCategoria()
-            }}
+            encontrados={filtrados.length}
           />
         </div>
 
-        <div>
-          {nomeCategoria ? (
-            <p className={css['filtroCategoria']}>
-              Categoria: {nomeCategoria}
-              <button
-                type="button"
-                className={css['limparCategoria']}
-                onClick={limparCategoria}
-                aria-label={`Remover o filtro de categoria ${nomeCategoria}`}
-              >
-                <Icone nome="fechar" tamanho={11} />
-              </button>
+        <div className={css['lista']}>
+          {filtrados.length === 0 ? (
+            <p className={css['vazio']}>
+              {itens.length === 0
+                ? `Ainda não há inventário desta categoria em ${destino.nome}. Escolha outro destino na aba Destinos.`
+                : 'Nenhuma opção passa por todos os filtros. Solte alguma característica ou suba o teto de preço.'}
             </p>
-          ) : null}
-
-          <div className={css['lista']} aria-busy={carregando}>
-            {carregando
-              ? Array.from({ length: 4 }, (_, i) => (
-                  <Esqueleto key={i} altura={168} raio="var(--r-3xl)" />
-                ))
-              : null}
-
-            {resultados.map((o) => (
+          ) : (
+            filtrados.map((o) => (
               <CartaoOferta
                 key={o.id}
                 oferta={o}
-                destacado={o.id === destacada}
-                aoReservar={aoReservar}
+                destacado={o.id === destacado}
+                custoBeneficio={notas.get(o.id)}
+                aoAbrir={aoAbrir}
               />
-            ))}
-
-            {resultados.length === 0 && !carregando ? (
-              <p className={css['vazio']}>
-                Nada dentro desses filtros. Solte o preço máximo, remova uma comodidade ou tire o
-                filtro de categoria.
-              </p>
-            ) : null}
-          </div>
+            ))
+          )}
         </div>
       </div>
     </>

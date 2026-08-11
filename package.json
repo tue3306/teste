@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -b --noEmit",
-    "assets": "node scripts/gerar-assets.mjs"
+    "assets": "node scripts/gerar-assets.mjs",
+    "fotos": "node scripts/gerar-fotos.mjs"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

@@ -44,7 +44,7 @@ export const PAGINAS: Record<string, PaginaInstitucional> = {
       {
         titulo: 'O problema',
         paragrafos: [
-          'Uma viagem de sete dias exige, em média, comparar voo em três buscadores, hospedagem em quatro, passeios em dois e ainda montar o roteiro à mão — sem saber se o museu abre na segunda ou se vai chover no dia da trilha.',
+          'Uma viagem de sete dias exige, em média, comparar voo em três buscadores, hospedagem em quatro e passeios em dois — e depois somar tudo à mão, sem saber se a diária que parecia barata continua barata depois de multiplicada pelas noites.',
           'Pior: o preço que aparece na busca quase nunca é o preço do checkout. Taxa de serviço, limpeza e política de cancelamento aparecem no fim, quando o cartão já está na mão.',
         ],
       },
@@ -52,7 +52,7 @@ export const PAGINAS: Record<string, PaginaInstitucional> = {
         titulo: 'O que fazemos',
         paragrafos: [
           'Uma consulta dispara todas as verticais ao mesmo tempo e devolve o resultado ranqueado por custo-benefício real — não por comissão. O preço exibido é o preço final, com taxas.',
-          'Em cima disso, a IA monta o roteiro dia a dia cruzando clima, distância, horário de funcionamento e orçamento. Praia quando o sol colabora, museu quando chove, jantar perto de onde você já está.',
+          'Em cima disso, a BI&B fecha a conta: cada item declara como é cobrado — por pessoa, por noite, por dia — e o total da viagem se refaz a cada escolha, com a economia contra o preço médio de mercado ao lado.',
         ],
       },
       {
@@ -84,21 +84,21 @@ export const PAGINAS: Record<string, PaginaInstitucional> = {
       {
         titulo: 'O que fica no seu navegador',
         paragrafos: [
-          'Favoritos, reservas, checklist da viagem e alterações no roteiro são gravados no `localStorage` do seu navegador. Nunca saem do seu aparelho: não há servidor recebendo esses dados nesta versão.',
+          'Favoritos, a viagem montada e o checklist são gravados no `localStorage` do seu navegador. Nunca saem do seu aparelho: não há servidor recebendo esses dados nesta versão.',
           'Limpar os dados do site no navegador apaga tudo, sem deixar cópia. Não há conta, não há sincronização entre aparelhos e não há como recuperar o que foi apagado.',
         ],
         itens: [
           'bib:favoritos — ids das ofertas salvas',
           'bib:reservas — ids das ofertas reservadas',
           'bib:checklist — itens de preparação concluídos',
-          'bib:roteiro:v1 — o roteiro com suas edições',
+          'bib:viagem:v2 — os itens que você escolheu e a quantidade de cada um',
         ],
       },
       {
         titulo: 'O que não coletamos',
         paragrafos: [
           'Nenhum cookie é gravado por esta aplicação. Não há Google Analytics, pixel de rede social, mapa de calor ou qualquer script de rastreamento de terceiro. Não há formulário que peça CPF, endereço ou dado de pagamento.',
-          'A conversa com a assistente fica apenas na memória da aba e desaparece ao recarregar a página.',
+          'A sessão de login fica em `sessionStorage` e desaparece quando você fecha a aba.',
         ],
       },
       {
@@ -163,9 +163,9 @@ export const PAGINAS: Record<string, PaginaInstitucional> = {
         ],
       },
       {
-        titulo: 'Assistente de IA',
+        titulo: 'Dados de demonstração',
         paragrafos: [
-          'A Bia gera sugestões a partir de dados públicos e do seu histórico de busca. As respostas são recomendação, não garantia: confirme horário de funcionamento, exigência de ingresso e condição de acesso antes de contar com eles.',
+          'O catálogo desta versão é de demonstração: os destinos, as coordenadas e as distâncias são reais, mas os estabelecimentos, os preços e as avaliações foram criados para o exemplo e não correspondem a ofertas comercializáveis. Nenhuma reserva é efetivada e nenhum dado de pagamento é pedido.',
         ],
       },
     ],

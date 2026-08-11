@@ -1,62 +1,57 @@
-import { useId, useMemo, useState } from 'react'
-import { Botao } from '@/components/ui/Botao'
+import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Imagem } from '@/components/ui/Imagem'
+import { Icone } from '@/components/ui/Icone'
 import { Mapa, type PontoMapa } from '@/components/ui/Mapa'
+import { Previsao } from './Previsao'
+import { DESTINOS, NOMES_REGIAO, contarPorVertical } from '@/data/rj'
 import { useViagem } from '@/context/ViagemContext'
-import { PINS_MAPA } from '@/data/roteiro'
+import { moeda, nota } from '@/lib/format'
+import type { RegiaoRJ } from '@/types'
 import css from './VisaoMapa.module.css'
 
-const COR_POR_TIPO: Record<string, string> = {
-  hotel: 'var(--teal-strong)',
-  passeio: 'var(--coral-strong)',
-  restaurante: 'var(--ink)',
-  noite: 'var(--ink)',
-  praia: 'var(--teal)',
+/**
+ * Uma cor por região.
+ *
+ * O mapa com 29 alfinetes iguais não diz nada; com a cor da região, a geografia
+ * do estado aparece sozinha — o azul se agrupa no litoral leste, o verde na
+ * serra. As cores saem dos tokens da marca, não de uma paleta avulsa.
+ */
+const COR_REGIAO: Record<RegiaoRJ, string> = {
+  metropolitana: '#0f766e',
+  'costa-do-sol': '#0ea5b5',
+  'costa-verde': '#3f8f4f',
+  serrana: '#7c5cbf',
+  'norte-fluminense': '#e0663f',
 }
 
 /**
- * Mapa da viagem.
+ * Mapa do estado.
  *
- * O mapa é real — Leaflet sobre OpenStreetMap, com as coordenadas dos pontos.
- * A versão anterior era uma grade em CSS com bolinhas em posição percentual,
- * que não correspondia à cidade nem servia para se localizar.
- *
- * A lista ao lado não é decoração: é a forma acessível de percorrer os pontos.
- * Um mapa arrastável sozinho deixa de fora quem navega por teclado.
+ * O protótipo tinha uma grade desenhada em CSS com bolinhas posicionadas em
+ * porcentagem — sem relação nenhuma com a geografia real. Aqui as 29
+ * coordenadas são as verdadeiras, e escolher um alfinete troca o destino da
+ * viagem inteira.
  */
 export function VisaoMapa() {
-  const { roteiro, adicionarParada } = useViagem()
-  const [pinAtivo, setPinAtivo] = useState('p1')
-  const [dia, setDia] = useState(1)
-  const [confirmacao, setConfirmacao] = useState('')
-  const selectId = useId()
+  const { destino, definirBusca } = useViagem()
+  const navegar = useNavigate()
+  const [ativo, setAtivo] = useState(destino.id)
 
   const pontos = useMemo<PontoMapa[]>(
     () =>
-      PINS_MAPA.map((p) => ({
-        id: p.id,
-        nome: p.nome,
-        latitude: p.latitude,
-        longitude: p.longitude,
-        cor: COR_POR_TIPO[p.tipo] ?? 'var(--ink)',
+      DESTINOS.map((d) => ({
+        id: d.id,
+        nome: d.nome,
+        latitude: d.latitude,
+        longitude: d.longitude,
+        cor: COR_REGIAO[d.regiao],
       })),
     [],
   )
 
-  const pin = PINS_MAPA.find((p) => p.id === pinAtivo) ?? PINS_MAPA[0]
-  if (!pin) return null
-
-  function adicionar() {
-    if (!pin) return
-    adicionarParada(dia, {
-      hora: '—',
-      titulo: pin.nome,
-      local: pin.sub,
-      tipo: pin.tipo,
-      custo: pin.preco,
-    })
-    setConfirmacao(`${pin.nome} entrou no dia ${String(dia)} do seu roteiro.`)
-  }
+  const escolhido = DESTINOS.find((d) => d.id === ativo) ?? destino
+  const conta = contarPorVertical(escolhido.id)
 
   return (
     <div className={css['grade']}>
@@ -64,82 +59,94 @@ export function VisaoMapa() {
         <div className={css['moldura']}>
           <Mapa
             pontos={pontos}
-            ativo={pinAtivo}
-            aoEscolher={(id) => {
-              setPinAtivo(id)
-              setConfirmacao('')
-            }}
-            rotulo="Mapa dos pontos da viagem no Rio de Janeiro"
+            ativo={ativo}
+            aoEscolher={setAtivo}
+            rotulo="Mapa dos 29 destinos do estado do Rio de Janeiro"
           />
         </div>
 
-        {/* Percorrer os pontos sem depender de arrastar o mapa. */}
-        <ul className={css['atalhos']} aria-label="Pontos da viagem">
-          {PINS_MAPA.map((p) => (
-            <li key={p.id}>
-              <button
-                type="button"
-                className={`${css['atalho']} ${p.id === pinAtivo ? css['atalhoAtivo'] : ''}`}
-                aria-pressed={p.id === pinAtivo}
-                onClick={() => {
-                  setPinAtivo(p.id)
-                  setConfirmacao('')
-                }}
-              >
-                <span
-                  className={css['bolinha']}
-                  style={{ background: COR_POR_TIPO[p.tipo] ?? 'var(--ink)' }}
-                  aria-hidden="true"
-                />
-                {p.nome}
-              </button>
+        <ul className={css['legenda']}>
+          {(Object.keys(NOMES_REGIAO) as RegiaoRJ[]).map((r) => (
+            <li key={r} className={css['legendaItem']}>
+              <span className={css['bolinha']} style={{ background: COR_REGIAO[r] }} />
+              {NOMES_REGIAO[r]}
             </li>
           ))}
         </ul>
       </div>
 
-      <div className={css['detalhe']}>
-        <Imagem slug={pin.foto} className={css['foto']} sizes="(min-width: 1180px) 256px, 100vw" />
+      <aside className={css['detalhe']} aria-live="polite">
+        <Imagem slug={escolhido.foto} className={css['foto']} sizes="(min-width: 940px) 360px, 92vw" />
 
-        <h2 className={css['nome']}>{pin.nome}</h2>
-        <p className={css['sub']}>{pin.sub}</p>
-
-        <div className={css['linhaPreco']}>
-          <span className={css['info']}>{pin.detalhe}</span>
-          <span className={css['preco']}>{pin.preco}</span>
-        </div>
-
-        <div className={css['escolherDia']}>
-          <label className={css['rotuloDia']} htmlFor={selectId}>
-            Adicionar ao dia
-          </label>
-          <select
-            id={selectId}
-            className={css['select']}
-            value={dia}
-            onChange={(e) => {
-              setDia(Number(e.target.value))
-              setConfirmacao('')
-            }}
-          >
-            {roteiro.map((d) => (
-              <option key={d.n} value={d.n}>
-                Dia {d.n} · {d.diaLongo} · {d.titulo}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div style={{ marginBlockStart: 14 }}>
-          <Botao variante="teal" bloco quadrado onClick={adicionar}>
-            Adicionar ao roteiro
-          </Botao>
-        </div>
-
-        <p aria-live="polite">
-          {confirmacao ? <span className={css['confirmacao']}>{confirmacao}</span> : null}
+        <h3 className={css['nome']}>{escolhido.nome}</h3>
+        <p className={css['sub']}>
+          {NOMES_REGIAO[escolhido.regiao]} ·{' '}
+          <span className={css['notaLinha']}>
+            <Icone nome="estrela" tamanho={11} />
+            {nota(escolhido.nota)}
+          </span>
         </p>
-      </div>
+
+        <p className={css['chamada']}>{escolhido.chamada}</p>
+
+        <dl className={css['fatos']}>
+          <div>
+            <dt>Distância do Rio</dt>
+            <dd>{escolhido.distanciaKm === 0 ? '—' : `${String(escolhido.distanciaKm)} km`}</dd>
+          </div>
+          <div>
+            <dt>Tempo de viagem</dt>
+            <dd>{escolhido.tempoViagem}</dd>
+          </div>
+          <div>
+            <dt>Diária típica</dt>
+            <dd>
+              {moeda(escolhido.faixaPreco.min)}–{moeda(escolhido.faixaPreco.max)}
+            </dd>
+          </div>
+          <div>
+            <dt>Melhor época</dt>
+            <dd>{escolhido.epoca}</dd>
+          </div>
+        </dl>
+
+        {escolhido.praias.length > 0 ? (
+          <p className={css['listaLinha']}>
+            <strong>Praias:</strong> {escolhido.praias.join(', ')}
+          </p>
+        ) : null}
+
+        <p className={css['listaLinha']}>
+          <strong>Atrações:</strong> {escolhido.atracoes.slice(0, 5).join(', ')}
+        </p>
+
+        {/* Previsão real do destino escolhido, via Open-Meteo. É o único dado
+            ao vivo de terceiro no produto, e some em silêncio se a rede falhar:
+            clima é complemento, não pode travar quem está montando a viagem. */}
+        <Previsao
+          key={escolhido.id}
+          latitude={escolhido.latitude}
+          longitude={escolhido.longitude}
+          destino={escolhido.nome}
+          dias={5}
+        />
+
+        <p className={css['inventario']}>
+          {conta.hoteis} hospedagens · {conta.passeios} passeios · {conta.restaurantes} restaurantes
+          · {conta.eventos} eventos · {conta.carros} carros
+        </p>
+
+        <button
+          type="button"
+          className={css['escolher']}
+          onClick={() => {
+            definirBusca('destino', escolhido.id)
+            void navegar('/plataforma/hoteis')
+          }}
+        >
+          {escolhido.id === destino.id ? 'Ver hospedagem' : `Viajar para ${escolhido.nome}`}
+        </button>
+      </aside>
     </div>
   )
 }

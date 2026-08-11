@@ -1,16 +1,19 @@
 import { useEffect, useId, useState } from 'react'
 import { Botao } from '@/components/ui/Botao'
 import { Logo } from '@/components/ui/Logo'
+import { useAuth } from '@/context/AuthContext'
 import { DialogoEntrar } from './DialogoEntrar'
 import css from './Cabecalho.module.css'
 
 const SECOES = [
   { href: '#tudo', label: 'Como funciona' },
   { href: '#destinos', label: 'Destinos' },
-  { href: '#comparar', label: 'Comparador' },
-  { href: '#roteiro', label: 'Roteiro IA' },
-  { href: '#bia', label: 'Assistente' },
+  { href: '#comparar', label: 'Economia' },
+  { href: '#grupos', label: 'Grupos' },
 ]
+
+/** Primeira tela da plataforma para quem já entrou. */
+const PLATAFORMA = '/plataforma/destinos'
 
 /**
  * Cabeçalho do site.
@@ -24,6 +27,7 @@ export function Cabecalho({ ancorasInternas = false }: { ancorasInternas?: boole
   const [menuAberto, setMenuAberto] = useState(false)
   const [entrarAberto, setEntrarAberto] = useState(false)
   const painelId = useId()
+  const { autenticado, usuario, sair } = useAuth()
 
   // Esc fecha o painel; sem isso o teclado fica preso num menu aberto.
   useEffect(() => {
@@ -59,17 +63,30 @@ export function Cabecalho({ ancorasInternas = false }: { ancorasInternas?: boole
           <div className={css['espaco']} />
 
           <div className={css['acoes']}>
+            {/*
+              Os dois botões respeitam a sessão, e cada um de um jeito:
+              "Entrar" abre o modal, para não tirar quem está lendo a home do
+              lugar; "Abrir plataforma" é um link de verdade — leva direto se
+              houver sessão, e para `/login` se não houver, com a `RotaProtegida`
+              guardando o caminho de volta.
+            */}
             <span className={css['entrarDesktop']}>
-              <Botao
-                variante="secundario"
-                onClick={() => {
-                  setEntrarAberto(true)
-                }}
-              >
-                Entrar
-              </Botao>
+              {autenticado ? (
+                <Botao variante="secundario" onClick={sair}>
+                  Sair{usuario ? ` (${usuario.iniciais})` : ''}
+                </Botao>
+              ) : (
+                <Botao
+                  variante="secundario"
+                  onClick={() => {
+                    setEntrarAberto(true)
+                  }}
+                >
+                  Entrar
+                </Botao>
+              )}
             </span>
-            <Botao para="/plataforma/voos">Abrir plataforma</Botao>
+            <Botao para={autenticado ? PLATAFORMA : '/login'}>Abrir plataforma</Botao>
 
             <button
               type="button"
@@ -106,16 +123,29 @@ export function Cabecalho({ ancorasInternas = false }: { ancorasInternas?: boole
               ))}
             </ul>
             <div className={css['painelAcoes']}>
-              <Botao
-                variante="secundario"
-                bloco
-                onClick={() => {
-                  setMenuAberto(false)
-                  setEntrarAberto(true)
-                }}
-              >
-                Entrar
-              </Botao>
+              {autenticado ? (
+                <Botao
+                  variante="secundario"
+                  bloco
+                  onClick={() => {
+                    setMenuAberto(false)
+                    sair()
+                  }}
+                >
+                  Sair da conta
+                </Botao>
+              ) : (
+                <Botao
+                  variante="secundario"
+                  bloco
+                  onClick={() => {
+                    setMenuAberto(false)
+                    setEntrarAberto(true)
+                  }}
+                >
+                  Entrar
+                </Botao>
+              )}
             </div>
           </div>
         ) : null}
@@ -126,6 +156,7 @@ export function Cabecalho({ ancorasInternas = false }: { ancorasInternas?: boole
       {entrarAberto ? (
         <DialogoEntrar
           aberto
+          destinoAposEntrar={PLATAFORMA}
           aoFechar={() => {
             setEntrarAberto(false)
           }}

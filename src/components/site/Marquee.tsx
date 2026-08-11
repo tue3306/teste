@@ -1,4 +1,3 @@
-import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { FONTES_CONECTADAS } from '@/data/site'
 import css from './Marquee.module.css'
 
@@ -11,12 +10,10 @@ import css from './Marquee.module.css'
  * emenda visível. A versão anterior punha `gap` no trilho, e essa folga extra
  * entre os grupos fazia a repetição saltar a cada volta.
  *
- * Com `prefers-reduced-motion`, o segundo grupo sai e a lista quebra em linhas:
- * antes a faixa virava rolável nesse caso, criando 4.359px de arrasto lateral.
+ * A faixa anda sempre. Com `prefers-reduced-motion` ela apenas desacelera, de
+ * 38s para 100s por volta — e apontar o mouse a congela.
  */
 export function Marquee() {
-  const semMovimento = useMovimentoReduzido()
-
   const grupo = (
     <div className={css['grupo']}>
       {FONTES_CONECTADAS.map((item) => (
@@ -35,12 +32,14 @@ export function Marquee() {
       {/* A lista visual é decorativa: o mesmo conteúdo está aqui em texto
           corrente. Sem isto o leitor de tela leria tudo duas vezes. */}
       <p className="sr-only">
-        Fontes conectadas: {FONTES_CONECTADAS.slice(1).join(', ')}. Ao todo, 342 fontes.
+        Categorias no catálogo: {FONTES_CONECTADAS.slice(1).join(', ')}.
       </p>
 
       <div className={css['trilho']} aria-hidden="true">
+        {/* Duas cópias de largura idêntica: o trilho desliza -50%, que é
+            exatamente uma delas, e o laço reinicia sem emenda visível. */}
         {grupo}
-        {semMovimento ? null : grupo}
+        {grupo}
       </div>
     </div>
   )

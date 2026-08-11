@@ -42,24 +42,30 @@
 }
 
 /**
- * Sem movimento, a faixa vira uma lista que quebra em linhas dentro da própria
- * largura — nada de rolagem lateral. O componente já reduz o conteúdo a um
- * grupo nesse caso, então não há repetição visível.
+ * Apontar o mouse na faixa a congela — o mecanismo de pausa que a WCAG 2.2.2
+ * exige de conteúdo que se move sozinho por mais de cinco segundos.
+ *
+ * `focus-within` cobre o teclado: a faixa está antes do rodapé na ordem de
+ * tabulação, e quem chega nela pelo Tab também consegue segurar o movimento.
  */
-:root[data-motion='reduzido'] .faixa {
-    padding-inline: var(--gutter);
-    mask-image: none;
-  }
+.faixa:hover .trilho,
+.faixa:focus-within .trilho {
+  animation-play-state: paused;
+}
 
+/**
+ * Com movimento reduzido a faixa continua andando — só que devagar.
+ *
+ * Ela parava por completo antes, e uma faixa parada é a primeira coisa que se
+ * nota morta numa home. Deslizamento horizontal constante e lento não é o que
+ * incomoda quem pediu menos movimento; o que incomoda é o que salta, acelera ou
+ * acompanha o scroll.
+ *
+ * A 70s ela leva quase o dobro do tempo para dar a volta — cerca de 60px por
+ * segundo. É devagar o suficiente para não puxar o olho e rápido o bastante
+ * para não parecer parada, que era a queixa: a 100s o movimento existia, mas
+ * ninguém percebia.
+ */
 :root[data-motion='reduzido'] .trilho {
-    animation: none;
-    width: auto;
-  }
-
-:root[data-motion='reduzido'] .grupo {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 0;
-    max-width: var(--shell);
-    margin-inline: auto;
-  }
+  animation-duration: 70s;
+}

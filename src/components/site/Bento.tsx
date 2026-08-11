@@ -6,9 +6,9 @@ import css from './Bento.module.css'
 
 const CARTOES = [
   {
-    titulo: 'Roteiro em timeline',
+    titulo: 'Orçamento que fecha',
     texto:
-      'Dias, horários, deslocamentos e custo previsto. Reordene as paradas e a IA recalcula o trajeto.',
+      'Diária × noites, passagem × passageiros, carro × dias. Trocou uma escolha, o total se refaz na hora.',
     atraso: 0.05,
   },
   {
@@ -22,10 +22,10 @@ const CARTOES = [
 /**
  * Grade "tudo em um lugar".
  *
- * A promessa do cartão de roteiro mudou de "Arraste para reorganizar" para
- * "Reordene as paradas": a plataforma reordena por botões, que funcionam no
- * toque e no teclado. Prometer arrasto e entregar outra coisa seria uma
- * promessa quebrada na primeira tentativa.
+ * Cada cartão descreve algo que a plataforma faz de fato. A versão anterior
+ * prometia roteiro gerado por IA e uma assistente que "remonta a viagem em
+ * segundos" — nada disso existia, e prometer o que não se entrega é a forma
+ * mais rápida de perder quem clicou.
  */
 export function Bento() {
   const refDestaque = useTilt<HTMLDivElement>()
@@ -83,9 +83,10 @@ export function Bento() {
         ))}
 
         <Reveal atraso={0.18} className={`${css['cartao']} ${css['bia']}`}>
-          <h3 className={css['tituloMenor']}>Bia, sua copiloto</h3>
+          <h3 className={css['tituloMenor']}>29 destinos do RJ</h3>
           <p className={css['texto']}>
-            Pergunte em português. Ela remonta a viagem inteira, com preço atualizado, em segundos.
+            Da Costa Verde ao Norte Fluminense, com hospedagem, passeio, restaurante, evento e carro
+            em cada um — e destinos vizinhos para combinar duas cidades numa viagem.
           </p>
         </Reveal>
       </div>

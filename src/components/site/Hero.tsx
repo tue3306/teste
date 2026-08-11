@@ -19,7 +19,7 @@ export function Hero() {
 
         <Reveal atraso={0.08}>
           <h1 id="hero-titulo" className={css['titulo']}>
-            Voo, hotel e roteiro.
+            Voo, hotel e passeio.
             <br />
             <span className="serif">Uma busca só.</span>
           </h1>
@@ -28,7 +28,7 @@ export function Hero() {
         <Reveal atraso={0.16}>
           <p className={css['subtitulo']}>
             A BI&amp;B varre companhias aéreas, hospedagens, passeios e restaurantes ao mesmo tempo,
-            compara tudo lado a lado e monta seu roteiro dia por dia. Melhor preço garantido — ou
+            compara tudo lado a lado e fecha o orçamento da viagem. Melhor preço garantido — ou
             devolvemos a diferença.
           </p>
         </Reveal>

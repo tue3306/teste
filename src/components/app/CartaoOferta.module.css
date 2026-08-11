@@ -212,3 +212,118 @@
 :root[data-motion='reduzido'] .cartao:hover {
     transform: none;
   }
+
+/* Estado "já está na viagem": borda teal em vez de um selo só, para o cartão
+   ser reconhecível de relance numa lista de vinte. */
+.escolhido {
+  border-color: var(--teal-border);
+  background: linear-gradient(180deg, var(--mint-2), var(--surface) 40%);
+}
+
+/* O título é um botão que abre o detalhe. Herda a tipografia do h3 e só ganha
+   sublinhado no hover — um <h3> clicável precisa dizer que é clicável. */
+.abrir {
+  font: inherit;
+  color: inherit;
+  text-align: start;
+}
+
+.abrir:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.chipDestaque {
+  background: var(--mint);
+  border-color: var(--teal-border);
+  color: var(--teal-text);
+  font-weight: 750;
+}
+
+.unidade {
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--ink-3);
+  letter-spacing: 0;
+}
+
+/* Quanto o item custa na viagem toda, não só a etiqueta unitária. */
+.totalViagem {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 7px 10px;
+  border-radius: var(--r-md);
+  background: var(--sand-2);
+  border: 1px solid var(--ink-a07);
+  text-align: end;
+}
+
+.totalRotulo {
+  font-size: 10.5px;
+  font-weight: 650;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.totalValor {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.adicionar {
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 13px;
+  font-weight: 750;
+  white-space: nowrap;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+
+.adicionar:hover {
+  background: var(--teal-strong);
+}
+
+/* Contador de quantidade. Os passos têm 34px de alvo — acima dos 24px da
+   SC 2.5.8 — porque são os controles mais clicados da lista. */
+.contador {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--teal-border);
+}
+
+.passo {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--teal-text);
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.passo:hover {
+  background: var(--mint);
+}
+
+.qtd {
+  min-width: 22px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}

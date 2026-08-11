@@ -1,0 +1,251 @@
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+/* As pílulas quebram em linha nova em vez de rolarem lateralmente: uma faixa
+   com arrasto horizontal esconde metade dos filtros sem nenhuma pista visual de
+   que existem. */
+.grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pilula {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.pilula:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+.ativa {
+  background: var(--mint);
+  border-color: var(--teal);
+  color: var(--teal-text);
+}
+
+.ativa:hover {
+  color: var(--teal-text);
+  border-color: var(--teal);
+}
+
+.contagem {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.vazio {
+  padding: 28px;
+  border-radius: var(--r-2xl);
+  background: var(--sand);
+  border: 1px dashed var(--ink-a16);
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  text-align: center;
+}
+
+/* `minmax(0, 1fr)` e não `1fr`: com `1fr` o mínimo é `min-content`, e um nome
+   longo estoura a coluna em telas estreitas. */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+
+.item {
+  min-width: 0;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  overflow: hidden;
+  box-shadow: var(--sh-sm);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-mid) var(--ease),
+    transform var(--t-mid) var(--ease);
+}
+
+.cartao:hover {
+  box-shadow: var(--sh-lg);
+  transform: translateY(-3px);
+}
+
+/* O deslocamento de hover é amplitude — sai com movimento reduzido. A sombra
+   fica: ela não desloca nada. */
+:root[data-motion='reduzido'] .cartao:hover {
+  transform: none;
+}
+
+.cartaoAtivo {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--mint);
+}
+
+.foto {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.regiao {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-start: 10px;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: rgba(251, 246, 238, 0.92);
+  backdrop-filter: blur(8px);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  flex: 1;
+  min-width: 0;
+}
+
+.linhaNome {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nome {
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  min-width: 0;
+}
+
+.nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--teal-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.chamada {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+.fatos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.fatos li + li::before {
+  content: '·';
+  margin-inline-end: 10px;
+  color: var(--ink-a22);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  padding: 3px 9px;
+  border-radius: var(--r-xs);
+  background: var(--sand-2);
+  font-size: 10.5px;
+  font-weight: 650;
+  color: var(--ink-3);
+  text-transform: capitalize;
+}
+
+.inventario {
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-block-start: auto;
+  padding-block-start: 6px;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.escolher {
+  flex: 1;
+  min-width: 12ch;
+  padding: 10px 16px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 13px;
+  font-weight: 750;
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.escolher:hover {
+  background: var(--teal-strong);
+}
+
+.selo {
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: var(--mint);
+  border: 1px solid var(--teal-border);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--teal-text);
+}
+
+.relacionados {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  padding-block-start: 4px;
+  border-block-start: 1px solid var(--ink-a07);
+}

@@ -4,6 +4,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { BarraProgresso, Fundo } from "@/components/ui/Fundo";
 import { PularParaConteudo } from "@/components/ui/PularParaConteudo";
 import { Carregando } from "@/components/ui/Carregando";
+import { RotaProtegida } from "@/components/RotaProtegida";
 import { useMovimentoReduzido } from "@/hooks/useMovimento";
 import { Landing } from "@/pages/Landing";
 
@@ -11,7 +12,7 @@ import { Landing } from "@/pages/Landing";
  * A plataforma carrega sob demanda.
  *
  * Quem chega pela home — a maioria — baixa só o site institucional. O código da
- * plataforma (filtros, roteiro, mapa, painel, chat) só entra na rede quando
+ * plataforma (filtros, destinos, mapa, orçamento) só entra na rede quando
  * alguém realmente abre `/plataforma`.
  */
 const Plataforma = lazy(() =>
@@ -23,6 +24,12 @@ const Institucional = lazy(() =>
 const Contato = lazy(() =>
   import("@/pages/Contato").then((m) => ({ default: m.Contato })),
 );
+const Login = lazy(() =>
+  import("@/pages/Login").then((m) => ({ default: m.Login })),
+);
+const Cadastro = lazy(() =>
+  import("@/pages/Cadastro").then((m) => ({ default: m.Cadastro })),
+);
 const NaoEncontrada = lazy(() =>
   import("@/pages/NaoEncontrada").then((m) => ({ default: m.NaoEncontrada })),
 );
@@ -33,10 +40,9 @@ export function App() {
 
   return (
     /**
-     * O Motion segue a mesma preferência resolvida que o CSS, e não a media
-     * query crua: usar `reducedMotion="user"` faria a biblioteca consultar o
-     * sistema por conta própria e ignorar a escolha explícita do usuário — o
-     * site ficaria metade animado, metade parado.
+     * O Motion lê a mesma decisão que o CSS, pelo hook, em vez de consultar o
+     * sistema por conta própria com `reducedMotion="user"`. Uma fonte de
+     * verdade só evita o site ficar metade animado e metade parado.
      */
     <MotionConfig reducedMotion={semMovimento ? "always" : "never"}>
       <PularParaConteudo />
@@ -65,11 +71,28 @@ export function App() {
         >
           <Routes location={location}>
             <Route path="/" element={<Landing />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+
+            {/**
+             * A plataforma inteira é privada. O portão fica aqui, e não dentro
+             * da página: assim nenhum código da plataforma chega a rodar sem
+             * sessão, e acrescentar uma aba nova não exige lembrar de protegê-la.
+             */}
             <Route
               path="/plataforma"
-              element={<Navigate to="/plataforma/voos" replace />}
+              element={<Navigate to="/plataforma/destinos" replace />}
             />
-            <Route path="/plataforma/:aba" element={<Plataforma />} />
+            <Route
+              path="/plataforma/:aba"
+              element={
+                <RotaProtegida>
+                  <Plataforma />
+                </RotaProtegida>
+              }
+            />
+
             <Route path="/contato" element={<Contato />} />
 
             {/**

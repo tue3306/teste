@@ -5,11 +5,11 @@ import { Icone } from '@/components/ui/Icone'
 import { Imagem } from '@/components/ui/Imagem'
 import { Reveal } from '@/components/ui/Reveal'
 import { HOVER_CARTAO, TAP_CARTAO } from '@/lib/motion'
-import { HOTEIS } from '@/data/ofertas'
+import { hospedagemService } from '@/services/catalogo'
+import { useViagem } from '@/context/ViagemContext'
 import { desconto, moeda, nota, resumo } from '@/lib/format'
 import css from './Vitrine.module.css'
 
-const EM_DESTAQUE = HOTEIS.slice(0, 4)
 const ItemMovel = motion.create(Link)
 
 /**
@@ -20,11 +20,19 @@ const ItemMovel = motion.create(Link)
  * eram, nem por mouse nem por teclado.
  */
 export function Vitrine() {
+  const { destino } = useViagem()
+  // As quatro melhores hospedagens do destino em foco, por nota. A vitrine
+  // antes mostrava sempre as mesmas quatro do Rio, mesmo com outro destino
+  // escolhido no formulario logo acima.
+  const emDestaque = [...hospedagemService.listar({ destino: destino.id })]
+    .sort((a, b) => b.nota - a.nota)
+    .slice(0, 4)
+
   return (
     <section className="shell secao" aria-labelledby="vitrine-titulo">
       <Reveal className={css['topo']}>
         <h2 id="vitrine-titulo" className={css['titulo']}>
-          Onde ficar no Rio
+          Onde ficar — {destino.nome}
         </h2>
         <Botao para="/plataforma/hoteis" variante="secundario">
           Ver todas as opções
@@ -33,10 +41,10 @@ export function Vitrine() {
       </Reveal>
 
       <ul className={css['grade']}>
-        {EM_DESTAQUE.map((h, i) => (
+        {emDestaque.map((h, i) => (
           <Reveal key={h.id} como="li" atraso={i * 0.06}>
             <ItemMovel
-              to={`/plataforma/hoteis?oferta=${h.id}`}
+              to={`/plataforma/hoteis?item=${h.id}`}
               className={css['item']}
               whileHover={HOVER_CARTAO}
               whileTap={TAP_CARTAO}

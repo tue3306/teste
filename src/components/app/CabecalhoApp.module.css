@@ -165,3 +165,71 @@
 :root[data-motion='reduzido'] .aoVivo {
     animation: none;
   }
+
+/* Total da viagem, sempre visível. É o número que a pessoa está tentando
+   controlar — escondê-lo dentro de uma aba obrigava a ir e voltar a cada
+   escolha. */
+.totalAtalho {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  padding: 5px 12px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--teal-border);
+  background: var(--mint-2);
+  color: var(--ink);
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.totalAtalho:hover {
+  background: var(--mint);
+  color: var(--ink);
+}
+
+.totalRotulo {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.totalValor {
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--teal-text);
+}
+
+.sair {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  color: var(--ink-3);
+  flex: none;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.sair:hover {
+  background: var(--peach-3);
+  color: var(--coral-text);
+}
+
+/* O rótulo da aba agora carrega ícone: os dois precisam ficar na mesma linha
+   de base sem que o ícone empurre o texto. */
+.abaTexto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 620px) {
+  .totalRotulo {
+    display: none;
+  }
+}

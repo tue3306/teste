@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '@/components/ui/Logo'
 import { GerenciarDados } from './AvisoPrivacidade'
-import { ControleMovimento } from './ControleMovimento'
 import css from './Rodape.module.css'
 
 const PRODUTO = [
   { href: '#tudo', label: 'Busca' },
-  { href: '#comparar', label: 'Comparador' },
-  { href: '#roteiro', label: 'Roteiro IA' },
-  { href: '#bia', label: 'Assistente' },
+  { href: '#comparar', label: 'Economia' },
+  { href: '#grupos', label: 'Grupos' },
 ]
 
 /**
@@ -27,7 +25,7 @@ export function Rodape() {
         <div>
           <Logo />
           <p className={css['sobre']}>
-            Planejamento de viagem inteligente. Voo, hotel e roteiro em uma busca só. Feito no Rio de
+            Voo, hospedagem, passeios e carro numa comparação só, nos 29 destinos do estado. Feito no Rio de
             Janeiro.
           </p>
         </div>
@@ -70,7 +68,6 @@ export function Rodape() {
 
       <div className={css['base']}>
         <span>© {new Date().getFullYear()} BI&amp;B tecnologia</span>
-        <ControleMovimento />
         <GerenciarDados />
       </div>
     </footer>

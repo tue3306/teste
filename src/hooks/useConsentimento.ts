@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react'
  * Consentimento de armazenamento local.
  *
  * Este site não usa cookie nenhum e não tem rastreador. O que ele guarda são
- * preferências suas — favoritos, reservas, checklist, roteiro editado e a opção
+ * preferências suas — favoritos, a viagem montada e o checklist — e a opção
  * de movimento — todas no `localStorage` do seu próprio aparelho, sem sair
  * dele.
  *

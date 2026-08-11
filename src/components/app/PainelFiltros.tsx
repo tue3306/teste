@@ -1,155 +1,160 @@
 import { useId } from 'react'
-import { FACETAS_POR_VERTICAL } from '@/data/ofertas'
-import { GASTO, SOBRA, USO_DO_ORCAMENTO, VIAGEM } from '@/data/viagem'
+import { FACETAS_POR_VERTICAL } from '@/data/rj'
+import { useViagem } from '@/context/ViagemContext'
 import { moeda } from '@/lib/format'
 import type { Ordenacao, Vertical } from '@/types'
 import css from './PainelFiltros.module.css'
 
-const ORDENS: { id: Ordenacao; label: string }[] = [
-  { id: 'melhor', label: 'Melhor custo-benefício' },
-  { id: 'preco', label: 'Menor preço' },
-  { id: 'nota', label: 'Melhor avaliado' },
-]
-
 interface Props {
   vertical: Vertical
-  precoMaximo: number
+  /** Faixa de preço do que está listado, para o controle não ter curso morto. */
   faixa: { min: number; max: number }
-  aoMudarPreco: (valor: number) => void
+  precoMax: number
+  aoTrocarPreco: (valor: number) => void
   ordenacao: Ordenacao
-  aoMudarOrdenacao: (valor: Ordenacao) => void
-  facetasAtivas: string[]
+  aoTrocarOrdenacao: (valor: Ordenacao) => void
+  facetas: string[]
   aoAlternarFaceta: (id: string) => void
-  aoLimpar: () => void
+  /** Quantos itens sobraram depois de tudo aplicado. */
+  encontrados: number
 }
 
-/**
- * Filtros da lista.
- *
- * As comodidades vêm de `FACETAS_POR_VERTICAL`, então cada aba mostra só o que
- * se aplica a ela. No protótipo as quatro opções de hotel apareciam também em
- * Voos, e como o filtro exigia que a oferta satisfizesse todas as marcadas,
- * marcar qualquer uma zerava a lista de voos sem explicação.
- *
- * Ordenação e facetas usam `aria-pressed`: são botões de alternância, e sem
- * isso o leitor de tela anuncia "Piscina, botão" sem dizer se está ligado.
- */
+const ORDENACOES: { id: Ordenacao; label: string }[] = [
+  { id: 'melhor', label: 'Melhor escolha' },
+  { id: 'preco', label: 'Menor preço' },
+  { id: 'nota', label: 'Melhor nota' },
+]
+
 export function PainelFiltros({
   vertical,
-  precoMaximo,
   faixa,
-  aoMudarPreco,
+  precoMax,
+  aoTrocarPreco,
   ordenacao,
-  aoMudarOrdenacao,
-  facetasAtivas,
+  aoTrocarOrdenacao,
+  facetas,
   aoAlternarFaceta,
-  aoLimpar,
+  encontrados,
 }: Props) {
-  const sliderId = useId()
-  const facetas = FACETAS_POR_VERTICAL[vertical]
-  const pct = Math.round(USO_DO_ORCAMENTO * 100)
+  const { orcamento, busca } = useViagem()
+  const idPreco = useId()
+  const disponiveis = FACETAS_POR_VERTICAL[vertical]
+
+  /** Quanto do orçamento declarado a viagem já consumiu. */
+  const usado = busca.orcamento > 0 ? Math.min(100, (orcamento.total / busca.orcamento) * 100) : 0
 
   return (
-    <aside className={css['painel']} aria-label="Filtros de resultado">
+    <aside className={css['painel']} aria-label="Filtros">
       <div className={css['topo']}>
-        <h2 className="rotulo">filtros</h2>
-        <button
-          type="button"
-          onClick={aoLimpar}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--coral-text)',
-            fontSize: '12.5px',
-            fontWeight: 700,
-            padding: 0,
-          }}
-        >
-          limpar
-        </button>
+        <span>Filtros</span>
+        <span className={css['legenda']} aria-live="polite">
+          {encontrados === 1 ? '1 opção' : `${String(encontrados)} opções`}
+        </span>
       </div>
 
       <div className={css['grupo']}>
-        <label className={css['linhaPreco']} htmlFor={sliderId}>
-          <span>Preço máximo</span>
-          <span className={css['valor']}>{moeda(precoMaximo)}</span>
+        <label htmlFor={idPreco} className={css['legenda']}>
+          Preço até
         </label>
+        <div className={css['linhaPreco']}>
+          <span className={css['valor']}>{moeda(precoMax)}</span>
+        </div>
+        {/*
+          Os limites vêm da faixa real do que está na tela. Os `min=200 max=2400`
+          fixos do protótipo deixavam metade do curso morto na aba de voos e
+          cortavam o resort mais caro fora do alcance.
+        */}
         <input
-          id={sliderId}
+          id={idPreco}
           className={css['slider']}
           type="range"
           min={faixa.min}
           max={faixa.max}
           step={10}
-          value={precoMaximo}
+          value={precoMax}
           onChange={(e) => {
-            aoMudarPreco(Number(e.target.value))
+            aoTrocarPreco(Number(e.target.value))
           }}
-          aria-valuetext={moeda(precoMaximo)}
         />
-      </div>
-
-      <hr className={css['divisoria']} />
-
-      <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
-        <legend className={css['legenda']}>Ordenar por</legend>
-        <div className={css['opcoes']}>
-          {ORDENS.map((o) => (
-            <button
-              key={o.id}
-              type="button"
-              className={`${css['opcao']} ${ordenacao === o.id ? css['ativo'] : ''}`}
-              aria-pressed={ordenacao === o.id}
-              onClick={() => {
-                aoMudarOrdenacao(o.id)
-              }}
-            >
-              {o.label}
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      <hr className={css['divisoria']} />
-
-      <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
-        <legend className={css['legenda']}>Comodidades</legend>
-        <div className={css['facetas']}>
-          {facetas.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              className={`${css['faceta']} ${facetasAtivas.includes(f.id) ? css['ativo'] : ''}`}
-              aria-pressed={facetasAtivas.includes(f.id)}
-              onClick={() => {
-                aoAlternarFaceta(f.id)
-              }}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      <hr className={css['divisoria']} />
-
-      <div className={css['orcamento']}>
-        <h3 className="rotulo">orçamento</h3>
-        <p className={css['orcamentoValor']}>{moeda(GASTO)}</p>
-        <div
-          className={css['trilho']}
-          role="progressbar"
-          aria-valuenow={pct}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label={`${String(pct)}% do orçamento comprometido`}
-        >
-          <div className={css['preenchimento']} style={{ width: `${String(pct)}%` }} />
-        </div>
-        <p className={css['orcamentoNota']}>
-          de {moeda(VIAGEM.orcamento)} · sobra {moeda(SOBRA)}
+        <p className={css['legenda']}>
+          {moeda(faixa.min)} a {moeda(faixa.max)}
         </p>
       </div>
+
+      <div className={css['divisoria']} />
+
+      <fieldset className={css['grupo']}>
+        <legend className={css['legenda']}>Ordenar por</legend>
+        <div className={css['opcoes']}>
+          {ORDENACOES.map((o) => (
+            <label key={o.id} className={css['opcao']}>
+              <input
+                type="radio"
+                name="ordenacao"
+                value={o.id}
+                checked={ordenacao === o.id}
+                onChange={() => {
+                  aoTrocarOrdenacao(o.id)
+                }}
+              />
+              {o.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className={css['divisoria']} />
+
+      <fieldset className={css['grupo']}>
+        <legend className={css['legenda']}>Características</legend>
+        <div className={css['facetas']}>
+          {/*
+            Cada vertical declara as suas. Filtrar voo por "piscina" nunca fez
+            sentido, e no protótipo isso zerava a lista de voos sem explicação.
+          */}
+          {disponiveis.map((f) => {
+            const ativa = facetas.includes(f.id)
+            return (
+              <button
+                key={f.id}
+                type="button"
+                className={`${css['faceta']} ${ativa ? css['ativo'] : ''}`}
+                aria-pressed={ativa}
+                onClick={() => {
+                  aoAlternarFaceta(f.id)
+                }}
+              >
+                {f.label}
+              </button>
+            )
+          })}
+        </div>
+      </fieldset>
+
+      {busca.orcamento > 0 ? (
+        <>
+          <div className={css['divisoria']} />
+          <div className={css['orcamento']}>
+            <p className={css['legenda']}>Seu orçamento</p>
+            <p className={css['orcamentoValor']}>{moeda(busca.orcamento)}</p>
+            <div
+              className={css['trilho']}
+              role="progressbar"
+              aria-valuenow={Math.round(usado)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Orçamento já comprometido"
+            >
+              <div className={css['preenchimento']} style={{ width: `${String(usado)}%` }} />
+            </div>
+            <p className={css['orcamentoNota']}>
+              {orcamento.estourou
+                ? `${moeda(orcamento.total - busca.orcamento)} acima do previsto`
+                : `${moeda(orcamento.total)} comprometidos · sobram ${moeda(orcamento.sobra)}`}
+            </p>
+          </div>
+        </>
+      ) : null}
     </aside>
   )
 }

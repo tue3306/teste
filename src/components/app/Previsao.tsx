@@ -20,7 +20,7 @@ const DIAS_SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
  * É o único ponto do produto que mostra dado ao vivo de terceiro, então trata
  * os três estados por completo: carregando (esqueleto do tamanho final), pronto
  * e falha. Numa falha a seção some em silêncio em vez de mostrar erro — clima é
- * complemento, não pode atrapalhar quem está montando o roteiro.
+ * complemento, não pode atrapalhar quem está montando a viagem.
  */
 export function Previsao({ latitude, longitude, destino, dias = 7 }: Props) {
   // A identidade desta função é a chave da busca: ela só muda quando as
@@ -78,7 +78,7 @@ export function Previsao({ latitude, longitude, destino, dias = 7 }: Props) {
       )}
 
       <p className={css['aviso']}>
-        Dados do Open-Meteo, atualizados a cada hora. O roteiro usa esta previsão para trocar praia
+        Dados do Open-Meteo, atualizados a cada hora. Use a previsão para escolher entre praia
         por museu nos dias de chuva.
       </p>
     </section>

@@ -20,6 +20,13 @@ export type NomeIcone =
   | 'noite'
   | 'familia'
   | 'luxo'
+  | 'serra'
+  | 'aventura'
+  | 'romantico'
+  | 'aviao'
+  | 'hotel'
+  | 'carro'
+  | 'evento'
   | 'estrela'
   | 'setaCima'
   | 'setaBaixo'
@@ -27,6 +34,71 @@ export type NomeIcone =
   | 'fechar'
 
 const TRACOS: Record<NomeIcone, React.ReactNode> = {
+  /* Cordilheira com neve no cume. */
+  serra: (
+    <>
+      <path d="M1.6 19.6h20.8" />
+      <path d="m3 19.6 5.6-10.4 3 5.2" />
+      <path d="m9.4 19.6 5.6-12 6 12" />
+      <path d="m12.8 11.4 2.2 1.4 2.2-1.4" />
+    </>
+  ),
+
+  /* Mosquetão de escalada — o objeto que diz "aventura" sem virar ilustração. */
+  aventura: (
+    <>
+      <path d="M8.6 3.4a5.4 5.4 0 0 0 0 10.8h1.2" />
+      <path d="M8.6 3.4h2.2a5.4 5.4 0 0 1 0 10.8" />
+      <path d="M10.8 14.2v6.4" />
+      <path d="M7.6 17.4h6.4" />
+    </>
+  ),
+
+  /* Duas taças brindando. */
+  romantico: (
+    <>
+      <path d="M4.4 3.2h5.2l-1 5.2a1.7 1.7 0 0 1-3.2 0Z" />
+      <path d="M14.4 3.2h5.2l-1 5.2a1.7 1.7 0 0 1-3.2 0Z" />
+      <path d="M7 10v10.4M17 10v10.4" />
+      <path d="M4.4 20.8h5.2M14.4 20.8h5.2" />
+    </>
+  ),
+
+  /* Avião em rota ascendente. */
+  aviao: (
+    <>
+      <path d="M2.6 13.4 21 4.2l-4.4 8.4-2.2 8.6-2.6-5.8-6.2-1.4Z" />
+      <path d="m11.8 15.4 4.8-3.2" />
+    </>
+  ),
+
+  /* Cama de hotel. */
+  hotel: (
+    <>
+      <path d="M2.6 19.4V7.6M21.4 19.4v-6.6H2.6" />
+      <path d="M2.6 16.6h18.8" />
+      <path d="M6.6 12.8v-2.4a1.6 1.6 0 0 1 1.6-1.6h3a1.6 1.6 0 0 1 1.6 1.6v2.4" />
+    </>
+  ),
+
+  /* Carro de perfil. */
+  carro: (
+    <>
+      <path d="M3.2 15.6h17.6v-3l-1.8-.6-2-4a1.6 1.6 0 0 0-1.4-.9H8.4a1.6 1.6 0 0 0-1.4.9l-2 4-1.8.6Z" />
+      <circle cx="7.2" cy="17.8" r="1.8" />
+      <circle cx="16.8" cy="17.8" r="1.8" />
+    </>
+  ),
+
+  /* Calendário com um dia marcado. */
+  evento: (
+    <>
+      <rect x="3.2" y="4.8" width="17.6" height="16" rx="2.2" />
+      <path d="M3.2 9.6h17.6M8 2.6v4.4M16 2.6v4.4" />
+      <path d="M8.4 14.2h3v3h-3z" />
+    </>
+  ),
+
   /* Sol sobre o mar. */
   praia: (
     <>

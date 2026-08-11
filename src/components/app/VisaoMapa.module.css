@@ -160,3 +160,88 @@
     height: 380px;
   }
 }
+
+/* --- legenda das regiões --- */
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-block-start: 12px;
+}
+
+.legendaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+.notaLinha {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--teal-text);
+  font-weight: 800;
+}
+
+.chamada {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-block: 10px;
+}
+
+/* Duas colunas de fato: rótulo em cima, valor embaixo. Uma <dl> em linha
+   quebrava feio quando "Melhor época" trazia uma frase inteira. */
+.fatos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
+  gap: 10px;
+  padding-block: 12px;
+  border-block: 1px solid var(--ink-a07);
+}
+
+.fatos dt {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.fatos dd {
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink);
+  margin-block-start: 2px;
+}
+
+.listaLinha {
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.55;
+  margin-block-start: 10px;
+}
+
+.inventario {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  margin-block: 12px;
+}
+
+.escolher {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 13.5px;
+  font-weight: 750;
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.escolher:hover {
+  background: var(--teal-strong);
+}

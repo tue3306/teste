@@ -3,17 +3,17 @@ import { motion, useScroll, useTransform } from 'motion/react'
 import { Imagem } from '@/components/ui/Imagem'
 import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import { useTilt } from '@/hooks/useTilt'
-import { DIA_DESTAQUE } from '@/data/roteiro'
-import { HOTEIS, VOOS } from '@/data/ofertas'
-import { ECONOMIA, GASTO } from '@/data/viagem'
+import { hospedagemService, passeioService, voosService } from '@/services/catalogo'
+import { useViagem } from '@/context/ViagemContext'
 import { moeda, nota, resumo } from '@/lib/format'
 import { MOLA_SUAVE } from '@/lib/motion'
 import css from './CartoesFlutuantes.module.css'
 
-const HOTEL = HOTEIS[0]
-const VOO = VOOS[0]
-/** Quatro paradas do dia em destaque — as mesmas que a aba Roteiro mostra. */
-const PARADAS = DIA_DESTAQUE.itens.slice(0, 4)
+/** Amostra do que a plataforma compara, para os cartões do hero. */
+const RIO = 'rio-de-janeiro'
+const HOTEL = hospedagemService.listar({ destino: RIO })[0]
+const VOO = voosService.listar({ destino: RIO })[0]
+const PASSEIOS = passeioService.listar({ destino: RIO }).slice(0, 4)
 
 /** Entrada dos cartões: sobem e assentam, um depois do outro. */
 const ENTRADA = {
@@ -43,6 +43,7 @@ const ENTRADA = {
  * corrente, nas seções abaixo.
  */
 export function CartoesFlutuantes() {
+  const { orcamento } = useViagem()
   const refHotel = useTilt<HTMLDivElement>()
   const refVoo = useTilt<HTMLDivElement>()
   const refRoteiro = useTilt<HTMLDivElement>()
@@ -101,16 +102,20 @@ export function CartoesFlutuantes() {
       >
         <div ref={refVoo} className={`${css['cartao']} ${css['voo']} ${css['compacto']} tilt`}>
           <div className={css['vooTopo']}>
-            <span>GRU → SDU</span>
-            <span className={css['direto']}>direto</span>
+            <span>
+              {VOO.origem} → {VOO.chegadaIata}
+            </span>
+            <span className={css['direto']}>{VOO.escalas === 0 ? 'direto' : `${String(VOO.escalas)} escala`}</span>
           </div>
           <div className={css['vooHorarios']}>
-            <div className={css['hora']}>06:20</div>
+            <div className={css['hora']}>{VOO.partida}</div>
             <div className={css['trilho']} />
-            <div className={css['hora']}>07:25</div>
+            <div className={css['hora']}>{VOO.chegada}</div>
           </div>
           <div className={css['vooRodape']}>
-            <div className={css['cia']}>LATAM · 1h 05m</div>
+            <div className={css['cia']}>
+              {VOO.companhia} · {VOO.duracao}
+            </div>
             <div className={css['vooPreco']}>{moeda(VOO.preco)}</div>
           </div>
         </div>
@@ -128,11 +133,11 @@ export function CartoesFlutuantes() {
           ref={refRoteiro}
           className={`${css['cartao']} ${css['roteiro']} ${css['compacto']} tilt`}
         >
-          <div className={css['roteiroTitulo']}>roteiro · dia {DIA_DESTAQUE.n}</div>
+          <div className={css['roteiroTitulo']}>passeios no Rio</div>
           <div className={css['roteiroLista']}>
-            {PARADAS.map((it) => (
-              <div key={it.hora} className={css['roteiroItem']}>
-                <span className={css['roteiroHora']}>{it.hora}</span>
+            {PASSEIOS.map((it) => (
+              <div key={it.id} className={css['roteiroItem']}>
+                <span className={css['roteiroHora']}>{it.saida}</span>
                 <span className={css['roteiroNome']}>{it.titulo}</span>
               </div>
             ))}
@@ -148,11 +153,14 @@ export function CartoesFlutuantes() {
         style={{ y: rapido }}
         className={css['camada']}
       >
+        {/* O total é o da viagem que está sendo montada de verdade — o cartão
+            do hero acompanha o que a pessoa escolhe na plataforma, em vez de
+            exibir um número fixo escrito no código. */}
         <div className={`${css['cartao']} ${css['total']} ${css['compacto']}`}>
           <div className={css['totalRotulo']}>total da viagem</div>
           <div className={css['totalValores']}>
-            <div className={css['totalPreco']}>{moeda(GASTO)}</div>
-            <div className={css['totalEconomia']}>−{moeda(ECONOMIA)}</div>
+            <div className={css['totalPreco']}>{moeda(orcamento.total)}</div>
+            <div className={css['totalEconomia']}>−{moeda(orcamento.economia)}</div>
           </div>
         </div>
       </motion.div>

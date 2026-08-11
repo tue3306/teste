@@ -1,0 +1,117 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.compacto {
+  gap: 14px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rotulo {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.entrada {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-a16);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-base);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
+.entrada:focus-visible {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--mint);
+}
+
+.entrada[aria-invalid='true'] {
+  border-color: var(--coral);
+}
+
+/* O campo e o botão do olho dividem a mesma caixa: o botão fica por cima, e o
+   `padding-inline-end` do input reserva o espaço para o texto não passar por
+   baixo dele. */
+.comBotao {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.comBotao .entrada {
+  padding-inline-end: 46px;
+}
+
+.olho {
+  position: absolute;
+  inset-inline-end: 4px;
+  /* 32px de alvo visual dentro de 40px de área clicável: acima dos 24px que a
+     SC 2.5.8 exige, sem um botão desproporcional ao campo. */
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  color: var(--ink-3);
+  transition:
+    color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.olho:hover {
+  color: var(--ink);
+  background: var(--sand-2);
+}
+
+.olho[aria-pressed='true'] {
+  color: var(--teal-text);
+}
+
+.ajuda {
+  font-size: 12px;
+  color: var(--coral-text);
+}
+
+.erro {
+  padding: 11px 14px;
+  border-radius: var(--r-lg);
+  background: var(--peach-3);
+  border: 1px solid var(--coral-border);
+  color: var(--coral-text);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.rodape {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  text-align: center;
+}
+
+.link {
+  font-weight: 750;
+  color: var(--teal-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover {
+  color: var(--teal-strong);
+}

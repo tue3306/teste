@@ -10,18 +10,45 @@
  * rodapé do site.
  */
 export const MANIFESTO = [
-  // --- destinos do Brasil ---
+  // --- os 28 destinos do estado do Rio de Janeiro ---
+  // Região metropolitana e litoral próximo
   { slug: 'rio-de-janeiro', titulo: 'Rio de Janeiro', alt: 'Vista do Rio de Janeiro com o Pão de Açúcar' },
-  { slug: 'sao-paulo', titulo: 'São Paulo', alt: 'Skyline da cidade de São Paulo' },
-  { slug: 'salvador', titulo: 'Salvador', alt: 'Centro histórico de Salvador, na Bahia' },
-  { slug: 'noronha', titulo: 'Fernando de Noronha', alt: 'Praia em Fernando de Noronha' },
-  { slug: 'foz-do-iguacu', titulo: 'Cataratas do Iguaçu', alt: 'Cataratas do Iguaçu' },
-  { slug: 'gramado', titulo: 'Gramado', alt: 'Arquitetura de Gramado, no Rio Grande do Sul' },
-  // "Jericoacoara" sozinho é página de desambiguação e não tem imagem principal.
-  { slug: 'jericoacoara', titulo: 'Praia de Jericoacoara', alt: 'Dunas e mar em Jericoacoara' },
-  { slug: 'chapada-diamantina', titulo: 'Parque Nacional da Chapada Diamantina', alt: 'Paisagem da Chapada Diamantina' },
-  { slug: 'bonito', titulo: 'Bonito (Mato Grosso do Sul)', alt: 'Águas transparentes em Bonito' },
-  { slug: 'lencois-maranhenses', titulo: 'Parque Nacional dos Lençóis Maranhenses', alt: 'Lagoas entre as dunas dos Lençóis Maranhenses' },
+  { slug: 'niteroi', titulo: 'Niterói', alt: 'Museu de Arte Contemporânea e a baía em Niterói' },
+  { slug: 'marica', titulo: 'Maricá', alt: 'Lagoa e restinga em Maricá' },
+  { slug: 'itaborai', titulo: 'Itaboraí', alt: 'Centro histórico de Itaboraí' },
+  { slug: 'guapimirim', titulo: 'Guapimirim', alt: 'Serra dos Órgãos vista de Guapimirim' },
+
+  // Costa do Sol / Região dos Lagos
+  { slug: 'buzios', titulo: 'Armação dos Búzios', alt: 'Enseada e barcos em Búzios' },
+  { slug: 'cabo-frio', titulo: 'Cabo Frio', alt: 'Praia do Forte em Cabo Frio' },
+  { slug: 'arraial-do-cabo', titulo: 'Arraial do Cabo', alt: 'Água transparente na Prainha de Arraial do Cabo' },
+  { slug: 'araruama', titulo: 'Araruama', alt: 'Lagoa de Araruama ao entardecer' },
+  { slug: 'sao-pedro-da-aldeia', titulo: 'São Pedro da Aldeia', alt: 'Orla da lagoa em São Pedro da Aldeia' },
+  { slug: 'saquarema', titulo: 'Saquarema', alt: 'Igreja de Nossa Senhora de Nazareth sobre o mar em Saquarema' },
+  { slug: 'rio-das-ostras', titulo: 'Rio das Ostras', alt: 'Praia urbana de Rio das Ostras' },
+
+  // Costa Verde
+  { slug: 'angra-dos-reis', titulo: 'Angra dos Reis', alt: 'Ilhas e mar calmo em Angra dos Reis' },
+  { slug: 'ilha-grande', titulo: 'Ilha Grande (Angra dos Reis)', alt: 'Vila do Abraão e a mata da Ilha Grande' },
+  { slug: 'paraty', titulo: 'Paraty', alt: 'Casario colonial do centro histórico de Paraty' },
+  { slug: 'mangaratiba', titulo: 'Mangaratiba', alt: 'Baía de Mangaratiba' },
+  { slug: 'itaguai', titulo: 'Itaguaí', alt: 'Orla de Itaguaí' },
+
+  // Região Serrana
+  { slug: 'petropolis', titulo: 'Petrópolis', alt: 'Museu Imperial e jardins em Petrópolis' },
+  { slug: 'teresopolis', titulo: 'Teresópolis', alt: 'Dedo de Deus na serra de Teresópolis' },
+  { slug: 'nova-friburgo', titulo: 'Nova Friburgo', alt: 'Montanhas em volta de Nova Friburgo' },
+  { slug: 'miguel-pereira', titulo: 'Miguel Pereira', alt: 'Vale verde de Miguel Pereira' },
+  { slug: 'vassouras', titulo: 'Vassouras', alt: 'Casarões do ciclo do café em Vassouras' },
+  { slug: 'valenca', titulo: 'Valença (Rio de Janeiro)', alt: 'Centro histórico de Valença' },
+  { slug: 'conservatoria', titulo: 'Conservatória (Valença)', alt: 'Ruas do distrito de Conservatória' },
+
+  // Norte e Noroeste Fluminense
+  { slug: 'campos-dos-goytacazes', titulo: 'Campos dos Goytacazes', alt: 'Centro de Campos dos Goytacazes' },
+  { slug: 'sao-joao-da-barra', titulo: 'São João da Barra', alt: 'Foz do rio Paraíba do Sul em São João da Barra' },
+  { slug: 'sao-francisco-de-itabapoana', titulo: 'São Francisco de Itabapoana', alt: 'Praia deserta em São Francisco de Itabapoana' },
+  { slug: 'macae', titulo: 'Macaé', alt: 'Orla e porto de Macaé' },
+  { slug: 'quissama', titulo: 'Quissamã', alt: 'Restinga e lagoas de Quissamã' },
 
   // --- pontos e bairros do Rio, usados nas ofertas e no roteiro ---
   { slug: 'cristo-redentor', titulo: 'Cristo Redentor', alt: 'Estátua do Cristo Redentor no Corcovado' },

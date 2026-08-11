@@ -15,7 +15,7 @@ import css from './AvisoPrivacidade.module.css'
  *
  * Não é banner de cookie — o site não usa cookie nenhum, nem rastreador. O que
  * ele guarda são preferências no `localStorage` do próprio aparelho: favoritos,
- * reservas, checklist, roteiro editado e a opção de movimento.
+ * a viagem montada e o checklist.
  *
  * Pela LGPD isso não exigiria consentimento prévio, já que nada identifica
  * ninguém nem sai do aparelho. O aviso existe porque as outras duas obrigações

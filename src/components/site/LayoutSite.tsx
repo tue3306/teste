@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { AvisoPrivacidade } from './AvisoPrivacidade'
 import { Cabecalho } from './Cabecalho'
-import { OfertaDeMovimento } from './OfertaDeMovimento'
 import { Rodape } from './Rodape'
 
 interface Props {
@@ -26,7 +25,6 @@ export function LayoutSite({ children, ancorasInternas = false }: Props) {
       <main id="conteudo">{children}</main>
       <Rodape />
       <AvisoPrivacidade />
-      <OfertaDeMovimento />
     </div>
   )
 }

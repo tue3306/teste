@@ -1,7 +1,7 @@
 import { buscarJson } from './http'
 import { env } from '@/config/env'
 import type { Oferta, Vertical } from '@/types'
-import { OFERTAS_POR_VERTICAL } from '@/data/ofertas'
+import { itensDe } from '@/data/rj'
 
 /**
  * Ponte com os provedores comerciais de inventário.
@@ -52,7 +52,7 @@ export async function buscarOfertas(
   sinal?: AbortSignal,
 ): Promise<ResultadoOfertas> {
   const local: ResultadoOfertas = {
-    ofertas: OFERTAS_POR_VERTICAL[consulta.vertical],
+    ofertas: itensDe(consulta.vertical),
     origem: 'local',
   }
 

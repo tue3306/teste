@@ -1,46 +1,108 @@
-import { moeda } from '@/lib/format'
-import { VIAGEM as VIAGEM_BASE } from './viagem'
-import type { CardCategoria, ItemChecklist, LinhaComparador } from '@/types'
+import { CATALOGO, DESTINOS } from '@/data/rj'
+import type { Busca, CardCategoria, Categoria, ItemChecklist, LinhaComparador } from '@/types'
+
+/**
+ * Conta quantos itens do catálogo atendem a um perfil de viagem.
+ *
+ * As contagens da régua de categorias eram escritas à mão — "64 opções", "38
+ * trilhas" — e não correspondiam a nada. Agora saem do próprio catálogo, então
+ * mudam sozinhas quando o inventário muda e nunca prometem o que não existe.
+ */
+function contar(categoria: Categoria): number {
+  return CATALOGO.filter((o) => o.categorias.includes(categoria)).length
+}
+
+/** Quantos destinos do estado atendem a um perfil. */
+function contarDestinos(categoria: Categoria): number {
+  return DESTINOS.filter((d) => d.categorias.includes(categoria)).length
+}
 
 /** Régua de categorias do site — cada cartão abre a plataforma já filtrada. */
 export const CATEGORIAS: CardCategoria[] = [
-  { id: 'praia', label: 'Praia', contagem: '64 opções', icone: 'praia', grad: 'var(--grad-mar)' },
+  {
+    id: 'praia',
+    label: 'Praia',
+    contagem: `${String(contarDestinos('praia'))} destinos`,
+    icone: 'praia',
+    grad: 'var(--grad-mar)',
+  },
+  {
+    id: 'serra',
+    label: 'Serra',
+    contagem: `${String(contarDestinos('serra'))} destinos`,
+    icone: 'serra',
+    grad: 'var(--grad-mata)',
+  },
   {
     id: 'natureza',
     label: 'Natureza',
-    contagem: '38 trilhas',
+    contagem: `${String(contar('natureza'))} opções`,
     icone: 'natureza',
     grad: 'var(--grad-mata)',
   },
   {
-    id: 'gastronomia',
-    label: 'Gastronomia',
-    contagem: '212 lugares',
-    icone: 'gastronomia',
-    grad: 'var(--grad-sol)',
-  },
-  {
-    id: 'cultura',
-    label: 'Cultura',
-    contagem: '47 museus',
+    id: 'historico',
+    label: 'Histórico',
+    contagem: `${String(contar('historico'))} opções`,
     icone: 'cultura',
     grad: 'var(--grad-céu)',
   },
   {
+    id: 'aventura',
+    label: 'Aventura',
+    contagem: `${String(contar('aventura'))} opções`,
+    icone: 'aventura',
+    grad: 'var(--grad-praia)',
+  },
+  {
+    id: 'gastronomia',
+    label: 'Gastronomia',
+    contagem: `${String(contar('gastronomia'))} lugares`,
+    icone: 'gastronomia',
+    grad: 'var(--grad-sol)',
+  },
+  {
     id: 'noite',
     label: 'Vida noturna',
-    contagem: '86 casas',
+    contagem: `${String(contar('noite'))} opções`,
     icone: 'noite',
     grad: 'var(--grad-noite)',
   },
   {
     id: 'familia',
     label: 'Com crianças',
-    contagem: '29 roteiros',
+    contagem: `${String(contar('familia'))} opções`,
     icone: 'familia',
     grad: 'var(--grad-praia)',
   },
-  { id: 'luxo', label: 'Luxo', contagem: '18 resorts', icone: 'luxo', grad: 'var(--grad-sol)' },
+  {
+    id: 'romantico',
+    label: 'Romântico',
+    contagem: `${String(contar('romantico'))} opções`,
+    icone: 'romantico',
+    grad: 'var(--grad-sol)',
+  },
+  {
+    id: 'fim-de-semana',
+    label: 'Fim de semana',
+    contagem: `${String(contarDestinos('fim-de-semana'))} destinos`,
+    icone: 'evento',
+    grad: 'var(--grad-céu)',
+  },
+  {
+    id: 'economico',
+    label: 'Econômico',
+    contagem: `${String(contar('economico'))} opções`,
+    icone: 'carro',
+    grad: 'var(--grad-mata)',
+  },
+  {
+    id: 'premium',
+    label: 'Premium',
+    contagem: `${String(contar('premium'))} opções`,
+    icone: 'luxo',
+    grad: 'var(--grad-sol)',
+  },
 ]
 
 /** Verticais varridas a cada busca, exibidas como chips no bento. */
@@ -54,12 +116,11 @@ export const VERTICAIS_BUSCADAS = [
   'Passeios',
   'Eventos',
   'Carros',
-  'Seguro',
 ]
 
 /** Itens da faixa rolante ("marquee") sob o hero. */
 export const FONTES_CONECTADAS = [
-  '342 fontes conectadas',
+  `${String(CATALOGO.length)} opções no catálogo`,
   'companhias aéreas',
   'hotéis & resorts',
   'pousadas',
@@ -68,42 +129,50 @@ export const FONTES_CONECTADAS = [
   'passeios',
   'eventos',
   'aluguel de carros',
-  'seguro viagem',
+  `${String(DESTINOS.length)} destinos do RJ`,
 ]
 
 /**
- * Comparação de preço da mesma diária em sete canais.
+ * Comparação de preço da mesma hospedagem em cinco canais.
  *
- * As larguras de barra vêm proporcionais aos preços, como no protótipo.
+ * As larguras de barra são proporcionais aos preços.
  */
 export const COMPARADOR: LinhaComparador[] = [
   {
     fonte: 'BI&B',
-    preco: 'R$ 6.230',
+    preco: 'R$ 890',
     nota: 'sem taxa de serviço · cancela grátis',
     largura: '54%',
     destaque: true,
   },
   {
     fonte: 'Agência A',
-    preco: 'R$ 6.860',
-    nota: 'taxa de R$ 180 no checkout',
+    preco: 'R$ 980',
+    nota: 'taxa de R$ 90 no checkout',
     largura: '64%',
     destaque: false,
   },
-  { fonte: 'Buscador B', preco: 'R$ 7.010', nota: 'cancelamento pago', largura: '69%', destaque: false },
-  { fonte: 'Portal C', preco: 'R$ 7.266', nota: 'café não incluído', largura: '76%', destaque: false },
-  { fonte: 'Site do hotel', preco: 'R$ 7.480', nota: 'tarifa balcão', largura: '84%', destaque: false },
-]
-
-/** Perguntas prontas oferecidas abaixo do campo de chat da Bia. */
-export const SUGESTOES_BIA = [
-  'Monte um roteiro de 7 dias',
-  'Quanto vou gastar?',
-  'Encontre hotéis melhores',
-  'O que fazer à noite?',
-  'Lugares escondidos',
-  'Melhor época para viajar',
+  {
+    fonte: 'Buscador B',
+    preco: 'R$ 1.010',
+    nota: 'cancelamento pago',
+    largura: '69%',
+    destaque: false,
+  },
+  {
+    fonte: 'Portal C',
+    preco: 'R$ 1.066',
+    nota: 'café não incluído',
+    largura: '76%',
+    destaque: false,
+  },
+  {
+    fonte: 'Site do hotel',
+    preco: 'R$ 1.094',
+    nota: 'tarifa balcão',
+    largura: '84%',
+    destaque: false,
+  },
 ]
 
 /** Checklist de preparação exibido em "Minha viagem". */
@@ -116,41 +185,19 @@ export const CHECKLIST: ItemChecklist[] = [
 ]
 
 /** Itens marcados por padrão no checklist. */
-export const CHECKLIST_INICIAL = ['doc', 'seguro']
+export const CHECKLIST_INICIAL = ['doc']
 
-/**
- * Orçamento, gasto e economia vêm de `data/viagem.ts`, calculados a partir do
- * que está reservado. Os valores fixos que existiam aqui se contradiziam: o
- * gasto declarado era menor que a própria hospedagem.
- */
-export { COMPOSICAO, ECONOMIA, GASTO, SOBRA, USO_DO_ORCAMENTO, VIAGEM } from './viagem'
-
-/** Alertas exibidos em "Minha viagem". */
-export const ALERTAS = [
-  { destaque: 'Preço caiu', tom: 'teal' as const, texto: ' · voo de volta −R$ 62' },
-  { destaque: 'Check-in', tom: 'coral' as const, texto: ' abre em 12 dias' },
-  { destaque: '', tom: 'neutro' as const, texto: 'Chuva prevista no dia 4 — roteiro já ajustado' },
-]
-
-/** Situação dos documentos da viagem. */
-export const DOCUMENTOS = [
-  { label: 'RG / CPF', valor: 'ok', ok: true },
-  { label: 'Seguro viagem', valor: 'ok', ok: true },
-  { label: 'Febre amarela', valor: 'opcional', ok: false },
-  { label: 'Cartão de embarque', valor: 'em 12 d', ok: false },
-]
-
-/** Estatísticas animadas do hero. */
+/** Estatísticas animadas do hero, derivadas do catálogo. */
 export const ESTATISTICAS = [
+  { valor: DESTINOS.length, sufixo: '', label: 'destinos no RJ' },
+  { valor: CATALOGO.length, sufixo: '', label: 'opções comparadas' },
   { valor: 34, sufixo: '%', label: 'economia média' },
-  { valor: 11, sufixo: 's', label: 'roteiro completo' },
-  { valor: 890, sufixo: 'k', label: 'viagens planejadas' },
 ]
 
 /** Diferenciais listados na seção de viagem em grupo. */
 export const DIFERENCIAIS_SOCIAL = [
   'Grupos por destino, voo, hotel ou evento',
-  'Chat, roteiros compartilhados e divisão de custos',
+  'Viagens compartilhadas e divisão de custos',
   'Privacidade granular e verificação de perfil',
 ]
 
@@ -192,7 +239,7 @@ export const VIAJANTES: Viajante[] = [
     nome: 'Marcos',
     iniciais: 'M',
     origem: 'Curitiba, PR',
-    coincidencia: 'Mesmo hotel · Ipanema · 12–19 set',
+    coincidencia: 'Mesma pousada · Búzios · 12–19 set',
     tipo: 'hotel',
     interesses: ['Surf', 'Vida noturna'],
     verificado: true,
@@ -202,9 +249,9 @@ export const VIAJANTES: Viajante[] = [
     nome: 'Júlia',
     iniciais: 'J',
     origem: 'Belo Horizonte, MG',
-    coincidencia: 'Mesmo passeio · Bondinho · 15 set',
+    coincidencia: 'Mesmo passeio · Arraial do Cabo · 15 set',
     tipo: 'passeio',
-    interesses: ['Fotografia', 'Cultura'],
+    interesses: ['Fotografia', 'Mergulho'],
     verificado: false,
   },
   {
@@ -212,21 +259,44 @@ export const VIAJANTES: Viajante[] = [
     nome: 'Família Duarte',
     iniciais: 'FD',
     origem: 'Porto Alegre, RS',
-    coincidencia: 'Mesmo período · 11–20 set',
+    coincidencia: 'Mesmo período · 11–20 set · Região Serrana',
     tipo: 'evento',
-    interesses: ['Com crianças', 'Praia'],
+    interesses: ['Com crianças', 'Serra'],
     verificado: true,
   },
 ]
 
-/** Tipos de viagem oferecidos no formulário de busca. */
-export const TIPOS_DE_VIAGEM = ['Casal', 'Família', 'Mochilão', 'Luxo', 'Aventura', 'Trabalho']
+/** Perfis de viagem oferecidos no formulário de busca. */
+export const TIPOS_DE_VIAGEM: { id: Categoria; label: string }[] = [
+  { id: 'praia', label: 'Praia' },
+  { id: 'serra', label: 'Serra' },
+  { id: 'romantico', label: 'Romântico' },
+  { id: 'familia', label: 'Família' },
+  { id: 'aventura', label: 'Aventura' },
+  { id: 'gastronomia', label: 'Gastronomia' },
+  { id: 'economico', label: 'Econômico' },
+  { id: 'premium', label: 'Premium' },
+]
 
-/** Valores iniciais do formulário de busca, coerentes com a viagem em foco. */
-export const BUSCA_INICIAL = {
-  destino: `${VIAGEM_BASE.destino}, Brasil`,
-  datas: VIAGEM_BASE.periodo,
-  pessoas: `${String(VIAGEM_BASE.pessoas)} adultos`,
-  orcamento: moeda(VIAGEM_BASE.orcamento),
-  tipo: 'Casal',
+/**
+ * Datas iniciais: um fim de semana prolongado daqui a três semanas.
+ *
+ * São calculadas a partir de hoje, e não escritas à mão, porque data fixa em
+ * dado de demonstração envelhece — o protótipo abria com "12–19 set" muito
+ * depois de setembro ter passado.
+ */
+function daquiA(dias: number): string {
+  const d = new Date()
+  d.setDate(d.getDate() + dias)
+  return d.toISOString().slice(0, 10)
+}
+
+/** Valores iniciais do formulário de busca. */
+export const BUSCA_INICIAL: Busca = {
+  destino: 'rio-de-janeiro',
+  ida: daquiA(21),
+  volta: daquiA(26),
+  pessoas: { adultos: 2, criancas: 0, bebes: 0 },
+  orcamento: 6000,
+  tipo: '',
 }

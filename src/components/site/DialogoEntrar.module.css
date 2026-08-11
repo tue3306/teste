@@ -1,70 +1,27 @@
-.form {
+.corpo {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  min-width: 0;
 }
 
-.campo {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.rotulo {
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  color: var(--ink-2);
-}
-
-.entrada {
-  padding: 14px 16px;
+.demo {
+  padding: 11px 13px;
   border-radius: var(--r-lg);
-  border: 1px solid var(--ink-a12);
-  background: var(--sand);
-  font-size: var(--fs-base);
-  transition: border-color var(--t-fast) ease;
-}
-
-.entrada:hover {
-  border-color: var(--ink-a16);
-}
-
-.entrada[aria-invalid='true'] {
-  border-color: var(--coral-strong);
-  background: var(--peach-2);
-}
-
-.erro {
-  font-size: var(--fs-xs);
-  font-weight: 650;
-  color: var(--coral-text);
-}
-
-.aviso {
-  font-size: var(--fs-xs);
-  color: var(--ink-3);
-  line-height: 1.5;
-}
-
-.sucesso {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 18px;
-  border-radius: var(--r-xl);
+  background: var(--mint-2);
   border: 1px solid var(--teal-border);
-  background: var(--mint);
-}
-
-.sucessoTitulo {
-  font-size: var(--fs-base);
-  font-weight: 750;
-  color: var(--teal-text);
-}
-
-.sucessoTexto {
-  font-size: var(--fs-sm);
+  font-size: 12.5px;
   color: var(--ink-2);
-  line-height: 1.55;
-  margin: 0;
+  line-height: 1.6;
+}
+
+.demo code {
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Code', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  border: 1px solid var(--ink-a09);
+  color: var(--teal-text);
 }

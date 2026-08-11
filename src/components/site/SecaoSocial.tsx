@@ -28,7 +28,7 @@ const CLASSE_SELO: Record<Viajante['tipo'], string> = {
  */
 export function SecaoSocial() {
   return (
-    <section className="shell secao" aria-labelledby="social-titulo">
+    <section id="grupos" className="shell secao" aria-labelledby="social-titulo">
       <div className={css['grade']}>
         <Reveal className={css['painel']}>
           <div className={css['painelTopo']}>
@@ -88,7 +88,7 @@ export function SecaoSocial() {
           </h2>
           <p className="lead" style={{ marginBlockStart: 20, maxWidth: 440 }}>
             Descubra pessoas indo para o mesmo destino, no mesmo período, no mesmo voo ou evento.
-            Crie grupos, divida corrida e hospedagem, troque roteiros.
+            Crie grupos, divida corrida e hospedagem, troque dicas.
           </p>
           <ul className={css['lista2']}>
             {DIFERENCIAIS_SOCIAL.map((d) => (

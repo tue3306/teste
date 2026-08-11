@@ -1,113 +1,56 @@
-import { useId, useState, type FormEvent } from 'react'
-import { Botao } from '@/components/ui/Botao'
+import { useNavigate } from 'react-router-dom'
 import { Dialogo } from '@/components/ui/Dialogo'
+import { FormularioLogin } from '@/components/auth/FormularioLogin'
 import css from './DialogoEntrar.module.css'
 
 interface Props {
   aberto: boolean
   aoFechar: () => void
+  /** Para onde ir depois de entrar. Sem isto, fica onde está. */
+  destinoAposEntrar?: string
 }
 
-/** Validação de e-mail deliberadamente permissiva: rejeita erro de digitação
- *  óbvio sem brigar com endereços válidos e incomuns. */
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-
 /**
- * Entrada por link mágico.
+ * Modal de entrada, aberto pelo botão "Entrar" do cabeçalho.
  *
- * Pede só o e-mail: sem senha não há o que vazar, e não há campo de credencial
- * a proteger num front-end estático. No protótipo o botão "Entrar" não tinha
- * ação nenhuma.
+ * O formulário é o mesmo da página `/login` — mesma validação, mesmas
+ * mensagens, mesmo estado de carregamento. Ter dois formulários seria ter duas
+ * versões da verdade sobre o que é uma senha válida.
  *
- * O envio ainda não fala com um backend — o estado de sucesso diz isso com
- * todas as letras em vez de fingir que a conta foi criada.
+ * As duas portas existem de propósito: "Entrar" abre o modal, porque quem está
+ * lendo a home não quer perder o lugar; "Abrir plataforma" leva a `/login`,
+ * porque ali a pessoa já decidiu ir para outro lugar.
  */
-export function DialogoEntrar({ aberto, aoFechar }: Props) {
-  const [email, setEmail] = useState('')
-  const [erro, setErro] = useState<string | null>(null)
-  const [enviado, setEnviado] = useState(false)
-  const campoId = useId()
-  const erroId = useId()
-
-  // O cabeçalho só monta este componente quando a modal abre, então o estado
-  // já nasce limpo a cada abertura — sem efeito de reset.
-
-  function aoEnviar(e: FormEvent) {
-    e.preventDefault()
-    const valor = email.trim()
-
-    if (!valor) {
-      setErro('Escreva seu e-mail para continuar.')
-      return
-    }
-    if (!EMAIL.test(valor)) {
-      setErro('Esse e-mail não parece completo. Confira e tente de novo.')
-      return
-    }
-
-    setErro(null)
-    setEnviado(true)
-  }
+export function DialogoEntrar({ aberto, aoFechar, destinoAposEntrar }: Props) {
+  const navegar = useNavigate()
 
   return (
     <Dialogo
       aberto={aberto}
       aoFechar={aoFechar}
       titulo="Entrar na BI&B"
-      descricao={
-        enviado ? undefined : 'Mandamos um link de acesso por e-mail. Sem senha para lembrar.'
-      }
+      descricao="Acesse sua conta para montar a viagem e salvar as escolhas."
     >
-      {enviado ? (
-        <div className={css['sucesso']} role="status">
-          <span className={css['sucessoTitulo']}>Link a caminho de {email}</span>
-          <p className={css['sucessoTexto']}>
-            Assim que a autenticação entrar no ar, é por aqui que você vai acessar suas reservas
-            salvas. Por enquanto, tudo que você salvar fica guardado neste navegador.
-          </p>
-          <Botao variante="secundario" onClick={aoFechar}>
-            Fechar
-          </Botao>
-        </div>
-      ) : (
-        <form className={css['form']} onSubmit={aoEnviar} noValidate>
-          <div className={css['campo']}>
-            <label className={css['rotulo']} htmlFor={campoId}>
-              Seu e-mail
-            </label>
-            <input
-              id={campoId}
-              className={css['entrada']}
-              type="email"
-              name="email"
-              inputMode="email"
-              autoComplete="email"
-              placeholder="voce@exemplo.com"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value)
-                if (erro) setErro(null)
-              }}
-              aria-invalid={erro ? 'true' : 'false'}
-              aria-describedby={erro ? erroId : undefined}
-            />
-            {erro ? (
-              <span id={erroId} className={css['erro']} role="alert">
-                {erro}
-              </span>
-            ) : null}
-          </div>
+      <div className={css['corpo']}>
+        <FormularioLogin
+          compacto
+          aoEntrar={() => {
+            aoFechar()
+            if (destinoAposEntrar) void navegar(destinoAposEntrar)
+          }}
+          aoCadastrar={() => {
+            aoFechar()
+            void navegar('/cadastro')
+          }}
+        />
 
-          <Botao type="submit" bloco>
-            Enviar link de acesso
-          </Botao>
-
-          <p className={css['aviso']}>
-            Planejar é grátis e não exige conta. A entrada serve para levar seus favoritos e
-            roteiros de um aparelho para outro.
-          </p>
-        </form>
-      )}
+        {/* A credencial fica à vista: esta é uma demonstração sem servidor, e a
+            senha está no pacote que o navegador já baixou. */}
+        <p className={css['demo']}>
+          <strong>Demonstração:</strong> usuário <code>tuerezende</code> · senha{' '}
+          <code>rezendetue</code>
+        </p>
+      </div>
     </Dialogo>
   )
 }

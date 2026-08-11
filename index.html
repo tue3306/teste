@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-    <title>BI&amp;B — Voo, hotel e roteiro numa busca só</title>
+    <title>BI&amp;B — Voo, hotel e passeio numa busca só</title>
     <meta
       name="description"
-      content="A BI&amp;B varre companhias aéreas, hospedagens, passeios e restaurantes ao mesmo tempo, compara tudo lado a lado e monta seu roteiro dia por dia. Melhor preço garantido."
+      content="A BI&amp;B varre companhias aéreas, hospedagens, passeios, restaurantes, eventos e locadoras nos 29 destinos do Rio de Janeiro, compara tudo lado a lado e fecha o orçamento da viagem."
     />
     <link rel="canonical" href="https://bib.com.br/" />
     <meta name="theme-color" content="#FBF6EE" />
@@ -17,19 +17,21 @@
       Preferência de movimento, resolvida antes da primeira pintura.
 
       Precisa ser embutido e síncrono: se esperasse o React montar, a página
-      apareceria animada por um instante antes de ser corrigida — exatamente o
-      susto que quem pediu movimento reduzido quer evitar. Todo o CSS depende do
-      atributo `data-motion`, não da media query, para que a escolha explícita
-      do usuário possa vencer o padrão do sistema.
+      apareceria com a amplitude cheia por um instante antes de ser corrigida.
+      Todo o CSS depende do atributo `data-motion`, e não da media query direto,
+      para que exista uma fonte de verdade só entre folha de estilo e script.
+
+      `reduzido` contém a amplitude — não desliga o movimento. Ver
+      `src/hooks/useMovimento.ts`.
     -->
     <script>
       ;(function () {
         try {
-          var escolha = localStorage.getItem('bib:movimento')
-          var reduzido =
-            escolha === 'reduzido' ||
-            (escolha !== 'ligado' && matchMedia('(prefers-reduced-motion: reduce)').matches)
-          document.documentElement.dataset.motion = reduzido ? 'reduzido' : 'ok'
+          document.documentElement.dataset.motion = matchMedia(
+            '(prefers-reduced-motion: reduce)',
+          ).matches
+            ? 'reduzido'
+            : 'ok'
         } catch (e) {
           document.documentElement.dataset.motion = 'ok'
         }
@@ -44,10 +46,10 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="BI&amp;B" />
     <meta property="og:locale" content="pt_BR" />
-    <meta property="og:title" content="BI&amp;B — Voo, hotel e roteiro numa busca só" />
+    <meta property="og:title" content="BI&amp;B — Voo, hotel e passeio numa busca só" />
     <meta
       property="og:description"
-      content="Compare voos, hospedagem e passeios lado a lado e receba um roteiro dia por dia montado por IA. Melhor preço garantido."
+      content="Compare voos, hospedagem, passeios, restaurantes e carros nos 29 destinos do RJ e feche o orçamento da viagem. Melhor preço garantido."
     />
     <meta property="og:url" content="https://bib.com.br/" />
     <meta property="og:image" content="https://bib.com.br/og-image.png" />
@@ -57,10 +59,10 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="BI&amp;B — Voo, hotel e roteiro numa busca só" />
+    <meta name="twitter:title" content="BI&amp;B — Voo, hotel e passeio numa busca só" />
     <meta
       name="twitter:description"
-      content="Compare voos, hospedagem e passeios lado a lado e receba um roteiro dia por dia montado por IA."
+      content="Compare voos, hospedagem, passeios e carros nos 29 destinos do Rio de Janeiro."
     />
     <meta name="twitter:image" content="https://bib.com.br/og-image.png" />
 
@@ -77,7 +79,7 @@
         "@type": "Organization",
         "name": "BI&B",
         "url": "https://bib.com.br/",
-        "description": "Planejamento de viagem inteligente. Voo, hotel e roteiro em uma busca só.",
+        "description": "Comparação de voo, hospedagem, passeios, restaurantes, eventos e carros nos 29 destinos do estado do Rio de Janeiro.",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Rio de Janeiro",
@@ -93,8 +95,8 @@
       <div style="padding: 32px; font-family: system-ui, sans-serif; color: #14312f">
         <h1>BI&amp;B</h1>
         <p>
-          A plataforma BI&amp;B precisa de JavaScript para comparar voos, hospedagem e passeios em
-          tempo real. Ative o JavaScript no seu navegador para continuar.
+          A plataforma BI&amp;B precisa de JavaScript para comparar voos, hospedagem, passeios e
+          carros. Ative o JavaScript no seu navegador para continuar.
         </p>
       </div>
     </noscript>

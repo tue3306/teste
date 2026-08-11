@@ -24,8 +24,8 @@ export function ChamadaFinal() {
           <Botao para="/plataforma/voos" tamanho="lg" ref={refMagnetico} className="magnetico">
             Planejar o Rio agora
           </Botao>
-          <Botao para="/plataforma/bia" variante="secundario" tamanho="lg">
-            Falar com a Bia
+          <Botao para="/plataforma/destinos" variante="secundario" tamanho="lg">
+            Ver os 29 destinos
           </Botao>
         </div>
       </Reveal>
