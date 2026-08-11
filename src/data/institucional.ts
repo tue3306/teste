@@ -3,7 +3,7 @@
  *
  * Sobre a Privacidade e os Termos: o texto descreve **o que este código faz de
  * fato** — quais dados ficam no navegador, quais APIs são chamadas, o que não é
- * coletado. Isso é verificável lendo `src/services/` e `src/hooks/useLocalStorage.ts`.
+ * coletado. Isso é verificável lendo `src/services/` e `src/lib/armazenamento.ts`.
  *
  * O que o texto NÃO é: um documento jurídico revisado. Redigir cláusula
  * contratual e política de LGPD com aparência de definitiva, sem advogado, é

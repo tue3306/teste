@@ -1,0 +1,641 @@
+/**
+ * Planejador em etapas.
+ *
+ * Duas colunas no desktop — fluxo à esquerda, resumo fixo à direita. O resumo
+ * some abaixo de 1040px e vira um bloco no fim: empilhá-lo acima do conteúdo no
+ * celular empurraria a etapa atual para fora da primeira tela.
+ */
+.grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (min-width: 1040px) {
+  .grade {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+  }
+}
+
+.principal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* --- trilha de etapas --- */
+.trilha {
+  padding: 14px 16px;
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  box-shadow: var(--sh-sm);
+}
+
+.barra {
+  height: 5px;
+  border-radius: var(--r-pill);
+  background: var(--ink-a07);
+  overflow: hidden;
+  margin-block-end: 12px;
+}
+
+.preenche {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--teal), var(--coral));
+}
+
+/* Quebram em linha: onze etapas numa faixa rolável são etapas que ninguém
+   encontra sem arrastar. */
+.passos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.passo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 12.5px;
+  font-weight: 700;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease);
+}
+
+.passo:hover {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+.passoNumero {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ink-a07);
+  font-size: 10.5px;
+  font-weight: 800;
+  flex: none;
+}
+
+.passoFeito .passoNumero {
+  background: var(--mint);
+  color: var(--teal-text);
+}
+
+.passoAqui {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.passoAqui:hover {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.passoAqui .passoNumero {
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--surface);
+}
+
+@media (max-width: 700px) {
+  .passoNome {
+    display: none;
+  }
+
+  .passo {
+    padding: 6px;
+  }
+}
+
+/* --- painel da etapa --- */
+.painel {
+  padding: 20px;
+  border-radius: var(--r-3xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  box-shadow: var(--sh-md);
+  min-width: 0;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-block-end: 16px;
+  border-block-end: 1px solid var(--ink-a07);
+}
+
+.etapaIcone {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-lg);
+  background: var(--mint);
+  color: var(--teal-text);
+  flex: none;
+}
+
+.etapaContador {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.etapaTitulo {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-block-start: 2px;
+}
+
+.etapaAjuda {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin-block-start: 3px;
+  max-width: 60ch;
+}
+
+.corpo {
+  padding-block: 18px;
+  min-width: 0;
+}
+
+.duplo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- navegação --- */
+.rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--ink-a07);
+}
+
+.voltar,
+.avancar {
+  min-height: 44px;
+  padding: 12px 22px;
+  border-radius: var(--r-pill);
+  font-size: 13.5px;
+  font-weight: 750;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.voltar {
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+}
+
+.voltar:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+.avancar {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.avancar:hover:not(:disabled) {
+  background: var(--teal-strong);
+}
+
+.avancar:disabled {
+  background: var(--ink-a12);
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+
+.travado {
+  margin-block-start: 10px;
+  font-size: 12.5px;
+  color: var(--coral-text);
+  text-align: end;
+}
+
+/* --- datas --- */
+.datas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 12px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.campoRotulo {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.campoEntrada {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 11px 14px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-a16);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-sm);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
+.campoEntrada:focus-visible {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--mint);
+}
+
+.datasResumo {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+/* --- preferências --- */
+.perfis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.perfil {
+  min-height: 40px;
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.perfil:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+.perfilAtivo {
+  background: var(--mint);
+  border-color: var(--teal);
+  color: var(--teal-text);
+}
+
+/* --- mapa --- */
+.mapaBloco {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.mapaMoldura {
+  height: 340px;
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  border: 1px solid var(--ink-a09);
+}
+
+.mapaTitulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  margin-block-end: 9px;
+}
+
+.vizinhos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 9px;
+}
+
+.vizinho {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: var(--r-xl);
+  background: var(--sand);
+  min-width: 0;
+}
+
+.vizinhoFoto {
+  flex: none;
+  width: 72px;
+  height: 50px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.vizinhoNome {
+  display: block;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.vizinhoSub {
+  display: block;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* --- resumo final --- */
+.resumoVazio {
+  padding: 28px;
+  border-radius: var(--r-2xl);
+  background: var(--sand);
+  border: 1px dashed var(--ink-a16);
+  text-align: center;
+}
+
+.resumoVazioTitulo {
+  font-size: var(--fs-base);
+  font-weight: 750;
+}
+
+.resumoVazioTexto {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin-block-start: 6px;
+  max-width: 48ch;
+  margin-inline: auto;
+}
+
+.resumoFinal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resumoFinalCabecalho {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+  color: var(--teal-text);
+}
+
+.extrato {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px;
+  border-radius: var(--r-lg);
+  background: var(--sand);
+  min-width: 0;
+}
+
+.linhaFoto {
+  flex: none;
+  width: 56px;
+  height: 42px;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.linhaCorpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.linhaNome {
+  font-size: 13px;
+  font-weight: 750;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linhaConta {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--teal-text);
+}
+
+.linhaValor {
+  flex: none;
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.fecho {
+  padding-block-start: 14px;
+  border-block-start: 1px solid var(--ink-a07);
+}
+
+.fechoLinha {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-block: 4px;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.fechoTotal {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  padding-block: 8px;
+}
+
+.riscado {
+  text-decoration: line-through;
+  color: var(--ink-3);
+}
+
+.fechoEconomia {
+  margin-block-start: 10px;
+  padding: 11px 14px;
+  border-radius: var(--r-lg);
+  background: var(--mint);
+  border: 1px solid var(--teal-border);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal-text);
+}
+
+.aviso {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+/* --- resumo lateral --- */
+.lateral {
+  min-width: 0;
+}
+
+@media (min-width: 1040px) {
+  .lateral {
+    position: sticky;
+    inset-block-start: 120px;
+  }
+}
+
+.resumo {
+  padding: 18px;
+  border-radius: var(--r-2xl);
+  background: linear-gradient(165deg, var(--mint-2), var(--surface) 55%);
+  border: 1px solid var(--teal-border);
+  box-shadow: var(--sh-sm);
+}
+
+.resumoTitulo {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-3);
+}
+
+.resumoLista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block: 12px;
+}
+
+.resumoLista div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.resumoLista dt {
+  font-size: 12px;
+  color: var(--ink-3);
+  flex: none;
+}
+
+.resumoLista dd {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: end;
+  min-width: 0;
+}
+
+.resumoTotal {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-block: 12px;
+  border-block: 1px solid var(--teal-border);
+}
+
+.resumoTotalRotulo {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+}
+
+.resumoTotalValor {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.resumoEconomia {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--teal-text);
+}
+
+.pendencias {
+  margin-block-start: 12px;
+}
+
+.pendenciasTitulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--coral-text);
+  margin-block-end: 6px;
+}
+
+.pendencia {
+  display: block;
+  width: 100%;
+  text-align: start;
+  min-height: 32px;
+  padding: 7px 11px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--coral-border);
+  color: var(--coral-text);
+  font-size: 12px;
+  font-weight: 700;
+  margin-block-end: 4px;
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.pendencia:hover {
+  background: var(--peach-3);
+}
+
+.completo {
+  margin-block-start: 12px;
+  font-size: 12px;
+  color: var(--ink-3);
+}

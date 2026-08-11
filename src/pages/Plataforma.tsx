@@ -6,7 +6,7 @@ import { DialogoItem } from '@/components/app/DialogoItem'
 import { SecaoLista } from '@/components/app/SecaoLista'
 import { VisaoDestinos } from '@/components/app/VisaoDestinos'
 import { VisaoMapa } from '@/components/app/VisaoMapa'
-import { VisaoViagem } from '@/components/app/VisaoViagem'
+import { Planejador } from '@/components/app/Planejador'
 import { TITULOS, ehAba, ehVertical } from '@/components/app/abas'
 import { useViagem } from '@/context/ViagemContext'
 import { useMetaDaPagina } from '@/hooks/useMetaDaPagina'
@@ -58,7 +58,7 @@ export function Plataforma() {
               />
               {abaValida === 'destinos' ? <VisaoDestinos /> : null}
               {abaValida === 'mapa' ? <VisaoMapa /> : null}
-              {abaValida === 'viagem' ? <VisaoViagem /> : null}
+              {abaValida === 'viagem' ? <Planejador /> : null}
             </>
           )}
         </main>

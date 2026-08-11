@@ -1,0 +1,254 @@
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.titulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cartao {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 10px;
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  min-width: 0;
+  box-shadow: var(--sh-sm);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.cartao:hover {
+  border-color: var(--ink-a16);
+}
+
+/* Já escolhido: borda e fundo teal, para ser reconhecível de relance numa
+   lista de vinte. */
+.escolhido {
+  border-color: var(--teal-border);
+  background: linear-gradient(180deg, var(--mint-2), var(--surface) 45%);
+}
+
+.foto {
+  flex: none;
+  width: 120px;
+  height: 80px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.corpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.linhaTopo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nome {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--teal-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.sub {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-block-start: 2px;
+}
+
+.chip {
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  background: var(--sand-2);
+  font-size: 10px;
+  font-weight: 650;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+/* Bate com o que a pessoa marcou nas preferências. */
+.chipCombina {
+  background: var(--mint);
+  color: var(--teal-text);
+  font-weight: 750;
+  text-transform: capitalize;
+}
+
+.direita {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.precos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  text-align: end;
+}
+
+.antes {
+  font-size: 11px;
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+
+.preco {
+  font-size: var(--fs-base);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.unidade {
+  font-size: 10.5px;
+  font-weight: 650;
+  color: var(--ink-3);
+  letter-spacing: 0;
+}
+
+/* Quanto o item soma na viagem inteira, e não só a etiqueta unitária: é a
+   diferença entre "R$ 890 a diária" e "R$ 4.450 pelas cinco noites". */
+.naViagem {
+  font-size: 10.5px;
+  font-weight: 750;
+  color: var(--teal-text);
+}
+
+.adicionar {
+  min-height: 36px;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 12.5px;
+  font-weight: 750;
+  white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.adicionar:hover {
+  background: var(--teal-strong);
+}
+
+.contador {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--teal-border);
+}
+
+.passo {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--teal-text);
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.passo:hover {
+  background: var(--mint);
+}
+
+.qtd {
+  min-width: 20px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.vazio {
+  padding: 24px;
+  border-radius: var(--r-2xl);
+  background: var(--sand);
+  border: 1px dashed var(--ink-a16);
+}
+
+.vazioTexto {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.55;
+  max-width: 56ch;
+}
+
+@media (max-width: 620px) {
+  .cartao {
+    flex-wrap: wrap;
+  }
+
+  .foto {
+    width: 84px;
+    height: 60px;
+  }
+
+  .direita {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-block-start: 4px;
+  }
+
+  .precos {
+    align-items: flex-start;
+    text-align: start;
+  }
+}

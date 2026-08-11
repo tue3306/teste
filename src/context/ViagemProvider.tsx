@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ViagemContext, type ViagemContexto } from './ViagemContext'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useArmazenado } from '@/hooks/useArmazenado'
 import { CHAVES, gravar, ler } from '@/lib/armazenamento'
 import { BUSCA_INICIAL, CHECKLIST_INICIAL } from '@/data/site'
 import { ITEM_POR_ID, acharDestino } from '@/data/rj'
@@ -64,9 +64,9 @@ export function ViagemProvider({ children }: { children: ReactNode }) {
     gravar(CHAVES.destino, busca)
   }, [busca])
 
-  const [favoritos, setFavoritos] = useLocalStorage<string[]>('bib:favoritos', [])
-  const [selecao, setSelecao] = useLocalStorage<Record<string, number>>('bib:viagem:v2', {})
-  const [checklist, setChecklist] = useLocalStorage<string[]>('bib:checklist', CHECKLIST_INICIAL)
+  const [favoritos, setFavoritos] = useArmazenado<string[]>(CHAVES.favoritos, [])
+  const [selecao, setSelecao] = useArmazenado<Record<string, number>>(CHAVES.viagem, {})
+  const [checklist, setChecklist] = useArmazenado<string[]>(CHAVES.checklist, CHECKLIST_INICIAL)
 
   const definirBusca = useCallback(<C extends keyof Busca>(campo: C, valor: Busca[C]) => {
     setBusca((atual) => ({ ...atual, [campo]: valor }))

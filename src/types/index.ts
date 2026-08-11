@@ -263,8 +263,15 @@ export interface Busca {
   pessoas: Pessoas
   /** Teto de gasto em reais; 0 quando não informado. */
   orcamento: number
-  /** Perfil de viagem escolhido, ou string vazia. */
-  tipo: Categoria | ''
+  /**
+   * Perfis de viagem escolhidos.
+   *
+   * Lista, e não um valor só: quem viaja em família e gosta de praia quer as
+   * duas coisas, e o campo antigo (`tipo: Categoria | ''`) obrigava a escolher
+   * uma. A lista alimenta o destaque de itens compatíveis e o filtro de
+   * destinos.
+   */
+  preferencias: Categoria[]
 }
 
 /** Item do checklist de preparação da viagem. */

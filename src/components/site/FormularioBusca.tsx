@@ -6,7 +6,7 @@ import { useViagem } from '@/context/ViagemContext'
 import { TIPOS_DE_VIAGEM } from '@/data/site'
 import { DESTINOS, NOMES_REGIAO } from '@/data/rj'
 import { noitesEntre } from '@/lib/orcamento'
-import type { Categoria, RegiaoRJ } from '@/types'
+import type { RegiaoRJ } from '@/types'
 import css from './FormularioBusca.module.css'
 
 /** Destinos agrupados por região, para o `<optgroup>` do seletor. */
@@ -31,6 +31,7 @@ export function FormularioBusca() {
   const navigate = useNavigate()
   const id = useId()
   const [pessoasAberto, setPessoasAberto] = useState(false)
+  const [perfisAberto, setPerfisAberto] = useState(false)
 
   const noites = noitesEntre(busca.ida, busca.volta)
   const total = busca.pessoas.adultos + busca.pessoas.criancas + busca.pessoas.bebes
@@ -139,24 +140,21 @@ export function FormularioBusca() {
         </div>
 
         <div className={css['campo']}>
-          <label className={css['rotulo']} htmlFor={`${id}-tipo`}>
-            Perfil da viagem
-          </label>
-          <select
-            id={`${id}-tipo`}
-            className={`${css['entrada']} ${css['select']}`}
-            value={busca.tipo}
-            onChange={(e) => {
-              definirBusca('tipo', e.target.value as Categoria | '')
+          <span className={css['rotulo']}>Preferências</span>
+          <button
+            type="button"
+            className={`${css['entrada']} ${css['gatilho']}`}
+            aria-expanded={perfisAberto}
+            onClick={() => {
+              setPerfisAberto((v) => !v)
             }}
           >
-            <option value="">Qualquer</option>
-            {TIPOS_DE_VIAGEM.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.label}
-              </option>
-            ))}
-          </select>
+            {busca.preferencias.length === 0
+              ? 'Qualquer'
+              : busca.preferencias
+                  .map((p) => TIPOS_DE_VIAGEM.find((t) => t.id === p)?.label ?? p)
+                  .join(' + ')}
+          </button>
         </div>
 
         <Botao type="submit" tamanho="lg" className={css['enviar']}>
@@ -167,6 +165,36 @@ export function FormularioBusca() {
       {pessoasAberto ? (
         <div className={css['painelPessoas']}>
           <SeletorPessoas compacto />
+        </div>
+      ) : null}
+
+      {/* Preferências são várias: quem viaja em família e gosta de praia quer
+          as duas, e o `<select>` de valor único obrigava a escolher uma. */}
+      {perfisAberto ? (
+        <div className={css['painelPessoas']}>
+          <div className={css['perfis']}>
+            {TIPOS_DE_VIAGEM.map((t) => {
+              const ativa = busca.preferencias.includes(t.id)
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  className={`${css['perfil']} ${ativa ? css['perfilAtivo'] : ''}`}
+                  aria-pressed={ativa}
+                  onClick={() => {
+                    definirBusca(
+                      'preferencias',
+                      ativa
+                        ? busca.preferencias.filter((p) => p !== t.id)
+                        : [...busca.preferencias, t.id],
+                    )
+                  }}
+                >
+                  {t.label}
+                </button>
+              )
+            })}
+          </div>
         </div>
       ) : null}
 

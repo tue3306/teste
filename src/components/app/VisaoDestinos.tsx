@@ -15,13 +15,13 @@ import type { Categoria, RegiaoRJ } from '@/types'
 import css from './VisaoDestinos.module.css'
 
 /** Lê os filtros da URL. Permite compartilhar uma busca filtrada por link. */
-function daUrl(params: URLSearchParams, perfilDaBusca: Categoria | ''): Filtros {
+function daUrl(params: URLSearchParams, preferencias: readonly Categoria[]): Filtros {
   const regioes = params.getAll('regiao') as RegiaoRJ[]
   const perfis = params.getAll('perfil') as Categoria[]
 
-  // Sem nada na URL, herda o perfil escolhido no formulário do hero.
-  if (regioes.length === 0 && perfis.length === 0 && perfilDaBusca) {
-    return { regioes: [], perfis: [perfilDaBusca] }
+  // Sem nada na URL, herda as preferências escolhidas no planejador.
+  if (regioes.length === 0 && perfis.length === 0 && preferencias.length > 0) {
+    return { regioes: [], perfis: [...preferencias] }
   }
   return { regioes, perfis }
 }
@@ -44,7 +44,7 @@ export function VisaoDestinos() {
   const semMovimento = useMovimentoReduzido()
 
   const [ordem, setOrdem] = useState<OrdemDestino>('relevancia')
-  const filtros = useMemo(() => daUrl(params, busca.tipo), [params, busca.tipo])
+  const filtros = useMemo(() => daUrl(params, busca.preferencias), [params, busca.preferencias])
 
   /** Grava os filtros na URL — o histórico do navegador passa a desfazê-los. */
   function aplicar(novos: Filtros) {

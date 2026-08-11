@@ -11,7 +11,7 @@ export const ABAS: { id: Aba; label: string; icone: NomeIcone }[] = [
   { id: 'eventos', label: 'Eventos', icone: 'evento' },
   { id: 'carros', label: 'Carros', icone: 'carro' },
   { id: 'mapa', label: 'Mapa', icone: 'natureza' },
-  { id: 'viagem', label: 'Minha viagem', icone: 'estrela' },
+  { id: 'viagem', label: 'Planejar viagem', icone: 'estrela' },
 ]
 
 /** Abas que listam itens do catálogo e, por isso, exibem o painel de filtros. */
@@ -75,7 +75,7 @@ export const TITULOS: Record<Aba, { titulo: (destino: string) => string; subtitu
     subtitulo: 'Os 29 destinos, com distância e tempo a partir da capital',
   },
   viagem: {
-    titulo: () => 'Minha viagem',
+    titulo: () => 'Planejar a viagem',
     subtitulo: 'O que você escolheu, quanto custa e quanto está economizando',
   },
 }

@@ -298,5 +298,5 @@ export const BUSCA_INICIAL: Busca = {
   volta: daquiA(26),
   pessoas: { adultos: 2, criancas: 0, bebes: 0 },
   orcamento: 6000,
-  tipo: '',
+  preferencias: [],
 }
