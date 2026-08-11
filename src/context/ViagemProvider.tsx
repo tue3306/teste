@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ViagemContext, type ViagemContexto } from './ViagemContext'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { CHAVES, gravar, ler } from '@/lib/armazenamento'
 import { BUSCA_INICIAL, CHECKLIST_INICIAL } from '@/data/site'
 import { ITEM_POR_ID, acharDestino } from '@/data/rj'
 import { catalogoCompleto, resolverIds } from '@/services/catalogo'
@@ -22,16 +23,46 @@ const ESCOLHA_UNICA: ReadonlySet<Vertical> = new Set<Vertical>(['voos', 'hoteis'
 /**
  * Estado da viagem em curso.
  *
- * Favoritos, seleção e checklist vão para `localStorage`: no protótipo tudo
- * voltava ao padrão a cada recarga, então "Salvar" não salvava nada.
+ * ## O que sobrevive ao recarregar
  *
- * O orçamento **não** é guardado. Ele é derivado — da seleção, das datas e do
- * grupo — e derivar a cada render é mais barato do que manter sincronizado. Um
- * total persistido é um total que uma hora discorda das próprias linhas.
+ * Tudo o que a pessoa escolheu: destino, datas, grupo, orçamento, perfil,
+ * favoritos, os itens da viagem e o checklist. Não há conta no produto — o
+ * navegador é a conta —, então perder isso num F5 significa perder a viagem
+ * inteira. Antes só favoritos e seleção persistiam: destino, datas e número de
+ * pessoas voltavam ao padrão, e o total mudava sozinho depois de um reload.
+ *
+ * A gravação passa por `lib/armazenamento.ts`, que centraliza prefixo, versão,
+ * consentimento e falha silenciosa. Nenhum `localStorage.setItem` solto.
+ *
+ * ## O que NÃO é guardado
+ *
+ * O orçamento calculado. Ele é derivado da seleção, das datas e do grupo, e
+ * derivar a cada render é mais barato que manter sincronizado. Um total
+ * persistido é um total que uma hora discorda das próprias linhas.
  */
 export function ViagemProvider({ children }: { children: ReactNode }) {
-  const [busca, setBusca] = useState<Busca>(BUSCA_INICIAL)
+  /**
+   * A busca é lida do armazenamento no inicializador, e não num efeito.
+   *
+   * Lendo num efeito, a primeira renderização usaria o padrão e a segunda o
+   * valor guardado — a tela piscaria com o destino errado, e qualquer cálculo
+   * feito no meio sairia com o grupo errado.
+   *
+   * O `...BUSCA_INICIAL` na frente é a rede: se a versão guardada tiver menos
+   * campos que a atual, o que faltar vem do padrão em vez de virar `undefined`.
+   */
+  const [busca, setBusca] = useState<Busca>(() => ({
+    ...BUSCA_INICIAL,
+    ...ler<Partial<Busca>>(CHAVES.destino, {}),
+  }))
   const [quartosManuais, setQuartosManuais] = useState<number | null>(null)
+
+  // Grava a busca inteira sob uma chave só. Um objeto pequeno, escrito a cada
+  // mudança, é mais simples de versionar do que seis chaves independentes que
+  // podem ficar fora de sincronia entre si.
+  useEffect(() => {
+    gravar(CHAVES.destino, busca)
+  }, [busca])
 
   const [favoritos, setFavoritos] = useLocalStorage<string[]>('bib:favoritos', [])
   const [selecao, setSelecao] = useLocalStorage<Record<string, number>>('bib:viagem:v2', {})

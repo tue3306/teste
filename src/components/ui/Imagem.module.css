@@ -53,3 +53,21 @@
 :root[data-motion='reduzido'] .zoom:hover .img {
     transform: none;
   }
+
+/* Moldura sem foto: mesmo espaço, sem ícone de imagem quebrada. */
+.vazia {
+  display: grid;
+  place-items: center;
+  background-color: var(--sand-2);
+  background-size: cover;
+  background-position: center;
+  /* O LQIP tem 20px de largura; ampliado, vira um borrão de cor. O blur tira o
+     serrilhado que a ampliação cria. */
+  filter: blur(6px);
+  transform: scale(1.06);
+}
+
+.vaziaIcone {
+  color: var(--ink-a22);
+  filter: none;
+}

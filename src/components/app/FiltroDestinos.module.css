@@ -1,0 +1,222 @@
+/**
+ * Barra de filtro.
+ *
+ * Todo raio vem dos tokens (`--r-*`), inclusive o do `<select>`, que antes era
+ * o único elemento quadrado no meio de uma tela de cantos arredondados — e por
+ * isso parecia colado de outro projeto.
+ */
+.barra {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  box-shadow: var(--sh-sm);
+}
+
+.grupos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grupo {
+  min-width: 0;
+}
+
+.rotulo {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-3);
+  margin-block-end: 8px;
+  padding: 0;
+}
+
+/* Quebram em linha nova em vez de rolar: uma faixa com arrasto horizontal
+   esconde metade dos filtros sem nenhuma pista de que existem. */
+.pilulas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pilula {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* 36px de altura: acima dos 24px que a SC 2.5.8 pede como alvo mínimo. */
+  min-height: 36px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
+.pilula:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+  background: var(--sand);
+}
+
+.pilula:focus-visible {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--mint);
+}
+
+/* O × dentro da pílula ativa diz que clicar de novo desmarca — a informação
+   que faltava para a multisseleção ser descoberta sem tentativa e erro. */
+.ativa {
+  background: var(--mint);
+  border-color: var(--teal);
+  color: var(--teal-text);
+}
+
+.ativa:hover {
+  background: var(--mint-2);
+  color: var(--teal-text);
+  border-color: var(--teal);
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--ink-a07);
+}
+
+.contagem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.contagem strong {
+  font-size: var(--fs-base);
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.selo {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: var(--mint);
+  border: 1px solid var(--teal-border);
+  font-size: 11px;
+  font-weight: 750;
+  color: var(--teal-text);
+}
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.limpar {
+  min-height: 36px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-3);
+  font-size: 12.5px;
+  font-weight: 700;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.limpar:hover {
+  border-color: var(--coral);
+  color: var(--coral-text);
+}
+
+/* --- ordenar --- */
+.ordenarCaixa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ordenarRotulo {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+/* A moldura desenha a borda e a seta; o `<select>` fica transparente por cima.
+   É o que permite estilizar a caixa sem perder o menu nativo do sistema. */
+.selectMoldura {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+
+.selectMoldura:hover {
+  border-color: var(--ink-a22);
+}
+
+.selectMoldura:focus-within {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--mint);
+}
+
+.select {
+  appearance: none;
+  min-height: 36px;
+  padding: 8px 34px 8px 14px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-pill);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.select:focus-visible {
+  outline: none;
+}
+
+.seta {
+  position: absolute;
+  inset-inline-end: 11px;
+  pointer-events: none;
+  color: var(--ink-3);
+}
+
+@media (min-width: 760px) {
+  .grupos {
+    gap: 14px;
+  }
+}

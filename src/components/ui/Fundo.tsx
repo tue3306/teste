@@ -17,15 +17,24 @@ const TETO_DPR = 2
 /**
  * Cenário fixo atrás do conteúdo: mar animado, sol e reflexo de água.
  *
- * Três correções em relação ao protótipo:
+ * O mar são três faixas senoidais sobrepostas, cada uma com período e
+ * amplitude próprios: é a defasagem entre elas que dá profundidade, e não o
+ * desenho de nenhuma isolada. Por cima passam partículas lentas, como reflexo
+ * na água.
  *
- * 1. O `requestAnimationFrame` para quando a aba sai de foco. Antes o loop
- *    rodava para sempre em segundo plano, gastando bateria numa tela que
- *    ninguém está vendo.
- * 2. O ouvinte de `resize` e o `ResizeObserver` são removidos no desmonte — o
- *    protótipo registrava ambos dentro de `sky()` e só desconectava o observer.
- * 3. Com `prefers-reduced-motion` o canvas nem é montado; o gradiente estático
- *    do sol e da água sozinho já dá o clima.
+ * ## Movimento reduzido não desliga o mar
+ *
+ * O canvas nem chegava a ser montado quando o sistema pedia menos movimento —
+ * quem tem "efeitos de animação" desligado no Windows recebia um degradê
+ * parado, e o mar parecia ter sido removido do produto. Não tinha: estava atrás
+ * de um `if`.
+ *
+ * Agora ele roda sempre, e a preferência regula **amplitude e velocidade**:
+ * ondas de um terço da altura, metade da velocidade, sem partículas. Um mar
+ * calmo continua sendo um mar; um degradê estático não é.
+ *
+ * Duas garantias de custo, mantidas: o `requestAnimationFrame` para quando a
+ * aba sai de foco, e todos os ouvintes saem no desmonte.
  */
 export function Fundo() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -33,10 +42,15 @@ export function Fundo() {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas || semMovimento) return
+    if (!canvas) return
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    // Os dois botões de volume do efeito. Com movimento reduzido a onda fica
+    // baixa e lenta, e o reflexo de partículas sai — é o que mais chama o olho.
+    const calma = semMovimento ? 0.34 : 1
+    const velocidade = semMovimento ? 0.0026 : 0.006
 
     const dpr = Math.min(window.devicePixelRatio || 1, TETO_DPR)
     let largura = 0
@@ -54,7 +68,7 @@ export function Fundo() {
       canvas.height = Math.round(altura * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-      const quantidade = Math.round((largura * altura) / 42000)
+      const quantidade = semMovimento ? 0 : Math.round((largura * altura) / 42000)
       motes = Array.from({ length: quantidade }, () => ({
         x: Math.random() * largura,
         y: Math.random() * altura,
@@ -67,14 +81,14 @@ export function Fundo() {
 
     const quadro = () => {
       if (largura && altura) {
-        t += 0.006
+        t += velocidade
         ctx.clearRect(0, 0, largura, altura)
 
         // Três faixas de mar sobrepostas, cada uma com período e amplitude
         // próprios — é a defasagem entre elas que dá a sensação de profundidade.
         for (let i = 0; i < 3; i++) {
           const base = altura - 30 - i * 46
-          const amplitude = 12 + i * 7
+          const amplitude = (12 + i * 7) * calma
           ctx.beginPath()
           ctx.moveTo(0, base)
           for (let x = 0; x <= largura; x += 12) {
@@ -137,7 +151,7 @@ export function Fundo() {
 
   return (
     <>
-      {!semMovimento && <canvas ref={canvasRef} className={css['canvas']} aria-hidden="true" />}
+      <canvas ref={canvasRef} className={css['canvas']} aria-hidden="true" />
       <div className={css['sol']} aria-hidden="true" />
       <div className={css['agua']} aria-hidden="true" />
     </>

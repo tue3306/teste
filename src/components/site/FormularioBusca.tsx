@@ -2,7 +2,6 @@ import { useId, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Botao } from '@/components/ui/Botao'
 import { SeletorPessoas } from '@/components/app/SeletorPessoas'
-import { useAuth } from '@/context/AuthContext'
 import { useViagem } from '@/context/ViagemContext'
 import { TIPOS_DE_VIAGEM } from '@/data/site'
 import { DESTINOS, NOMES_REGIAO } from '@/data/rj'
@@ -29,7 +28,6 @@ const POR_REGIAO = (Object.keys(NOMES_REGIAO) as RegiaoRJ[]).map((r) => ({
  */
 export function FormularioBusca() {
   const { busca, definirBusca } = useViagem()
-  const { autenticado } = useAuth()
   const navigate = useNavigate()
   const id = useId()
   const [pessoasAberto, setPessoasAberto] = useState(false)
@@ -39,9 +37,7 @@ export function FormularioBusca() {
 
   function aoEnviar(e: FormEvent) {
     e.preventDefault()
-    // A plataforma é privada: sem sessão, a `RotaProtegida` mandaria para o
-    // login de qualquer forma — ir direto evita o desvio e o piscar de tela.
-    void navigate(autenticado ? '/plataforma/hoteis' : '/login')
+    void navigate('/plataforma/hoteis')
   }
 
   return (

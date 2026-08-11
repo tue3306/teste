@@ -2,6 +2,8 @@ import { Bento } from '@/components/site/Bento'
 import { Categorias } from '@/components/site/Categorias'
 import { ChamadaFinal } from '@/components/site/ChamadaFinal'
 import { Comparador } from '@/components/site/Comparador'
+import { Comunidade } from '@/components/site/Comunidade'
+import { Rankings } from '@/components/site/Rankings'
 import { Hero } from '@/components/site/Hero'
 import { LayoutSite } from '@/components/site/LayoutSite'
 import { Marquee } from '@/components/site/Marquee'
@@ -25,7 +27,9 @@ export function Landing() {
       <SecaoDestinos />
       <Vitrine />
       <Comparador />
+      <Rankings />
       <SecaoSocial />
+      <Comunidade />
       <ChamadaFinal />
     </LayoutSite>
   )

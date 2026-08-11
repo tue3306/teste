@@ -1,0 +1,175 @@
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-block-end: 24px;
+}
+
+/* Quebram em linha em vez de rolar: seis abas escondidas atrás de um arrasto
+   horizontal são seis abas que ninguém encontra. */
+.abas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aba {
+  min-height: 38px;
+  padding: 9px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.aba:hover {
+  border-color: var(--ink-a22);
+  color: var(--ink);
+}
+
+.abaAtiva {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.abaAtiva:hover {
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+/* O critério fica visível ao lado da lista, não escondido num rodapé. */
+.criterio {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-block: 14px 12px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  counter-reset: rank;
+}
+
+.item {
+  min-width: 0;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 10px 10px;
+  border-radius: var(--r-2xl);
+  background: var(--surface);
+  border: 1px solid var(--ink-a07);
+  color: var(--ink);
+  box-shadow: var(--sh-sm);
+  min-width: 0;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    box-shadow var(--t-mid) var(--ease);
+}
+
+.linha:hover {
+  border-color: var(--teal-border);
+  box-shadow: var(--sh-md);
+  color: var(--ink);
+}
+
+.posicao {
+  flex: none;
+  width: 30px;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink-a22);
+  font-variant-numeric: tabular-nums;
+}
+
+.foto {
+  flex: none;
+  width: 96px;
+  height: 64px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.corpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nome {
+  font-size: var(--fs-base);
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.direita {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--teal-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.preco {
+  font-size: 11px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .foto {
+    width: 68px;
+    height: 50px;
+  }
+
+  .posicao {
+    width: 22px;
+    font-size: 1.2rem;
+  }
+
+  .preco {
+    display: none;
+  }
+}

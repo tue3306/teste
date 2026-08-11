@@ -1,127 +1,135 @@
 import { useMemo, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { Link } from 'react-router-dom'
 import { Icone } from '@/components/ui/Icone'
 import { Imagem } from '@/components/ui/Imagem'
+import { FiltroDestinos } from './FiltroDestinos'
 import { DESTINOS, NOMES_REGIAO, contarPorVertical } from '@/data/rj'
 import { useViagem } from '@/context/ViagemContext'
 import { moeda, nota } from '@/lib/format'
-import { CATEGORIAS } from '@/data/site'
+import { filtrar, ordenar, saidas, type Filtros, type OrdemDestino } from '@/lib/filtros'
+import { selosDe, tamanhoInventario } from '@/lib/selos'
 import { GRADE, ITEM_GRADE, TAP_CARTAO, hoverCartao } from '@/lib/motion'
 import { useMovimentoReduzido } from '@/hooks/useMovimento'
 import type { Categoria, RegiaoRJ } from '@/types'
 import css from './VisaoDestinos.module.css'
 
-const REGIOES = Object.keys(NOMES_REGIAO) as RegiaoRJ[]
+/** Lê os filtros da URL. Permite compartilhar uma busca filtrada por link. */
+function daUrl(params: URLSearchParams, perfilDaBusca: Categoria | ''): Filtros {
+  const regioes = params.getAll('regiao') as RegiaoRJ[]
+  const perfis = params.getAll('perfil') as Categoria[]
+
+  // Sem nada na URL, herda o perfil escolhido no formulário do hero.
+  if (regioes.length === 0 && perfis.length === 0 && perfilDaBusca) {
+    return { regioes: [], perfis: [perfilDaBusca] }
+  }
+  return { regioes, perfis }
+}
 
 /**
  * Escolha do destino.
  *
  * É a primeira aba de propósito: o destino comanda tudo o que as outras seis
- * mostram. Antes a plataforma abria em "Voos" com um destino fixo escrito no
- * código, e não havia como trocar.
+ * mostram.
+ *
+ * Os filtros ficam num componente à parte e a regra de combinação numa função
+ * pura (`lib/filtros.ts`), testada. Era aqui que morava o bug: um valor por
+ * grupo, cruzados com E — clicar na segunda pílula apagava a primeira, e 15 das
+ * 60 combinações possíveis devolviam zero sem explicar por quê.
  */
 export function VisaoDestinos() {
-  const { destino, definirBusca, busca } = useViagem()
+  const { destino, definirBusca, busca, favoritos, alternarFavorito } = useViagem()
   const navegar = useNavigate()
-  const [params] = useSearchParams()
+  const [params, setParams] = useSearchParams()
   const semMovimento = useMovimentoReduzido()
 
-  const [regiao, setRegiao] = useState<RegiaoRJ | 'todas'>('todas')
+  const [ordem, setOrdem] = useState<OrdemDestino>('relevancia')
+  const filtros = useMemo(() => daUrl(params, busca.tipo), [params, busca.tipo])
 
-  /**
-   * Perfil inicial: o da URL, senão o escolhido no formulário do hero.
-   *
-   * Os dois caminhos existiam e nenhum chegava aqui — a régua de categorias
-   * mandava um `?cat=` que ninguém lia, e o campo "perfil da viagem" era escrito
-   * no estado e nunca consultado. Agora ambos abrem a lista já filtrada.
-   */
-  const perfilInicial = (params.get('perfil') ?? busca.tipo) as Categoria | ''
-  const [categoria, setCategoria] = useState<Categoria | 'todas'>(perfilInicial || 'todas')
+  /** Grava os filtros na URL — o histórico do navegador passa a desfazê-los. */
+  function aplicar(novos: Filtros) {
+    const p = new URLSearchParams()
+    for (const r of novos.regioes) p.append('regiao', r)
+    for (const c of novos.perfis) p.append('perfil', c)
+    setParams(p, { replace: true })
+  }
 
   const lista = useMemo(
-    () =>
-      DESTINOS.filter(
-        (d) =>
-          (regiao === 'todas' || d.regiao === regiao) &&
-          (categoria === 'todas' || d.categorias.includes(categoria)),
-      ),
-    [regiao, categoria],
+    () => ordenar(filtrar(DESTINOS, filtros), ordem, tamanhoInventario),
+    [filtros, ordem],
+  )
+
+  /** O que soltar quando o cruzamento não devolve nada. */
+  const escapes = useMemo(
+    () => (lista.length === 0 ? saidas(DESTINOS, filtros) : []),
+    [lista.length, filtros],
   )
 
   return (
     <div className={css['bloco']}>
-      <div className={css['filtros']}>
-        <div className={css['grupo']} role="group" aria-label="Filtrar por região">
-          <button
-            type="button"
-            className={`${css['pilula']} ${regiao === 'todas' ? css['ativa'] : ''}`}
-            aria-pressed={regiao === 'todas'}
-            onClick={() => {
-              setRegiao('todas')
-            }}
-          >
-            Todas as regiões
-          </button>
-          {REGIOES.map((r) => (
-            <button
-              key={r}
-              type="button"
-              className={`${css['pilula']} ${regiao === r ? css['ativa'] : ''}`}
-              aria-pressed={regiao === r}
-              onClick={() => {
-                setRegiao(r)
-              }}
-            >
-              {NOMES_REGIAO[r]}
-            </button>
-          ))}
-        </div>
-
-        <div className={css['grupo']} role="group" aria-label="Filtrar por perfil de viagem">
-          <button
-            type="button"
-            className={`${css['pilula']} ${categoria === 'todas' ? css['ativa'] : ''}`}
-            aria-pressed={categoria === 'todas'}
-            onClick={() => {
-              setCategoria('todas')
-            }}
-          >
-            Todos os perfis
-          </button>
-          {CATEGORIAS.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              className={`${css['pilula']} ${categoria === c.id ? css['ativa'] : ''}`}
-              aria-pressed={categoria === c.id}
-              onClick={() => {
-                setCategoria(c.id)
-              }}
-            >
-              <Icone nome={c.icone} tamanho={14} />
-              {c.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <p className={css['contagem']} aria-live="polite">
-        {lista.length === 1 ? '1 destino' : `${String(lista.length)} destinos`} no estado do Rio de
-        Janeiro
-      </p>
+      <FiltroDestinos
+        filtros={filtros}
+        aoMudar={aplicar}
+        ordem={ordem}
+        aoOrdenar={setOrdem}
+        encontrados={lista.length}
+      />
 
       {lista.length === 0 ? (
-        <p className={css['vazio']}>
-          Nenhum destino combina essa região com esse perfil. Solte um dos dois filtros.
-        </p>
+        /*
+          Estado vazio que não é beco sem saída. Um cruzamento como
+          "Região Serrana + Praia" é geograficamente impossível, não é dado
+          faltando — então a tela explica isso e oferece o caminho de volta,
+          com o número de destinos que cada saída destrava.
+        */
+        <motion.div
+          className={css['vazio']}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className={css['vazioIcone']} aria-hidden="true">
+            <Icone nome="praia" tamanho={30} />
+          </span>
+          <h3 className={css['vazioTitulo']}>Nenhum destino combina esses filtros</h3>
+          <p className={css['vazioTexto']}>
+            Nem toda combinação existe no estado — não há praia na Região Serrana nem serra na
+            Costa do Sol. Solte um dos filtros para voltar a ver resultados.
+          </p>
+
+          <div className={css['vazioAcoes']}>
+            {escapes.map((s) => (
+              <button
+                key={s.grupo}
+                type="button"
+                className={css['vazioBotao']}
+                onClick={() => {
+                  aplicar({ ...filtros, [s.grupo]: [] })
+                }}
+              >
+                Soltar {s.grupo === 'regioes' ? 'a região' : 'o perfil'} · {s.quantidade}{' '}
+                {s.quantidade === 1 ? 'destino' : 'destinos'}
+              </button>
+            ))}
+            <button
+              type="button"
+              className={`${css['vazioBotao']} ${css['vazioPrimario']}`}
+              onClick={() => {
+                aplicar({ regioes: [], perfis: [] })
+              }}
+            >
+              Limpar filtros · {DESTINOS.length} destinos
+            </button>
+          </div>
+        </motion.div>
       ) : (
-        <motion.ul className={css['grade']} {...GRADE}>
+        <motion.ul className={css['grade']} {...GRADE} key={`${filtros.regioes.join()}|${filtros.perfis.join()}`}>
           {lista.map((d) => {
             const conta = contarPorVertical(d.id)
             const escolhido = d.id === destino.id
+            const salvo = favoritos.includes(d.id)
             const opcoes = Object.values(conta).reduce((s, n) => s + n, 0)
+            const selos = selosDe(d)
 
             return (
               <motion.li key={d.id} layout variants={ITEM_GRADE} className={css['item']}>
@@ -137,6 +145,30 @@ export function VisaoDestinos() {
                       zoom
                     />
                     <span className={css['regiao']}>{NOMES_REGIAO[d.regiao]}</span>
+
+                    {/* Favoritar não exige conta: o id vai para o armazenamento
+                        deste navegador e continua lá na próxima visita. */}
+                    <button
+                      type="button"
+                      className={`${css['coracao']} ${salvo ? css['coracaoAtivo'] : ''}`}
+                      aria-pressed={salvo}
+                      aria-label={salvo ? `Tirar ${d.nome} dos favoritos` : `Favoritar ${d.nome}`}
+                      onClick={() => {
+                        alternarFavorito(d.id)
+                      }}
+                    >
+                      {salvo ? '♥' : '♡'}
+                    </button>
+
+                    {selos.length > 0 ? (
+                      <ul className={css['selos']}>
+                        {selos.map((s) => (
+                          <li key={s.id} className={css['seloItem']} title={s.criterio}>
+                            <span aria-hidden="true">{s.emoji}</span> {s.label}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </div>
 
                   <div className={css['corpo']}>
@@ -184,17 +216,11 @@ export function VisaoDestinos() {
                       >
                         {escolhido ? 'Ver hospedagem' : 'Escolher este destino'}
                       </button>
-                      {/* A página do destino tem a descrição, a galeria, as
-                          atrações e as praias — conteúdo que não cabe no cartão
-                          e que antes não aparecia em lugar nenhum. */}
                       <Link to={`/destino/${d.id}`} className={css['detalhes']}>
                         Detalhes
                       </Link>
                     </div>
 
-                    {/* Destinos próximos: combinar duas cidades numa viagem só é
-                        o uso mais comum no RJ, e sem esta pista ninguém descobre
-                        que Arraial fica a 20 minutos de Cabo Frio. */}
                     {d.relacionados.length > 0 ? (
                       <p className={css['relacionados']}>
                         Combina com{' '}

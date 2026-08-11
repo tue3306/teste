@@ -8,7 +8,6 @@ import { Imagem } from '@/components/ui/Imagem'
 import { Reveal } from '@/components/ui/Reveal'
 import { DESTINO_POR_ID, DESTINOS, NOMES_REGIAO, contarPorVertical } from '@/data/rj'
 import { inventarioDoDestino } from '@/services/catalogo'
-import { useAuth } from '@/context/AuthContext'
 import { useViagem } from '@/context/ViagemContext'
 import { useMetaDaPagina } from '@/hooks/useMetaDaPagina'
 import { useMovimentoReduzido } from '@/hooks/useMovimento'
@@ -43,7 +42,6 @@ export function DestinoDetalhe() {
   const destino = id ? DESTINO_POR_ID.get(id) : undefined
   const navegar = useNavigate()
   const { definirBusca } = useViagem()
-  const { autenticado } = useAuth()
   const semMovimento = useMovimentoReduzido()
 
   const { scrollY } = useScroll()
@@ -69,7 +67,7 @@ export function DestinoDetalhe() {
   function abrirNaPlataforma(aba: string) {
     if (!destino) return
     definirBusca('destino', destino.id)
-    void navegar(autenticado ? `/plataforma/${aba}` : '/login')
+    void navegar(`/plataforma/${aba}`)
   }
 
   return (
@@ -286,9 +284,8 @@ export function DestinoDetalhe() {
             </Botao>
 
             <p className={css['cartaoNota']}>
-              {autenticado
-                ? 'Abre a plataforma com este destino já escolhido.'
-                : 'Você precisa entrar para abrir a plataforma.'}
+              Abre a plataforma com este destino já escolhido. Sem cadastro: o que você montar
+              fica guardado neste navegador.
             </p>
           </div>
         </aside>

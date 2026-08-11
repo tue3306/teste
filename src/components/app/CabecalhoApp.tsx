@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom'
 import { Logo } from '@/components/ui/Logo'
 import { Icone } from '@/components/ui/Icone'
 import { Numero } from '@/components/ui/Numero'
-import { useAuth } from '@/context/AuthContext'
 import { useViagem } from '@/context/ViagemContext'
 
 import { ABAS } from './abas'
@@ -26,9 +25,12 @@ function curta(iso: string): string {
  */
 export function CabecalhoApp() {
   const { busca, destino, contexto, orcamento, itensEscolhidos } = useViagem()
-  const { usuario, sair } = useAuth()
 
   const pessoas = contexto.pessoas.adultos + contexto.pessoas.criancas + contexto.pessoas.bebes
+  const vazia = itensEscolhidos.length === 0
+  // Quantas das seis verticais já têm ao menos uma escolha. É mais informativo
+  // que "7 itens": diz o que falta decidir, não só o quanto já foi decidido.
+  const categoriasComEscolha = new Set(itensEscolhidos.map((i) => i.vertical)).size
 
   return (
     <header className={css['cabecalho']}>
@@ -59,26 +61,34 @@ export function CabecalhoApp() {
           <div className={css['espaco']} />
 
           <div className={css['conta']}>
-            {/* O total acompanha a pessoa por todas as abas: é o número que ela
-                está tentando controlar, e escondê-lo dentro de uma aba só
-                obrigava a ir e voltar a cada escolha. */}
-            <NavLink to="/plataforma/viagem" className={css['totalAtalho']}>
-              <span className={css['totalRotulo']}>
-                {itensEscolhidos.length} {itensEscolhidos.length === 1 ? 'item' : 'itens'}
-              </span>
-              {/* Percorre a distância até o valor novo em vez de saltar: é o
-                  que conecta "somei uma criança" a "o total subiu". */}
-              <Numero valor={orcamento.total} className={css['totalValor']} />
+            {/*
+              Resumo da viagem, e não um contador solto.
+
+              Antes isto era "0 itens · R$ 0" — dois zeros sem contexto, que
+              leem como defeito e não como estado inicial. Agora a caixa conta o
+              que existe (quantas categorias já têm escolha) ou convida a
+              começar, e o total só aparece quando há total.
+            */}
+            <NavLink
+              to="/plataforma/viagem"
+              className={`${css['resumoViagem']} ${vazia ? css['resumoVazio'] : ''}`}
+            >
+              {vazia ? (
+                <>
+                  <span className={css['resumoRotulo']}>Sua viagem</span>
+                  <span className={css['resumoConvite']}>comece escolhendo</span>
+                </>
+              ) : (
+                <>
+                  <span className={css['resumoRotulo']}>
+                    {categoriasComEscolha} de 6 categorias
+                  </span>
+                  {/* Percorre a distância até o valor novo em vez de saltar: é o
+                      que conecta "somei uma criança" a "o total subiu". */}
+                  <Numero valor={orcamento.total} className={css['totalValor']} />
+                </>
+              )}
             </NavLink>
-
-            <span className={css['avatar']} aria-hidden="true">
-              {usuario?.iniciais ?? '—'}
-            </span>
-            <span className="sr-only">Conta de {usuario?.nome ?? 'visitante'}</span>
-
-            <button type="button" className={css['sair']} onClick={sair} aria-label="Sair da conta">
-              <Icone nome="fechar" tamanho={14} />
-            </button>
           </div>
         </div>
 

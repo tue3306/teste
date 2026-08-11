@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from 'react'
-import { FOTOS, LARGURAS_FOTO, type SlugFoto } from '@/data/fotos'
+import { FOTOS, LARGURAS_FOTO, type Foto, type SlugFoto } from '@/data/fotos'
 import css from './Imagem.module.css'
 
 interface Props {
@@ -44,9 +44,35 @@ export function Imagem({
   className,
   style,
 }: Props) {
-  const [carregada, setCarregada] = useState(false)
-  const foto = FOTOS[slug]
+  const [estado, setEstado] = useState<'carregando' | 'pronta' | 'falhou'>('carregando')
+  const foto: Foto | undefined = FOTOS[slug]
 
+  /**
+   * Slug fora do catálogo.
+   *
+   * `FOTOS[slug]` é tipado, mas o tipo não cobre dado que entra em tempo de
+   * execução — um id vindo da URL, um catálogo regenerado sem aquele slug. Sem
+   * esta guarda, `foto.lqip` lançava e derrubava a árvore inteira até o
+   * ErrorBoundary: uma foto faltando levava a página junto.
+   */
+  if (!foto) return <Espaco className={className} style={style} proporcao={proporcao} />
+
+  // O arquivo existe no catálogo mas não chegou pela rede — 404, disco cheio,
+  // build sem `npm run fotos`. O LQIP embutido continua ali e é o suficiente
+  // para o cartão não ficar com o ícone de imagem quebrada.
+  if (estado === 'falhou') {
+    return (
+      <Espaco
+        className={className}
+        style={style}
+        proporcao={proporcao ?? foto.proporcao}
+        lqip={foto.lqip}
+        rotulo={alt ?? foto.alt}
+      />
+    )
+  }
+
+  const carregada = estado === 'pronta'
   const srcSet = LARGURAS_FOTO.map((l) => `/fotos/${slug}-${String(l)}.webp ${String(l)}w`).join(', ')
 
   return (
@@ -74,9 +100,57 @@ export function Imagem({
         fetchPriority={prioridade ? 'high' : 'auto'}
         decoding="async"
         onLoad={() => {
-          setCarregada(true)
+          setEstado('pronta')
+        }}
+        onError={() => {
+          setEstado('falhou')
         }}
       />
+    </div>
+  )
+}
+
+/**
+ * Moldura sem foto.
+ *
+ * Ocupa exatamente o mesmo espaço que a imagem ocuparia, então nada ao redor se
+ * desloca quando ela falha. Quando há LQIP, ele fica ampliado e desfocado — a
+ * cor média da cena é mais informativa que um retângulo cinza, e não parece
+ * defeito.
+ */
+function Espaco({
+  className,
+  style,
+  proporcao,
+  lqip,
+  rotulo,
+}: {
+  className?: string
+  style?: CSSProperties
+  proporcao?: number
+  lqip?: string
+  rotulo?: string
+}) {
+  return (
+    <div
+      className={[css['moldura'], css['vazia'], className].filter(Boolean).join(' ')}
+      style={{
+        ...style,
+        ...(proporcao ? { aspectRatio: String(proporcao) } : null),
+        ...(lqip ? { backgroundImage: `url("${lqip}")` } : null),
+      }}
+      role="img"
+      aria-label={rotulo ?? 'Imagem indisponível'}
+    >
+      {lqip ? null : (
+        <span className={css['vaziaIcone']} aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4.5" width="18" height="15" rx="2.4" />
+            <circle cx="8.4" cy="9.6" r="1.5" />
+            <path d="m3.6 17.4 5-5 4.4 4.4 3-3 4.4 4.4" />
+          </svg>
+        </span>
+      )}
     </div>
   )
 }

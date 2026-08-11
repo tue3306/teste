@@ -4,7 +4,6 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { BarraProgresso, Fundo } from "@/components/ui/Fundo";
 import { PularParaConteudo } from "@/components/ui/PularParaConteudo";
 import { Carregando } from "@/components/ui/Carregando";
-import { RotaProtegida } from "@/components/RotaProtegida";
 import { Landing } from "@/pages/Landing";
 
 /**
@@ -22,12 +21,6 @@ const Institucional = lazy(() =>
 );
 const Contato = lazy(() =>
   import("@/pages/Contato").then((m) => ({ default: m.Contato })),
-);
-const Login = lazy(() =>
-  import("@/pages/Login").then((m) => ({ default: m.Login })),
-);
-const Cadastro = lazy(() =>
-  import("@/pages/Cadastro").then((m) => ({ default: m.Cadastro })),
 );
 const DestinoDetalhe = lazy(() =>
   import("@/pages/DestinoDetalhe").then((m) => ({ default: m.DestinoDetalhe })),
@@ -84,26 +77,16 @@ export function App() {
           <Routes location={location}>
             <Route path="/" element={<Landing />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/cadastro" element={<Cadastro />} />
-
             {/**
-             * A plataforma inteira é privada. O portão fica aqui, e não dentro
-             * da página: assim nenhum código da plataforma chega a rodar sem
-             * sessão, e acrescentar uma aba nova não exige lembrar de protegê-la.
+             * A plataforma é aberta. Não há login: planejar uma viagem não
+             * deveria exigir cadastro, e o que a pessoa monta vive no
+             * armazenamento do próprio navegador — ver `lib/armazenamento.ts`.
              */}
             <Route
               path="/plataforma"
               element={<Navigate to="/plataforma/destinos" replace />}
             />
-            <Route
-              path="/plataforma/:aba"
-              element={
-                <RotaProtegida>
-                  <Plataforma />
-                </RotaProtegida>
-              }
-            />
+            <Route path="/plataforma/:aba" element={<Plataforma />} />
 
             {/* Página pública de cada um dos 29 destinos. Fica fora da
                 plataforma de propósito: é conteúdo, indexável, e serve de porta

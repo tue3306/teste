@@ -266,3 +266,136 @@
   border-color: var(--teal);
   color: var(--teal-text);
 }
+
+/* --- estado vazio --- */
+.vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 48px 24px;
+  border-radius: var(--r-3xl);
+  background: linear-gradient(170deg, var(--mint-2), var(--surface) 60%);
+  border: 1px solid var(--teal-border);
+}
+
+.vazioIcone {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--teal-border);
+  color: var(--teal-text);
+}
+
+.vazioTitulo {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.vazioTexto {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+.vazioAcoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-block-start: 8px;
+}
+
+.vazioBotao {
+  min-height: 40px;
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--ink-a12);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.vazioBotao:hover {
+  border-color: var(--teal);
+  color: var(--teal-text);
+}
+
+.vazioPrimario {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.vazioPrimario:hover {
+  background: var(--teal-strong);
+  border-color: var(--teal-strong);
+  color: var(--surface);
+}
+
+/* --- favorito e selos sobre a foto --- */
+.coracao {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(251, 246, 238, 0.92);
+  backdrop-filter: blur(8px);
+  font-size: 17px;
+  line-height: 1;
+  color: var(--ink-3);
+  transition:
+    color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+
+.coracao:hover {
+  color: var(--coral-text);
+  transform: scale(1.08);
+}
+
+.coracaoAtivo {
+  color: var(--coral);
+}
+
+:root[data-motion='reduzido'] .coracao:hover {
+  transform: none;
+}
+
+/* Selos derivados dos dados internos. `title` carrega o critério — ver
+   src/lib/selos.ts, que explica por que nenhum deles é um número inventado. */
+.selos {
+  position: absolute;
+  inset-block-end: 8px;
+  inset-inline-start: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: calc(100% - 16px);
+}
+
+.seloItem {
+  padding: 4px 9px;
+  border-radius: var(--r-pill);
+  background: rgba(20, 49, 47, 0.82);
+  backdrop-filter: blur(8px);
+  font-size: 10.5px;
+  font-weight: 750;
+  color: #fff;
+  white-space: nowrap;
+}
