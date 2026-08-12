@@ -20,6 +20,8 @@ export type RegiaoRJ =
   | 'costa-do-sol'
   | 'costa-verde'
   | 'serrana'
+  | 'agulhas-negras'
+  | 'vale-do-cafe'
   | 'norte-fluminense'
 
 /** Perfis de viagem. Servem de filtro no site e na plataforma. */

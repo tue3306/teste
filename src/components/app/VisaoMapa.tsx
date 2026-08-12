@@ -22,6 +22,8 @@ const COR_REGIAO: Record<RegiaoRJ, string> = {
   'costa-do-sol': '#0ea5b5',
   'costa-verde': '#3f8f4f',
   serrana: '#7c5cbf',
+  'agulhas-negras': '#4a6b8a',
+  'vale-do-cafe': '#8a6a3f',
   'norte-fluminense': '#e0663f',
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { DESTINOS } from '@/data/rj'
+import { DESTINOS, NOMES_REGIAO } from '@/data/rj'
 import {
   FILTROS_VAZIOS,
   alternar,
@@ -131,19 +131,23 @@ describe('saidas — o que soltar quando dá zero', () => {
   })
 })
 
+/**
+ * Regiões e perfis derivados do próprio catálogo.
+ *
+ * Escritos à mão, o teste quebrava ao acrescentar uma região — sem que nada
+ * tivesse quebrado de fato. Derivar do dado faz o teste medir a regra, e não a
+ * memória de quem o escreveu.
+ */
+const REGIOES = Object.keys(NOMES_REGIAO) as RegiaoRJ[]
+const PERFIS: Categoria[] = [
+  'praia', 'serra', 'natureza', 'historico', 'aventura', 'gastronomia',
+  'noite', 'familia', 'romantico', 'fim-de-semana', 'economico', 'premium',
+]
+
 describe('catálogo real', () => {
   it('nenhuma combinação de UMA região com UM perfil quebra a função', () => {
-    const regioes: RegiaoRJ[] = [
-      'metropolitana',
-      'costa-do-sol',
-      'costa-verde',
-      'serrana',
-      'norte-fluminense',
-    ]
-    const perfis: Categoria[] = [
-      'praia', 'serra', 'natureza', 'historico', 'aventura', 'gastronomia',
-      'noite', 'familia', 'romantico', 'fim-de-semana', 'economico', 'premium',
-    ]
+    const regioes = REGIOES
+    const perfis = PERFIS
 
     for (const r of regioes) {
       for (const p of perfis) {
@@ -159,22 +163,19 @@ describe('catálogo real', () => {
   })
 
   it('marcar todas as regiões equivale a não marcar nenhuma', () => {
-    const todas: RegiaoRJ[] = [
-      'metropolitana',
-      'costa-do-sol',
-      'costa-verde',
-      'serrana',
-      'norte-fluminense',
-    ]
-    expect(filtrar(DESTINOS, { regioes: todas, perfis: [] })).toHaveLength(DESTINOS.length)
+    expect(filtrar(DESTINOS, { regioes: REGIOES, perfis: [] })).toHaveLength(DESTINOS.length)
+  })
+
+  it('todo destino pertence a uma região conhecida', () => {
+    for (const d of DESTINOS) expect(REGIOES).toContain(d.regiao)
+  })
+
+  it('todo destino tem ao menos um perfil, senão some ao filtrar', () => {
+    for (const d of DESTINOS) expect(d.categorias.length).toBeGreaterThan(0)
   })
 
   it('marcar todos os perfis não esvazia a lista', () => {
-    const perfis: Categoria[] = [
-      'praia', 'serra', 'natureza', 'historico', 'aventura', 'gastronomia',
-      'noite', 'familia', 'romantico', 'fim-de-semana', 'economico', 'premium',
-    ]
-    expect(filtrar(DESTINOS, { regioes: [], perfis }).length).toBe(DESTINOS.length)
+    expect(filtrar(DESTINOS, { regioes: [], perfis: PERFIS }).length).toBe(DESTINOS.length)
   })
 })
 

@@ -1,4 +1,5 @@
 import type { Destino } from '@/types'
+import { DESTINOS_EXTRA } from './destinos-extra'
 
 /**
  * Os 29 destinos do estado do Rio de Janeiro cobertos pela plataforma.
@@ -13,7 +14,7 @@ import type { Destino } from '@/types'
  * são reais. As fotos vêm do catálogo local gerado do Wikimedia Commons
  * (`npm run fotos`).
  */
-export const DESTINOS: Destino[] = [
+const BASE: Destino[] = [
   // ─────────────────────────── Região Metropolitana ───────────────────────────
   {
     id: 'rio-de-janeiro',
@@ -589,7 +590,7 @@ export const DESTINOS: Destino[] = [
     id: 'miguel-pereira',
     nome: 'Miguel Pereira',
     uf: 'RJ',
-    regiao: 'serrana',
+    regiao: 'vale-do-cafe',
     latitude: -22.4569,
     longitude: -43.48,
     foto: 'miguel-pereira',
@@ -617,7 +618,7 @@ export const DESTINOS: Destino[] = [
     id: 'vassouras',
     nome: 'Vassouras',
     uf: 'RJ',
-    regiao: 'serrana',
+    regiao: 'vale-do-cafe',
     latitude: -22.4039,
     longitude: -43.6631,
     foto: 'vassouras',
@@ -645,7 +646,7 @@ export const DESTINOS: Destino[] = [
     id: 'valenca',
     nome: 'Valença',
     uf: 'RJ',
-    regiao: 'serrana',
+    regiao: 'vale-do-cafe',
     latitude: -22.2444,
     longitude: -43.7,
     foto: 'valenca',
@@ -673,7 +674,7 @@ export const DESTINOS: Destino[] = [
     id: 'conservatoria',
     nome: 'Conservatória',
     uf: 'RJ',
-    regiao: 'serrana',
+    regiao: 'vale-do-cafe',
     latitude: -22.2861,
     longitude: -43.8722,
     foto: 'conservatoria',
@@ -841,6 +842,14 @@ export const DESTINOS: Destino[] = [
   },
 ]
 
+/**
+ * O catálogo inteiro de destinos.
+ *
+ * A segunda leva vive em `destinos-extra.ts` para os dois arquivos continuarem
+ * revisáveis — 47 destinos num arquivo só passa de 2.500 linhas.
+ */
+export const DESTINOS: Destino[] = [...BASE, ...DESTINOS_EXTRA]
+
 /** Índice por id, para lookup direto sem varrer a lista. */
 export const DESTINO_POR_ID = new Map(DESTINOS.map((d) => [d.id, d]))
 
@@ -853,6 +862,8 @@ export const NOMES_REGIAO = {
   'costa-do-sol': 'Costa do Sol',
   'costa-verde': 'Costa Verde',
   serrana: 'Região Serrana',
+  'agulhas-negras': 'Agulhas Negras',
+  'vale-do-cafe': 'Vale do Café',
   'norte-fluminense': 'Norte Fluminense',
 } as const
 

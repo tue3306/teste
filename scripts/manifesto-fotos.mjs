@@ -53,6 +53,39 @@ export const MANIFESTO = [
   { slug: 'macae', titulo: 'Macaé', alt: 'Orla e porto de Macaé' },
   { slug: 'quissama', titulo: 'Quissamã', alt: 'Restinga e lagoas de Quissamã' },
 
+  // --- expansão: mais 18 destinos do estado ---
+  // Região Metropolitana e Baixada
+  { slug: 'sao-goncalo', titulo: 'São Gonçalo (Rio de Janeiro)', alt: 'Vista de São Gonçalo' },
+  { slug: 'mage', titulo: 'Magé', alt: 'Serra dos Órgãos vista de Magé' },
+  { slug: 'cachoeiras-de-macacu', titulo: 'Cachoeiras de Macacu', alt: 'Mata e rio em Cachoeiras de Macacu' },
+  { slug: 'nova-iguacu', titulo: 'Nova Iguaçu', alt: 'Parque Municipal de Nova Iguaçu' },
+
+  // Costa do Sol
+  { slug: 'iguaba-grande', titulo: 'Iguaba Grande', alt: 'Orla da lagoa em Iguaba Grande' },
+  { slug: 'casimiro-de-abreu', titulo: 'Casimiro de Abreu (Rio de Janeiro)', alt: 'Rio e mata em Casimiro de Abreu' },
+  { slug: 'silva-jardim', titulo: 'Silva Jardim', alt: 'Mata atlântica em Silva Jardim' },
+
+  // Agulhas Negras / Médio Paraíba
+  { slug: 'itatiaia', titulo: 'Parque Nacional do Itatiaia', alt: 'Prateleiras no Parque Nacional do Itatiaia' },
+  { slug: 'resende', titulo: 'Resende (Rio de Janeiro)', alt: 'Vale do Paraíba em Resende' },
+  { slug: 'penedo', titulo: 'Penedo (Itatiaia)', alt: 'Colônia finlandesa de Penedo' },
+  // O distrito não tem imagem principal na Wikipédia; a serra que o abriga tem.
+  { slug: 'visconde-de-maua', titulo: 'Serra da Mantiqueira', alt: 'Serra da Mantiqueira, onde fica Visconde de Mauá' },
+
+  // Vale do Café
+  { slug: 'barra-do-pirai', titulo: 'Barra do Piraí', alt: 'Centro histórico de Barra do Piraí' },
+  // O artigo do município tem a bandeira como imagem principal.
+  { slug: 'rio-das-flores', titulo: 'Vale do Paraíba', alt: 'Vale do Paraíba, onde fica Rio das Flores' },
+
+  // Região Serrana
+  { slug: 'bom-jardim', titulo: 'Bom Jardim (Rio de Janeiro)', alt: 'Montanhas de Bom Jardim' },
+  { slug: 'santa-maria-madalena', titulo: 'Santa Maria Madalena', alt: 'Pico do Desengano em Santa Maria Madalena' },
+
+  // Norte e Noroeste Fluminense
+  { slug: 'itaperuna', titulo: 'Itaperuna', alt: 'Centro de Itaperuna' },
+  { slug: 'santo-antonio-de-padua', titulo: 'Santo Antônio de Pádua (Rio de Janeiro)', alt: 'Rio Pomba em Santo Antônio de Pádua' },
+  { slug: 'carapebus', titulo: 'Carapebus', alt: 'Lagoa de Carapebus na restinga de Jurubatiba' },
+
   // --- pontos e bairros do Rio, usados nas ofertas e no roteiro ---
   { slug: 'cristo-redentor', titulo: 'Cristo Redentor', alt: 'Estátua do Cristo Redentor no Corcovado' },
   // "Pão de Açúcar" virou página de desambiguação e deixou de ter imagem principal.
