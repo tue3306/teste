@@ -42,7 +42,7 @@
 
 .primario:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 20px 44px -12px rgba(207, 71, 30, 0.7);
+  box-shadow: var(--sh-coral-hover);
 }
 
 /* Ação secundária: contorno sobre superfície clara. */
@@ -79,7 +79,7 @@
 
 .teal:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 20px 40px -12px rgba(12, 123, 133, 0.6);
+  box-shadow: var(--sh-teal-hover);
 }
 
 /* Ação textual, sem caixa. */

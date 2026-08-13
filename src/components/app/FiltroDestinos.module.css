@@ -74,7 +74,7 @@
 .pilula:focus-visible {
   outline: none;
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px var(--mint);
+  box-shadow: var(--focus-ring);
 }
 
 /* O × dentro da pílula ativa diz que clicar de novo desmarca — a informação
@@ -187,7 +187,7 @@
 
 .selectMoldura:focus-within {
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px var(--mint);
+  box-shadow: var(--focus-ring);
 }
 
 .select {
