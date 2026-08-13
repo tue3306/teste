@@ -91,8 +91,50 @@ textarea {
   color: inherit;
 }
 
-button {
+/**
+ * Reset de botão — dentro de `:where()`, pelo mesmo motivo dos links.
+ *
+ * Sem isto, todo `<button>` que não declarasse fundo e borda herdava o estilo do
+ * sistema operacional. O título de cada cartão de hospedagem, passeio e
+ * restaurante é um `<button>` que só ajustava tipografia; no Windows ele
+ * aparecia cinza `#f0f0f0` com borda `2px outset` preta e cantos retos, no meio
+ * de um cartão de cantos arredondados. Era o mais visível de uma família
+ * inteira: qualquer botão futuro que esquecesse o reset teria o mesmo destino.
+ *
+ * `:where()` zera a especificidade, então isto é só o ponto de partida — todo
+ * componente que declara o próprio fundo, borda ou padding continua ganhando
+ * sem precisar de `!important` nem de ordem de importação.
+ */
+:where(button) {
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: pointer;
+}
+
+/**
+ * Reset de `<fieldset>` e `<legend>` — mesma história do botão.
+ *
+ * Agrupar controles relacionados num `<fieldset>` com `<legend>` é o que dá o
+ * nome do grupo para leitores de tela. Só que o navegador desenha o fieldset com
+ * `border: 2px groove` e canto reto: a caixa "Ordenar por" aparecia como um
+ * retângulo cinza-esverdeado sulcado, com a legenda cortando a borda, dentro de
+ * um painel de canto 26px. Era acessibilidade correta com aparência de
+ * formulário de 1999.
+ *
+ * `min-inline-size: 0` não é cosmético: a folha do navegador dá `min-content` ao
+ * fieldset, e por isso ele se recusa a encolher dentro de flex e grid — é uma
+ * das origens clássicas de estouro horizontal no celular.
+ */
+:where(fieldset) {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:where(legend) {
+  padding: 0;
 }
 
 input::placeholder,
@@ -111,10 +153,22 @@ textarea::placeholder {
  * foco só pela cor da borda — o que some para quem navega por teclado e reprova
  * no WCAG 2.4.7. Aqui todo elemento interativo tem anel de foco de verdade,
  * e apenas quando o foco veio do teclado (`:focus-visible`).
+ *
+ * **O foco não muda o formato do elemento.** Havia um `border-radius` nesta
+ * regra, e ele reescrevia o raio de qualquer coisa que recebesse foco: uma
+ * pílula de 999px virava um retângulo de 8px enquanto estivesse focada. Um
+ * estado de foco desenha por cima; não redesenha o componente.
+ *
+ * O raio de contingência vive na regra `:where()` abaixo, com especificidade
+ * zero — vale para quem não declarou raio nenhum e perde para qualquer
+ * declaração de componente.
  */
 :focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
+}
+
+:where(:focus-visible) {
   border-radius: var(--r-xs);
 }
 

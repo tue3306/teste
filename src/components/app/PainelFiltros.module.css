@@ -32,10 +32,53 @@
   font-variant-numeric: tabular-nums;
 }
 
+/**
+ * Controle de preço.
+ *
+ * `accent-color` sozinho deixa o trilho com a espessura e o raio padrão do
+ * sistema — grosso e de canto reto no Windows, fino e arredondado no macOS. O
+ * desenho explícito é o que faz o controle pertencer ao site em vez de ao
+ * sistema operacional de quem abre.
+ */
 .slider {
+  appearance: none;
   width: 100%;
+  height: 6px;
   margin-block-start: 12px;
-  accent-color: var(--teal-strong);
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--teal), var(--teal-border));
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--teal-strong);
+  box-shadow: var(--sh-sm);
+  cursor: grab;
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--teal-strong);
+  box-shadow: var(--sh-sm);
+  cursor: grab;
+}
+
+.slider:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .divisoria {
@@ -77,6 +120,26 @@
 .opcao:hover {
   border-color: var(--ink-a22);
   color: var(--ink);
+}
+
+/* O `input[type=radio]` nativo é o único controle quadrado que sobrava na
+   tela — sem `accent-color` ele herda o azul do sistema, que não é do site. */
+.opcao input[type='radio'] {
+  inline-size: 17px;
+  block-size: 17px;
+  margin-inline-end: 9px;
+  accent-color: var(--teal-strong);
+  vertical-align: -3px;
+}
+
+/* O rótulo inteiro é o alvo, então o anel vai nele — e não no radio de 17px. */
+.opcao:focus-within {
+  border-color: var(--teal);
+  box-shadow: var(--focus-ring);
+}
+
+.opcao input[type='radio']:focus-visible {
+  box-shadow: none;
 }
 
 .facetas {

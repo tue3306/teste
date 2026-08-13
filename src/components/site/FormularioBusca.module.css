@@ -30,8 +30,21 @@
   transition: border-color var(--t-fast) ease;
 }
 
+/**
+ * O anel de foco fica na caixa, não no campo.
+ *
+ * O `<select>` e o `<input type="date">` são transparentes e têm 24px de
+ * altura; a caixa em volta tem 71px. Com o anel no campo, ele desenhava um
+ * retângulo apertado flutuando no meio de um cartão arredondado — que é o que
+ * fazia a busca parecer desalinhada ao clicar para selecionar.
+ *
+ * `:focus-within` e não `:has(:focus-visible)` de propósito: destacar a caixa
+ * também no clique de mouse é informação útil, não ruído, e é o que casa com o
+ * que a pessoa acabou de tocar.
+ */
 .campo:focus-within {
   border-color: var(--teal);
+  box-shadow: var(--focus-ring);
 }
 
 .rotulo {
